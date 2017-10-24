@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "786096365295",
+    "firebase_url": "https://greenerlawn-4838b.firebaseio.com",
+    "project_id": "greenerlawn-4838b",
+    "storage_bucket": "greenerlawn-4838b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:786096365295:android:509f5d78ecefdc78",
+        "android_client_info": {
+          "package_name": "com.greenerlawn.greenerlawn"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "786096365295-bnarfsnmdtukk36np901n5i2h0dc4ggo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.greenerlawn.greenerlawn",
+            "certificate_hash": "698a2ed6d9bfd67afee7f343f5db93582d5165af"
+          }
+        },
+        {
+          "client_id": "786096365295-08u55vlu24iao5hssevvbtdc1algi5vu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDi7W-4g3qfQPNrpnF3QQ5cXEqu4dUUOFM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "786096365295-08u55vlu24iao5hssevvbtdc1algi5vu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
