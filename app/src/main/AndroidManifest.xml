@@ -23,6 +23,7 @@
         <activity android:name=".TimePopUp"
             android:theme="@style/AppTheme.TimerPopup">
         </activity>
+        <activity android:name=".ZoneSettings"></activity>
     </application>
 
 </manifest>
