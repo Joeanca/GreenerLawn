@@ -4,5 +4,6 @@
     <string name="hour">Hour</string>
     <string name="minute">Minute</string>
     <string name="second">Second</string>
+    <string name="OPEN_WEATHER_MAP_API_KEY">bea4b929ff482f02d7ab334b6e015467</string>
 
 </resources>

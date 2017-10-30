@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.1"
     defaultConfig {
         applicationId "com.greenerlawn.greenerlawn"
         minSdkVersion 15
@@ -17,6 +16,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
 }
 
 dependencies {
@@ -26,5 +26,10 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:26.+'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+
+    //Weather api
+    compile 'com.github.KwabenBerko:OpenWeatherMap-Android-Library:v1.1.1'
+
     testCompile 'junit:junit:4.12'
+    implementation 'com.android.support:design:26.1.0'
 }
