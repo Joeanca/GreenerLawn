@@ -3,7 +3,9 @@ package com.greenerlawn.greenerlawn;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.view.View;
 import android.widget.NumberPicker;
+import android.widget.TextView;
 
 /**
  * Created by Austin on 2017-10-28.
@@ -38,12 +40,18 @@ public class TimePopUp extends Activity{
         npm.setMaxValue(59);
         npm.setWrapSelectorWheel(true);
 
-        //Define second picker
-        NumberPicker nps = findViewById(R.id.numberPickerSecond);
-        nps.setMinValue(0);
-        nps.setMaxValue(59);
-        nps.setWrapSelectorWheel(true);
-
-
     }
+
+    public void submitResult(View view) {
+        NumberPicker nph = findViewById(R.id.numberPickerHour);
+        NumberPicker npm =  findViewById(R.id.numberPickerMinute);
+        int minutes;
+        minutes = 60 * nph.getValue();
+        minutes = minutes + npm.getValue();
+        TextView tv = findViewById(R.id.textView);
+        tv.setText("The time is: " + minutes);
+        //setResult(RESULT_OK);
+        //finish();
+    }
+
 }
