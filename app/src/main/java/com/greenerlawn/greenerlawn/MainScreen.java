@@ -22,24 +22,20 @@ public class MainScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_screen_activity);
 
+        setWeather();
+    }
+
+    private void setWeather() {
+        UserSettings settings = new UserSettings();
         OpenWeatherMapHelper helper = new OpenWeatherMapHelper();
 
-        helper.setApiKey(getString(R.string.OPEN_WEATHER_MAP_API_KEY));
+        configWeather(helper, settings);
 
-        helper.setUnits(Units.METRIC);
-
-        helper.getCurrentWeatherByCityName("Calgary", new OpenWeatherMapHelper.CurrentWeatherCallback() {
+        helper.getCurrentWeatherByCityName(settings.getCity(), new OpenWeatherMapHelper.CurrentWeatherCallback() {
             @Override
             public void onSuccess(CurrentWeather currentWeather) {
-                TextView tv = findViewById(R.id.textView2);
-                tv.setText("" + currentWeather.getMain().getTemp()+ "°");
-                Log.v("SUCCESS",
-                        "Coordinates: " + currentWeather.getCoord().getLat() + ", "+currentWeather.getCoord().getLat() +"\n"
-                                +"Weather Description: " + currentWeather.getWeatherArray().get(0).getDescription() + "\n"
-                                +"Max Temperature: " + currentWeather.getMain().getTempMax()+"\n"
-                                +"Wind Speed: " + currentWeather.getWind().getSpeed() + "\n"
-                                +"City, Country: " + currentWeather.getName() + ", " + currentWeather.getSys().getCountry()
-                );
+                TextView weatherBox = findViewById(R.id.currentTemp);
+                weatherBox.setText("" + currentWeather.getMain().getTemp()+ "°");
             }
 
             @Override
@@ -48,6 +44,17 @@ public class MainScreen extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void configWeather(OpenWeatherMapHelper helper, UserSettings settings) {
+        helper.setApiKey(getString(R.string.OPEN_WEATHER_MAP_API_KEY));
+
+        //@TODO Might change the settings heat unit to use same values as library for cleaner code.
+        if(settings.getHeatUnit() == settings.CELSIUS) {
+            helper.setUnits(Units.METRIC);
+        } else {
+            helper.setUnits(Units.IMPERIAL);
+        }
     }
 
     public void openTimer(View view) {
