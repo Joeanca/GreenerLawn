@@ -8,6 +8,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.kwabenaberko.openweathermaplib.Units;
 import com.kwabenaberko.openweathermaplib.implementation.OpenWeatherMapHelper;
 import com.kwabenaberko.openweathermaplib.models.currentweather.CurrentWeather;
@@ -16,6 +22,15 @@ import org.w3c.dom.Text;
 
 
 public class MainScreen extends AppCompatActivity {
+    public static final String ANONYMOUS = "anonymous";
+    private String mUsername;
+
+    private FirebaseDatabase mFirebaseDatabase;
+    private DatabaseReference mMessagesDatabaseReference;
+    private ChildEventListener mChildEventListener;
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseAuth.AuthStateListener mAuthStateListener;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +60,7 @@ public class MainScreen extends AppCompatActivity {
         });
 
     }
-
+  // TODO: create resource file which contains all the keys and logins for apis (good practice)
     private void configWeather(OpenWeatherMapHelper helper, UserSettings settings) {
         helper.setApiKey(getString(R.string.OPEN_WEATHER_MAP_API_KEY));
 
@@ -60,5 +75,38 @@ public class MainScreen extends AppCompatActivity {
     public void openTimer(View view) {
         startActivity(new Intent(MainScreen.this, TimePopUp.class));
 
+    }
+    private void attachDatabaseReadListener(){
+        if (mChildEventListener == null){
+            mChildEventListener = new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+//                    FriendlyMessage friendlyMessage = dataSnapshot.getValue(FriendlyMessage.class);
+//                    mMessageAdapter.add(friendlyMessage);
+                }
+
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {  }
+
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) { }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {   }
+            };
+            mMessagesDatabaseReference.addChildEventListener(mChildEventListener);
+        }
+
+    }
+    private void detachDatabaseReadListener(){
+        if (mChildEventListener != null){
+            mMessagesDatabaseReference.removeEventListener(mChildEventListener);
+            mChildEventListener = null;
+        }
     }
 }
