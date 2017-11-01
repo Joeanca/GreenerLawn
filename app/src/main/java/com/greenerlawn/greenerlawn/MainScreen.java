@@ -25,7 +25,8 @@ import com.kwabenaberko.openweathermaplib.models.currentweather.CurrentWeather;
 
 import org.w3c.dom.Text;
 
-
+// TODO revise weather api which includes rain? precipitation
+// https://www.apixu.com/doc/current.aspx apikey: 708a2ed675de4b6a9fb171931170111
 public class MainScreen extends Activity {
     public static final String ANONYMOUS = "anonymous";
     private String mUsername;
