@@ -1,14 +1,19 @@
 package com.greenerlawn.greenerlawn;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -21,10 +26,10 @@ import com.kwabenaberko.openweathermaplib.models.currentweather.CurrentWeather;
 import org.w3c.dom.Text;
 
 
-public class MainScreen extends AppCompatActivity {
+public class MainScreen extends Activity {
     public static final String ANONYMOUS = "anonymous";
     private String mUsername;
-
+    public String uid;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mMessagesDatabaseReference;
     private ChildEventListener mChildEventListener;
@@ -35,9 +40,28 @@ public class MainScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_screen_activity);
+        //Remove title bar
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
+        //Remove notification bar
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        //set content view AFTER ABOVE sequence (to avoid crash)
+        this.setContentView(R.layout.main_screen_activity);
+
+        getUser();
         setWeather();
+    }
+
+    private void getUser(){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            // The user's ID, unique to the Firebase project. Do NOT use this value to
+            // authenticate with your backend server, if you have one. Use
+            // FirebaseUser.getToken() instead.
+             uid = user.getUid();
+
+        }
     }
 
     private void setWeather() {

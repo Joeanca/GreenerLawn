@@ -12,12 +12,12 @@ import com.google.firebase.database.FirebaseDatabase;
 public abstract class FirebaseConnection {
     // Main entry point for the app to access the database
     private FirebaseDatabase mFirebaseDatabase;
-
     // DB reference object: references a specific part of the db
     private DatabaseReference mMessagesDatabaseReference;
 
     /**
-     * This method initializes the database and gets the elements under root x.
+     * This method initializes the database and gets the elements under "root".
+     * i.e users = root -> get all users
      *
      * Created by Jorge on 2017-10-31.
      */
@@ -28,6 +28,7 @@ public abstract class FirebaseConnection {
         mMessagesDatabaseReference = mFirebaseDatabase.getReference().child(root);
         return mMessagesDatabaseReference;
     }
+
 
 
 }
