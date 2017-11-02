@@ -55,7 +55,7 @@
         app:layout_constraintVertical_bias="1.0">
 
         <android.support.design.widget.FloatingActionButton
-            android:id="@+id/settingButton"
+            android:id="@+id/fab_settingButton"
             android:layout_width="77dp"
             android:layout_height="77dp"
             android:layout_marginBottom="8dp"
@@ -68,13 +68,14 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.591"
-            app:layout_constraintStart_toEndOf="@+id/seeZonesButton"
+            app:layout_constraintStart_toEndOf="@+id/fab_seeZonesButton"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0"
-            app:srcCompat="@drawable/ic_device_hub_black_24dp" />
+            app:srcCompat="@drawable/ic_more_vert_black_24dp"
+             />
 
         <android.support.design.widget.FloatingActionButton
-            android:id="@+id/seeZonesButton"
+            android:id="@+id/fab_seeZonesButton"
             android:layout_width="77dp"
             android:layout_height="77dp"
             android:layout_marginBottom="8dp"
@@ -82,6 +83,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="32dp"
             android:clickable="true"
+            android:onClick="modifyZones"
             android:translationZ="20dp"
             app:backgroundTint="@color/accent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -89,27 +91,27 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0"
-            app:srcCompat="@drawable/ic_access_time_black_24dp" />
+            app:srcCompat="@drawable/ic_device_hub_black_24dp" />
 
         <android.support.design.widget.FloatingActionButton
-            android:id="@+id/startAllZone"
+            android:id="@+id/fab_startAllZone"
             android:layout_width="77dp"
             android:layout_height="136dp"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="6dp"
             android:layout_marginTop="32dp"
             android:clickable="true"
             android:onClick="openTimer"
             android:translationZ="20dp"
             app:backgroundTint="@color/accent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/seeZonesButton"
+            app:layout_constraintEnd_toStartOf="@+id/fab_seeZonesButton"
             app:layout_constraintHorizontal_bias="0.437"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.039"
-            app:srcCompat="@drawable/ic_more_vert_black_24dp" />
+            app:srcCompat="@drawable/ic_opacity_24dp" />
 
         <TextView
             android:id="@+id/tv_main_underMenu"
@@ -119,12 +121,12 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="@string/main_underMenu"
+            android:text="@string/main_quickon"
             android:textColor="@color/icons"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/startAllZone"
-            app:layout_constraintStart_toStartOf="@+id/startAllZone"
-            app:layout_constraintTop_toBottomOf="@+id/startAllZone" />
+            app:layout_constraintEnd_toEndOf="@+id/fab_startAllZone"
+            app:layout_constraintStart_toStartOf="@+id/fab_startAllZone"
+            app:layout_constraintTop_toBottomOf="@+id/fab_startAllZone" />
 
         <TextView
             android:id="@+id/tv_main_quickon"
@@ -134,13 +136,13 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="@string/main_quickon"
+            android:text="@string/main_zones"
             android:textColor="@color/icons"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/seeZonesButton"
+            app:layout_constraintEnd_toEndOf="@+id/fab_seeZonesButton"
             app:layout_constraintHorizontal_bias="0.333"
-            app:layout_constraintStart_toStartOf="@+id/seeZonesButton"
-            app:layout_constraintTop_toBottomOf="@+id/seeZonesButton"
+            app:layout_constraintStart_toStartOf="@+id/fab_seeZonesButton"
+            app:layout_constraintTop_toBottomOf="@+id/fab_seeZonesButton"
             app:layout_constraintVertical_bias="0.428" />
 
         <TextView
@@ -151,12 +153,12 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="@string/main_zones"
+            android:text="@string/main_underMenu"
             android:textColor="@color/icons"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/settingButton"
-            app:layout_constraintStart_toStartOf="@+id/settingButton"
-            app:layout_constraintTop_toBottomOf="@+id/settingButton" />
+            app:layout_constraintEnd_toEndOf="@+id/fab_settingButton"
+            app:layout_constraintStart_toStartOf="@+id/fab_settingButton"
+            app:layout_constraintTop_toBottomOf="@+id/fab_settingButton" />
 
     </android.support.constraint.ConstraintLayout>
 
