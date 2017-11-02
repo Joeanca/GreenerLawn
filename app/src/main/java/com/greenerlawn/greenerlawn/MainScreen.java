@@ -6,11 +6,13 @@ import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -27,7 +29,7 @@ import org.w3c.dom.Text;
 
 // TODO revise weather api which includes rain? precipitation
 // https://www.apixu.com/doc/current.aspx apikey: 708a2ed675de4b6a9fb171931170111
-public class MainScreen extends Activity {
+public class MainScreen extends AppCompatActivity {
     public static final String ANONYMOUS = "anonymous";
     private String mUsername;
     public String uid;
@@ -50,10 +52,13 @@ public class MainScreen extends Activity {
         //set content view AFTER ABOVE sequence (to avoid crash)
         this.setContentView(R.layout.main_screen_activity);
 
+        //startup the toolbar
+        android.support.v7.widget.Toolbar myToolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(myToolbar);
+
         getUser();
         setWeather();
     }
-
     private void getUser(){
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {

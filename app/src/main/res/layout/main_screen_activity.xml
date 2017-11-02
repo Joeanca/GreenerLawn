@@ -1,32 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.ContentFrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.ContentFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/primary_light"
     tools:context="com.greenerlawn.greenerlawn.MainScreen">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="300dp"
         android:orientation="vertical"
-        >
+        android:translationZ="60dp">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar3"
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/primary_dark"
+            android:background="@color/primary"
             android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme" />
+            android:theme="?attr/actionBarTheme"
+            android:translationZ="20dp" />
 
         <TextView
             android:id="@+id/currentTemp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_height="match_parent"
+            android:background="@color/primary_light"
+            android:translationZ="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -48,12 +49,13 @@
             android:layout_margin="16dp"
             android:layout_weight="1"
             android:clickable="true"
+            android:translationZ="20dp"
             app:backgroundTint="@color/accent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/seeZonesButton"
-            app:srcCompat="@android:drawable/ic_dialog_dialer" />
+            app:srcCompat="@drawable/ic_device_hub_black_24dp" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/seeZonesButton"
@@ -65,12 +67,13 @@
             android:layout_marginTop="16dp"
             android:layout_weight="1"
             android:clickable="true"
+            android:translationZ="20dp"
             app:backgroundTint="@color/accent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/settingButton"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/startAllZone"
-            app:srcCompat="@android:drawable/ic_secure" />
+            app:srcCompat="@drawable/ic_access_time_black_24dp" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/startAllZone"
@@ -83,12 +86,13 @@
             android:layout_weight="1"
             android:clickable="true"
             android:onClick="openTimer"
+            android:translationZ="20dp"
             app:backgroundTint="@color/accent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/seeZonesButton"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@mipmap/ic_launcher_round" />
+            app:srcCompat="@drawable/ic_more_vert_black_24dp" />
     </LinearLayout>
 
 </android.support.v7.widget.ContentFrameLayout>
