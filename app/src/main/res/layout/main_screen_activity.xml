@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/primary_light"
     tools:context="com.greenerlawn.greenerlawn.MainScreen">
 
     <LinearLayout
@@ -17,8 +16,9 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/primary"
+            android:background="@color/primary_dark"
             android:minHeight="?attr/actionBarSize"
+            android:paddingTop="25dp"
             android:theme="?attr/actionBarTheme"
             android:translationZ="20dp" />
 
@@ -26,7 +26,8 @@
             android:id="@+id/currentTemp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/primary_light"
+            android:background="@drawable/custom_bottom_border"
+            android:backgroundTint="@color/primary"
             android:translationZ="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
