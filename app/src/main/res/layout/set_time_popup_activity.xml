@@ -17,6 +17,7 @@
         android:layout_marginStart="16dp"
         android:onClick="submitResult"
         android:text="@string/submit"
+        android:textColor="@color/icons"
         android:backgroundTint="@color/primary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
