@@ -88,7 +88,7 @@ public class MainScreen extends AppCompatActivity {
             @Override
             public void onSuccess(CurrentWeather currentWeather) {
                 TextView weatherBox = findViewById(R.id.currentTemp);
-                weatherBox.setText("" + currentWeather.getMain().getTemp()+ "°");
+                weatherBox.setText("Current temperature: " + currentWeather.getMain().getTemp()+ "°");
             }
 
             @Override

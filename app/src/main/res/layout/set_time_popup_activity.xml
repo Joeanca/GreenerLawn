@@ -4,7 +4,7 @@
     android:id="@+id/hourPicker"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/darker_gray"
+    android:background="@color/primary_light"
     android:visibility="visible">
 
 
@@ -17,6 +17,7 @@
         android:layout_marginStart="16dp"
         android:onClick="submitResult"
         android:text="@string/submit"
+        android:backgroundTint="@color/primary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -26,6 +27,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
+        android:textColor="@color/primary_text"
         app:layout_constraintBottom_toTopOf="@+id/submitTime"
         app:layout_constraintEnd_toStartOf="@+id/numberPickerMinute"
         app:layout_constraintHorizontal_bias="0.5"
@@ -38,6 +40,7 @@
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
+        android:textColor="@color/primary_text"
         app:layout_constraintBottom_toTopOf="@+id/submitTime"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/numberPickerHour" />
@@ -48,6 +51,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:text="@string/hour"
+        android:textColor="@color/primary_text"
         app:layout_constraintBottom_toTopOf="@+id/numberPickerHour"
         app:layout_constraintEnd_toStartOf="@+id/minutes"
         app:layout_constraintHorizontal_bias="0.5"
@@ -61,6 +65,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:text="@string/minute"
+        android:textColor="@color/primary_text"
         app:layout_constraintBottom_toTopOf="@+id/numberPickerMinute"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/hours" />
@@ -72,6 +77,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

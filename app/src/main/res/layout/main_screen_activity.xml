@@ -4,7 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.greenerlawn.greenerlawn.MainScreen">
+    tools:context="com.greenerlawn.greenerlawn.MainScreen"
+    android:background="@drawable/bk_water_droplets"
+    android:orientation="vertical"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,7 +19,6 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/primary_dark"
             android:minHeight="?attr/actionBarSize"
             android:paddingTop="25dp"
             android:theme="?attr/actionBarTheme"
@@ -26,8 +28,11 @@
             android:id="@+id/currentTemp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/custom_bottom_border"
-            android:backgroundTint="@color/primary"
+            android:layout_margin="10dp"
+            android:background="@drawable/custom_all_border"
+            android:backgroundTint="@color/primary_light"
+            android:textSize="16sp"
+            android:textColor="@color/primary_text"
             android:translationZ="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -39,7 +44,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center_horizontal"
         android:background="@drawable/custom_border"
-        android:backgroundTint="@color/primary"
+        android:backgroundTint="#CC2196F3"
         android:gravity="center"
         android:orientation="horizontal">
 
