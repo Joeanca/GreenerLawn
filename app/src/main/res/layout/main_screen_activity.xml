@@ -1,104 +1,158 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.ContentFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/contentFrameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.greenerlawn.greenerlawn.MainScreen"
     android:background="@drawable/bk_water_droplets"
-    android:orientation="vertical"
-    >
+    tools:context="com.greenerlawn.greenerlawn.MainScreen">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:orientation="vertical"
-        android:translationZ="60dp">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="?attr/actionBarSize"
-            android:paddingTop="25dp"
-            android:theme="?attr/actionBarTheme"
-            android:translationZ="20dp" />
-
-        <TextView
-            android:id="@+id/currentTemp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="10dp"
-            android:background="@drawable/custom_all_border"
-            android:backgroundTint="@color/primary_light"
-            android:textSize="16sp"
-            android:textColor="@color/primary_text"
-            android:translationZ="20dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginTop="8dp"
+        android:minHeight="?attr/actionBarSize"
+        android:paddingTop="25dp"
+        android:theme="?attr/actionBarTheme"
+        android:translationZ="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/currentTemp"
+        android:layout_width="340dp"
+        android:layout_height="224dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/custom_all_border"
+        android:backgroundTint="@color/primary_light"
+        android:textColor="@color/primary_text"
+        android:textSize="16sp"
+        android:translationZ="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="360dp"
+        android:layout_height="168dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="108dp"
         android:background="@drawable/custom_border"
         android:backgroundTint="#CC2196F3"
-        android:gravity="center"
-        android:orientation="horizontal">
+        android:gravity="center_vertical|center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/currentTemp"
+        app:layout_constraintVertical_bias="0.0">
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/settingButton"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_margin="16dp"
-            android:layout_weight="1"
+            android:layout_width="77dp"
+            android:layout_height="77dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="32dp"
             android:clickable="true"
             android:translationZ="20dp"
             app:backgroundTint="@color/accent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_bias="0.591"
             app:layout_constraintStart_toEndOf="@+id/seeZonesButton"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
             app:srcCompat="@drawable/ic_device_hub_black_24dp" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/seeZonesButton"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_margin="16dp"
-            android:layout_marginBottom="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_weight="1"
+            android:layout_width="77dp"
+            android:layout_height="77dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="32dp"
             android:clickable="true"
             android:translationZ="20dp"
             app:backgroundTint="@color/accent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/settingButton"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/startAllZone"
-            app:srcCompat="@drawable/ic_access_time_black_24dp" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@drawable/ic_access_time_black_24dp"
+            tools:layout_editor_absoluteX="132dp" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/startAllZone"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_margin="16dp"
-            android:layout_marginBottom="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_weight="1"
+            android:layout_width="77dp"
+            android:layout_height="136dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="32dp"
             android:clickable="true"
             android:onClick="openTimer"
             android:translationZ="20dp"
             app:backgroundTint="@color/accent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/seeZonesButton"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_bias="0.437"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.039"
             app:srcCompat="@drawable/ic_more_vert_black_24dp" />
-    </LinearLayout>
 
-</android.support.v7.widget.ContentFrameLayout>
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="21dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="TextView"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/startAllZone"
+            app:layout_constraintStart_toStartOf="@+id/startAllZone"
+            app:layout_constraintTop_toBottomOf="@+id/startAllZone" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="TextView"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/seeZonesButton"
+            app:layout_constraintHorizontal_bias="0.333"
+            app:layout_constraintStart_toStartOf="@+id/seeZonesButton"
+            app:layout_constraintTop_toBottomOf="@+id/seeZonesButton"
+            app:layout_constraintVertical_bias="0.428" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="TextView"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/settingButton"
+            app:layout_constraintStart_toStartOf="@+id/settingButton"
+            app:layout_constraintTop_toBottomOf="@+id/settingButton" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.constraint.ConstraintLayout>
