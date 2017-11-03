@@ -96,7 +96,7 @@ public class MainScreen extends AppCompatActivity {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null){
                     //user is signed in
-                    Log.d("insideListener", "onAuthStateChanged: inside mAuthStateListener");
+                    Log.d("insideListener", "onAuthStateChanged: inside mAuthStateListener" + user.getDisplayName());
                     onSignedInInitialize(user.getDisplayName());
                 }else {
                     //user is signed out
@@ -115,14 +115,15 @@ public class MainScreen extends AppCompatActivity {
                 }
             }
         };
-
-        getUser();
+        // TODO implement sign out interface and get it to record on firebase.
+        //getUser();
 
         // Weather setup
         setWeather();
     }
     private void onSignedInInitialize(String username){
         mUsername = username;
+        Log.d("username", "onSignedInInitialize: "  + username);
         attachDatabaseReadListener();
     }
     private void onSignedOutCleanup(){
