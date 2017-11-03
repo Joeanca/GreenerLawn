@@ -3,6 +3,7 @@ package com.greenerlawn.greenerlawn;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,7 +14,10 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.Toolbar;
+
+import com.firebase.ui.auth.AuthUI;
 import com.greenerlawn.greenerlawn.R;
 
 
@@ -32,6 +36,7 @@ import com.kwabenaberko.openweathermaplib.models.currentweather.CurrentWeather;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -43,16 +48,24 @@ public class MainScreen extends AppCompatActivity {
     public String uid;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mUsersDatabaseReference,mZonesDatabaseReference;
+    private FirebaseUser firebaseUser;
     private ChildEventListener mChildEventListener;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
+    private static final int RC_SIGN_IN = 123;
+    List<AuthUI.IdpConfig> providers;
+
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    //        android.support.v7.widget.Toolbar myToolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
-    //        setSupportActionBar(myToolbar);
+
+
+
+        //        android.support.v7.widget.Toolbar myToolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
+        //        setSupportActionBar(myToolbar);
 
         // Set colored status bar
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -67,12 +80,82 @@ public class MainScreen extends AppCompatActivity {
 
         //set content view AFTER ABOVE sequence (to avoid crash)
         this.setContentView(R.layout.main_screen_activity);
+        Log.d("getUser", "onCreate: Getting user" );
+
+        mUsername = ANONYMOUS;
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = mFirebaseAuth.getCurrentUser();
+        providers = new ArrayList<>();
+
 
         //get Firebase user
+        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null){
+                    //user is signed in
+                    Log.d("insideListener", "onAuthStateChanged: inside mAuthStateListener");
+                    onSignedInInitialize(user.getDisplayName());
+                }else {
+                    //user is signed out
+                    onSignedOutCleanup();
+                    providers.add(new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build());
+                    providers.add(new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build());
+                    startActivityForResult(
+                            AuthUI.getInstance()
+                                    .createSignInIntentBuilder()
+                                    .setAvailableProviders(
+                                            Arrays.asList(new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
+                                                    new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build()))
+                                    .build(),
+                            RC_SIGN_IN);
+
+                }
+            }
+        };
+
         getUser();
 
         // Weather setup
         setWeather();
+    }
+    private void onSignedInInitialize(String username){
+        mUsername = username;
+        attachDatabaseReadListener();
+    }
+    private void onSignedOutCleanup(){
+        mUsername = ANONYMOUS;
+        detachDatabaseReadListener();
+
+    }
+    private void attachDatabaseReadListener(){
+        if (mChildEventListener == null){
+            mChildEventListener = new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    //FriendlyMessage friendlyMessage = dataSnapshot.getValue(FriendlyMessage.class);
+                    //mMessageAdapter.add(friendlyMessage);
+                }
+
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {  }
+
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) { }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {   }
+            };
+            //mMessagesDatabaseReference.addChildEventListener(mChildEventListener);
+        }
+
     }
     private void getUser(){
         // Getting the firebase user
@@ -82,6 +165,7 @@ public class MainScreen extends AppCompatActivity {
             // authenticate with your backend server, if you have one. Use
             // FirebaseUser.getToken() instead.
             uid = user.getUid();
+            Log.d("userid", "getUser: " + uid.toString());
             mZonesDatabaseReference = FirebaseDatabase.getInstance(uid).getReference().child("zones");
             mZonesDatabaseReference.addListenerForSingleValueEvent(
                     new ValueEventListener() {
@@ -96,6 +180,8 @@ public class MainScreen extends AppCompatActivity {
                             //handle databaseError
                         }
                     });
+        } else{
+            Log.d("noUser", "getUser: No user found");
         }
     }
 
@@ -147,7 +233,7 @@ public class MainScreen extends AppCompatActivity {
     }
     private void collectZones(Map<String,Object> users) {
 
-        ArrayList<Long> zones = new ArrayList<>();
+        ArrayList<Zones> zones = new ArrayList<>();
 
         //iterate through each user, ignoring their UID
         for (Map.Entry<String, Object> entry : users.entrySet()){
@@ -155,10 +241,34 @@ public class MainScreen extends AppCompatActivity {
             //Get user map
             Map singleUser = (Map) entry.getValue();
             //Get zone field and append to list
-            zones.add((Long) singleUser.get("zones"));
+            zones.add((Zones) singleUser.get("zones"));
+            Log.d("zonemssg", "collectZones: "+ singleUser.toString());
         }
 
         System.out.println(zones.toString());
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RC_SIGN_IN){
+            if (resultCode == RESULT_OK){
+                Toast.makeText(this, "Signed in!", Toast.LENGTH_SHORT).show();
+            }else if (resultCode == RESULT_CANCELED){
+                Toast.makeText(this, "Sign in canceled", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        }
+    }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mFirebaseAuth.addAuthStateListener(mAuthStateListener);
+    }
 }
