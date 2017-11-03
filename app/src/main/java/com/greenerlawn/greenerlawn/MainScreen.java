@@ -123,7 +123,9 @@ public class MainScreen extends AppCompatActivity {
     }
     private void onSignedInInitialize(String username){
         mUsername = username;
-        Log.d("username", "onSignedInInitialize: "  + username);
+    // remove it after validation it's just to test the id
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        Log.d("username", "onSignedInInitialize: "  + user.getUid());
         attachDatabaseReadListener();
     }
     private void onSignedOutCleanup(){
