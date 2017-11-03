@@ -15,14 +15,6 @@
       },
       "oauth_client": [
         {
-          "client_id": "786096365295-usjnpgeqenhj1soid966bcav97ftjvhh.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.greenerlawn.greenerlawn",
-            "certificate_hash": "c586c5b4a729db69971b0ddbbdbe5bf463714e3e"
-          }
-        },
-        {
           "client_id": "786096365295-bnarfsnmdtukk36np901n5i2h0dc4ggo.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

@@ -25,7 +25,7 @@
 
     <TextView
         android:id="@+id/currentTemp"
-        android:layout_width="340dp"
+        android:layout_width="match_parent"
         android:layout_height="224dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
@@ -41,8 +41,8 @@
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/linearLayout"
-        android:layout_width="359dp"
-        android:layout_height="167dp"
+        android:layout_width="match_parent"
+        android:layout_height="162dp"
         android:layout_marginTop="108dp"
         android:background="@drawable/custom_border"
         android:backgroundTint="#CC2196F3"
@@ -71,8 +71,7 @@
             app:layout_constraintStart_toEndOf="@+id/fab_seeZonesButton"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0"
-            app:srcCompat="@drawable/ic_more_vert_black_24dp"
-             />
+            app:srcCompat="@drawable/ic_more_vert_black_24dp" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab_seeZonesButton"
