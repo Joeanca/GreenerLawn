@@ -9,26 +9,13 @@
     tools:context="com.greenerlawn.greenerlawn.MainScreen">
 
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:minHeight="?attr/actionBarSize"
-        android:paddingTop="25dp"
-        android:theme="?attr/actionBarTheme"
-        android:translationZ="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <TextView
         android:id="@+id/currentTemp"
         android:layout_width="match_parent"
         android:layout_height="224dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/custom_all_border"
         android:backgroundTint="@color/primary_light"
         android:textColor="@color/primary_text"
@@ -36,7 +23,7 @@
         android:translationZ="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <android.support.constraint.ConstraintLayout

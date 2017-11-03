@@ -11,4 +11,11 @@
     <string name="main_zones">zones</string>
     <string name="main_quickon">quick on</string>
     <string name="current_temp">Current temperature: </string>
+    <string name="sign_out">Sign out</string>
+    <string name="title_activity_drawer">Drawer</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
 </resources>

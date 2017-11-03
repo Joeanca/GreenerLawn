@@ -3,16 +3,21 @@ package com.greenerlawn.greenerlawn;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
@@ -52,6 +57,8 @@ public class MainScreen extends AppCompatActivity {
     private ChildEventListener mChildEventListener;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
+    private DrawerLayout mDrawerLayout;
+    private ListView mDrawerList;
     private static final int RC_SIGN_IN = 123;
     List<AuthUI.IdpConfig> providers;
 
@@ -67,20 +74,24 @@ public class MainScreen extends AppCompatActivity {
         //        android.support.v7.widget.Toolbar myToolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
         //        setSupportActionBar(myToolbar);
 
+
+
+
         // Set colored status bar
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.primary_dark));
 
-        //Remove title bar
-        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-
-        //Remove notification bar
-        //this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
         //set content view AFTER ABOVE sequence (to avoid crash)
         this.setContentView(R.layout.main_screen_activity);
         Log.d("getUser", "onCreate: Getting user" );
+
+        // for add back arrow in action bar
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
 
         mUsername = ANONYMOUS;
         mFirebaseDatabase = FirebaseDatabase.getInstance();
@@ -115,7 +126,7 @@ public class MainScreen extends AppCompatActivity {
                 }
             }
         };
-        // TODO implement sign out interface and get it to record on firebase.
+        // TODO transparent action_bar and get it to record on firebase.
         //getUser();
 
         // Weather setup
@@ -261,6 +272,25 @@ public class MainScreen extends AppCompatActivity {
                 finish();
             }
         }
+    }    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.sign_out_menu:
+                // sign out
+                AuthUI.getInstance().signOut(this);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
+
     }
 
     @Override
