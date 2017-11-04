@@ -14,6 +14,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,6 +23,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +31,10 @@ import android.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.auth.AuthUI;
+import com.firebase.ui.auth.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.UserInfo;
 import com.greenerlawn.greenerlawn.R;
 
@@ -59,8 +65,9 @@ public class MainScreen extends AppCompatActivity {
     private String mUsername, mEmail;
     private ImageView mImage;
     public String uid;
+    private DatabaseReference mUserRef;
     private FirebaseDatabase mFirebaseDatabase;
-    private DatabaseReference mUsersDatabaseReference,mZonesDatabaseReference;
+    private DatabaseReference mDatabaseReference,mZonesDatabaseReference;
     private FirebaseUser firebaseUser;
     private ChildEventListener mChildEventListener;
     private FirebaseAuth mFirebaseAuth;
@@ -69,7 +76,7 @@ public class MainScreen extends AppCompatActivity {
     private ActionBarDrawerToggle abdt;
     private ListView mDrawerList;
     private static final int RC_SIGN_IN = 123;
-    private TextView userName, email;
+
     List<AuthUI.IdpConfig> providers;
 
 
@@ -77,17 +84,19 @@ public class MainScreen extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         int transparent = ContextCompat.getColor(this, R.color.transparent);
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         getWindow().setStatusBarColor(transparent);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(transparent));
 
+
+
+
+
         //set content view AFTER ABOVE sequence (to avoid crash)
         this.setContentView(R.layout.main_screen_activity);
-
-        userName = (TextView) findViewById(R.id.tv_drawer_user);
-        email = (TextView) findViewById(R.id.tv_drawer_email);
         mImage = findViewById(R.id.iv_drawer_user);
 
 
@@ -121,6 +130,7 @@ public class MainScreen extends AppCompatActivity {
 
 
         //get Firebase user
+
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -129,6 +139,7 @@ public class MainScreen extends AppCompatActivity {
                     //user is signed in
                     Log.d("insideListener", "onAuthStateChanged: inside mAuthStateListener" + user.getDisplayName());
                     onSignedInInitialize(user);
+                    createUser(user);
 
                 }else {
                     //user is signed out
@@ -143,16 +154,32 @@ public class MainScreen extends AppCompatActivity {
                                                     new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build()))
                                     .build(),
                             RC_SIGN_IN);
-
                 }
             }
         };
-        // TODO transparent action_bar and get it to record on firebase.
-        //getUser();
-
+        // TODO place the username and password variables to the textviews
+//        View drawerView = (DrawerLayout)findViewById(R.id.drawer_layout);
+//        NavigationView mNavView = (NavigationView) drawerView.findViewById(R.id.nav_view);
+//        LinearLayout headerDrawer = (LinearLayout) mNavView.findViewById( R.id.nav_header_drawer);
+//        TextView tvUserName,tvEmail;
+//        tvUserName = (TextView) headerDrawer.findViewById(R.id.tv_drawer_user);
+//        tvUserName.setText("someName");
         // Weather setup
         setWeather();
     }
+
+    private void createUser(FirebaseUser user) {
+        writeNewUser(user.getUid(),user.getDisplayName(),user.getEmail());
+    }
+    private void writeNewUser(String userId, String name, String email) {
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference("users");
+        com.greenerlawn.greenerlawn.User user = new com.greenerlawn.greenerlawn.User(name, email);
+        mDatabaseReference.setValue(userId);
+        mUserRef = mDatabaseReference.child(userId);
+        mUserRef.setValue(user);
+    }
+
+
     private void onSignedInInitialize(FirebaseUser users){
         attachDatabaseReadListener();
     }
@@ -188,34 +215,6 @@ public class MainScreen extends AppCompatActivity {
         }
 
     }
-    private void getUser(){
-        // Getting the firebase user
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            // The user's ID, unique to the Firebase project. Do NOT use this value to
-            // authenticate with your backend server, if you have one. Use
-            // FirebaseUser.getToken() instead.
-            uid = user.getUid();
-            Log.d("userid", "getUser: " + uid.toString());
-            mZonesDatabaseReference = FirebaseDatabase.getInstance(uid).getReference().child("zones");
-            mZonesDatabaseReference.addListenerForSingleValueEvent(
-                    new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            //Get map of users in datasnapshot
-                            collectZones((Map<String,Object>) dataSnapshot.getValue());
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-                            //handle databaseError
-                        }
-                    });
-        } else{
-            Log.d("noUser", "getUser: No user found");
-        }
-    }
-
     private void setWeather() {
         UserSettings settings = new UserSettings();
         OpenWeatherMapHelper helper = new OpenWeatherMapHelper();
@@ -285,6 +284,8 @@ public class MainScreen extends AppCompatActivity {
         if (requestCode == RC_SIGN_IN){
             if (resultCode == RESULT_OK){
                 Toast.makeText(this, "Signed in!", Toast.LENGTH_SHORT).show();
+                Log.d("onActivityResult", "onActivityResult: " + data.getAction());
+//                createNewUser();
             }else if (resultCode == RESULT_CANCELED){
                 Toast.makeText(this, "Sign in canceled", Toast.LENGTH_SHORT).show();
                 finish();
