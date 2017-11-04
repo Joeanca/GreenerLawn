@@ -174,9 +174,8 @@ public class MainScreen extends AppCompatActivity {
     private void writeNewUser(String userId, String name, String email) {
         mDatabaseReference = FirebaseDatabase.getInstance().getReference("users");
         com.greenerlawn.greenerlawn.User user = new com.greenerlawn.greenerlawn.User(name, email);
-        mDatabaseReference.setValue(userId);
-        mUserRef = mDatabaseReference.child(userId);
-        mUserRef.setValue(user);
+        mDatabaseReference.child(userId).setValue(user);
+//        mUserRef = mDatabaseReference.child(userId).push().setValue(user);
     }
 
 
@@ -285,7 +284,6 @@ public class MainScreen extends AppCompatActivity {
             if (resultCode == RESULT_OK){
                 Toast.makeText(this, "Signed in!", Toast.LENGTH_SHORT).show();
                 Log.d("onActivityResult", "onActivityResult: " + data.getAction());
-//                createNewUser();
             }else if (resultCode == RESULT_CANCELED){
                 Toast.makeText(this, "Sign in canceled", Toast.LENGTH_SHORT).show();
                 finish();
