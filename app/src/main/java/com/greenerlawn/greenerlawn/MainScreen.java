@@ -169,7 +169,8 @@ public class MainScreen extends AppCompatActivity {
     }
 
     private void createUser(FirebaseUser user) {
-        writeNewUser(user.getUid(),user.getDisplayName(),user.getEmail());
+        String profileEmail = user.getEmail();
+        writeNewUser(user.getUid(),user.getDisplayName(),profileEmail);
     }
     private void writeNewUser(String userId, String name, String email) {
         mDatabaseReference = FirebaseDatabase.getInstance().getReference("users");
