@@ -5,7 +5,8 @@
     <string name="minute">Minute</string>
     <string name="second">Second</string>
     <string name="OPEN_WEATHER_MAP_API_KEY">bea4b929ff482f02d7ab334b6e015467</string>
-
+    <string name="Open">NavBar</string>
+    <string name="Close">NavBar</string>
     <string name="zone_setting_item_configure">...</string>
     <string name="main_underMenu">more settings</string>
     <string name="main_zones">zones</string>

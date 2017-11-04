@@ -12,10 +12,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:screenOrientation="portrait"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.Light.Translucent">
+        >
         <activity
             android:name=".MainScreen"
-            android:theme="@style/myTransparent">
+            android:theme="@style/Theme.AppCompat.Light.main"
+            >
 
             <!--
              to make this the starting activity uncomment the intent filter and the content within,
@@ -24,7 +25,6 @@
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -49,10 +49,12 @@
             android:name=".Drawer"
             android:label="@string/title_activity_drawer"
             android:parentActivityName=".MainScreen"
-            android:theme="@style/Theme.AppCompat.Light.Translucent">
+            android:theme="@style/Theme.AppCompat.Light.drawer">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.greenerlawn.greenerlawn.MainScreen" />
+                android:value="com.greenerlawn.greenerlawn.MainScreen"
+                android:theme="@style/Theme.AppCompat.Light.drawer"
+                />
         </activity>
     </application>
 
