@@ -1,18 +1,186 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_screen_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.greenerlawn.greenerlawn.MainScreen">
+    android:orientation="vertical"
+    tools:context="com.greenerlawn.greenerlawn.MainScreen"
+    >
+    <!--<android.support.v7.widget.AppCompatImageView-->
+        <!--android:src="@drawable/bk_water_droplets"-->
+        <!--android:scaleType = "centerCrop"/>-->
 
-    <TextView
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+       >
+
+        <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/currentTemp"
+                android:layout_width="match_parent"
+                android:layout_height="224dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/custom_all_border"
+                android:backgroundTint="@color/primary_light"
+                android:textColor="@color/primary_text"
+                android:textSize="16sp"
+                android:translationZ="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="162dp"
+                android:layout_marginTop="108dp"
+                android:background="@drawable/custom_border"
+                android:backgroundTint="#CC2196F3"
+                android:gravity="center_vertical|center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/currentTemp"
+                app:layout_constraintVertical_bias="1.0">
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/fab_settingButton"
+                    android:layout_width="77dp"
+                    android:layout_height="77dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="25dp"
+                    android:clickable="true"
+                    android:translationZ="20dp"
+                    app:backgroundTint="@color/accent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.591"
+                    app:layout_constraintStart_toEndOf="@+id/fab_seeZonesButton"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0"
+                    app:srcCompat="@drawable/ic_more_vert_black_24dp" />
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/fab_seeZonesButton"
+                    android:layout_width="77dp"
+                    android:layout_height="77dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="25dp"
+                    android:clickable="true"
+                    android:onClick="modifyZones"
+                    android:translationZ="20dp"
+                    app:backgroundTint="@color/accent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0"
+                    app:srcCompat="@drawable/ic_device_hub_black_24dp" />
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/fab_startAllZone"
+                    android:layout_width="77dp"
+                    android:layout_height="136dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="6dp"
+                    android:layout_marginTop="25dp"
+                    android:clickable="true"
+                    android:onClick="openTimer"
+                    android:translationZ="20dp"
+                    app:backgroundTint="@color/accent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/fab_seeZonesButton"
+                    app:layout_constraintHorizontal_bias="0.437"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.039"
+                    app:srcCompat="@drawable/ic_opacity_24dp" />
+
+                <TextView
+                    android:id="@+id/tv_main_underMenu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="21dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/main_quickon"
+                    android:textColor="@color/icons"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/fab_startAllZone"
+                    app:layout_constraintStart_toStartOf="@+id/fab_startAllZone"
+                    app:layout_constraintTop_toBottomOf="@+id/fab_startAllZone" />
+
+                <TextView
+                    android:id="@+id/tv_main_quickon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/main_zones"
+                    android:textColor="@color/icons"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/fab_seeZonesButton"
+                    app:layout_constraintHorizontal_bias="0.333"
+                    app:layout_constraintStart_toStartOf="@+id/fab_seeZonesButton"
+                    app:layout_constraintTop_toBottomOf="@+id/fab_seeZonesButton"
+                    app:layout_constraintVertical_bias="0.428" />
+
+                <TextView
+                    android:id="@+id/tv_main_zones"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/main_underMenu"
+                    android:textColor="@color/icons"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/fab_settingButton"
+                    app:layout_constraintStart_toStartOf="@+id/fab_settingButton"
+                    app:layout_constraintTop_toBottomOf="@+id/fab_settingButton" />
+
+
+            </android.support.constraint.ConstraintLayout>
+
+        </android.support.constraint.ConstraintLayout>
+    </RelativeLayout>
+
+    <android.support.design.widget.NavigationView
+        android:id="@+id/nav_view"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@color/primary"
+        android:fitsSystemWindows="true"
+        app:headerLayout="@layout/nav_header_drawer"
+        app:itemIconTint="@color/icons"
+        app:itemTextColor="@color/icons"
+        app:menu="@menu/activity_drawer_drawer" />
 
-</android.support.constraint.ConstraintLayout>
+
+</android.support.v4.widget.DrawerLayout>
+

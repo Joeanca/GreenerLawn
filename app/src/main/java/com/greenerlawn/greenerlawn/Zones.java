@@ -13,7 +13,9 @@ public class Zones {
     private boolean zOnOff;
     private ArrayList<zSchedule> zoneSchedule = new ArrayList<zSchedule>();
 
-
+    public Zones(String zGUID){
+        this.zGUID = zGUID;
+    }
     public Zones(String zGUID, String zName, boolean zOnOff) {
         this.zGUID = zGUID;
         this.zName = zName;
