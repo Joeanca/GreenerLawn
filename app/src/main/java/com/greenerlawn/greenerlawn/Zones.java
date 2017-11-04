@@ -20,8 +20,6 @@ public class Zones {
         this.zGUID = zGUID;
         this.zName = zName;
         this.zOnOff = zOnOff;
-        //day of week returns an int, 1 is sunday 7 is saturday
-        //need to get values that meaningfully correspond to ranges of times
 
         }
 
