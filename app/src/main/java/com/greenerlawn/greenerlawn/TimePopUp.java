@@ -23,10 +23,10 @@ public class TimePopUp extends Activity{
 
         int width = dm.widthPixels;
         int height = dm.heightPixels;
-        double hieghtPercentage = .5;
+        double heightPercentage = .5;
         double widthPercentage = .8;
 
-        getWindow().setLayout((int)(width*widthPercentage), (int)(height*hieghtPercentage));
+        getWindow().setLayout((int)(width*widthPercentage), (int)(height*heightPercentage));
 
         //Define the our picker
         NumberPicker nph = findViewById(R.id.numberPickerHour);

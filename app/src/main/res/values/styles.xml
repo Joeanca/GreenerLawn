@@ -25,7 +25,13 @@
         <item name="android:windowFullscreen">true</item>
     </style>
 
-    <style name="AppTheme.TimerPopup">
+    <style name="Theme.AppCompat.Light.TimerPopup" >
+        <item name="android:background">#CCc9dff1</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+    </style>
+
+    <style name="Theme.AppCompat.Light.myBase.zoneSettings" >
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowCloseOnTouchOutside">true</item>
     </style>

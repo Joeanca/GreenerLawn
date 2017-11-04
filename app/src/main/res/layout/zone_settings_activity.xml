@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.greenerlawn.greenerlawn.ZoneSettings">
+    android:id="@+id/zone_settings"
+    tools:context="com.greenerlawn.greenerlawn.ZoneSettings"
+    >
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="0dp"
@@ -36,5 +38,4 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:srcCompat="?android:attr/textCheckMark" />
-
 </android.support.constraint.ConstraintLayout>

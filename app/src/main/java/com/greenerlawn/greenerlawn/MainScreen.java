@@ -21,12 +21,15 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
+import com.bumptech.glide.Glide;
 import com.firebase.ui.auth.AuthUI;
+import com.google.firebase.auth.UserInfo;
 import com.greenerlawn.greenerlawn.R;
 
 
@@ -53,7 +56,8 @@ import java.util.Map;
 // https://www.apixu.com/doc/current.aspx apikey: 708a2ed675de4b6a9fb171931170111
 public class MainScreen extends AppCompatActivity {
     public static final String ANONYMOUS = "anonymous";
-    private String mUsername;
+    private String mUsername, mEmail;
+    private ImageView mImage;
     public String uid;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mUsersDatabaseReference,mZonesDatabaseReference;
@@ -65,6 +69,7 @@ public class MainScreen extends AppCompatActivity {
     private ActionBarDrawerToggle abdt;
     private ListView mDrawerList;
     private static final int RC_SIGN_IN = 123;
+    private TextView userName, email;
     List<AuthUI.IdpConfig> providers;
 
 
@@ -74,16 +79,17 @@ public class MainScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         int transparent = ContextCompat.getColor(this, R.color.transparent);
-        // Set colored status bar
-        //getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         getWindow().setStatusBarColor(transparent);
-        //getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(transparent));
-
 
         //set content view AFTER ABOVE sequence (to avoid crash)
         this.setContentView(R.layout.main_screen_activity);
+
+        userName = (TextView) findViewById(R.id.tv_drawer_user);
+        email = (TextView) findViewById(R.id.tv_drawer_email);
+        mImage = findViewById(R.id.iv_drawer_user);
+
 
         // Drawer functions
         mDrawerLayout = (DrawerLayout) findViewById(R.id.main_screen_layout);
@@ -91,10 +97,7 @@ public class MainScreen extends AppCompatActivity {
         abdt.setDrawerIndicatorEnabled(true);
         mDrawerLayout.addDrawerListener(abdt);
         abdt.syncState();
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-
 
         NavigationView nav_view = (NavigationView)findViewById(R.id.nav_view);
         nav_view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -125,7 +128,8 @@ public class MainScreen extends AppCompatActivity {
                 if (user != null){
                     //user is signed in
                     Log.d("insideListener", "onAuthStateChanged: inside mAuthStateListener" + user.getDisplayName());
-                    onSignedInInitialize(user.getDisplayName());
+                    onSignedInInitialize(user);
+
                 }else {
                     //user is signed out
                     onSignedOutCleanup();
@@ -149,11 +153,7 @@ public class MainScreen extends AppCompatActivity {
         // Weather setup
         setWeather();
     }
-    private void onSignedInInitialize(String username){
-        mUsername = username;
-    // remove it after validation it's just to test the id
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        Log.d("username", "onSignedInInitialize: "  + user.getUid());
+    private void onSignedInInitialize(FirebaseUser users){
         attachDatabaseReadListener();
     }
     private void onSignedOutCleanup(){
@@ -254,6 +254,7 @@ public class MainScreen extends AppCompatActivity {
     }
     public void modifyZones(View view){
         startActivity(new Intent(MainScreen.this, ZoneSettings.class));
+
     }
 
     private void detachDatabaseReadListener(){
