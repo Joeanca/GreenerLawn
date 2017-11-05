@@ -7,10 +7,10 @@ import java.util.ArrayList;
  * Created by jason on 11/5/2017.
  */
 
-public class DataHolder {
-    private ArrayList<Zone> zoneArrayList = new ArrayList<Zone>();
+public class DataManager {
+    private ArrayList<Zone> zoneArrayList = new ArrayList<>();
 
-    public DataHolder() {
+    public DataManager() {
         String[] guidArray = {"aa","ab","ac","ad","ae","af","ag","ah","ai"};
         String[] nameArray = {"name1","name2","name3","name4","name5","name6","name7","name8"};
         boolean status = false;
