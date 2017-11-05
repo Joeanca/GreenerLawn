@@ -13,6 +13,7 @@ import com.firebase.ui.auth.AuthUI;
 import java.util.ArrayList;
 
 public class ZoneSettings extends AppCompatActivity {
+    DataManager dM = new DataManager();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,8 +24,9 @@ public class ZoneSettings extends AppCompatActivity {
         final RecyclerView recyclerZones = (RecyclerView) findViewById(R.id.zone_recycler);
         final LinearLayoutManager zoneLayoutManager = new LinearLayoutManager(this);
         recyclerZones.setLayoutManager(zoneLayoutManager);
-
-
+        ArrayList<Zone> zones = dM.getZoneArrayList();
+        final ZoneSettingsRecyclerAdapter zoneSettingsRecyclerAdapter = new ZoneSettingsRecyclerAdapter(this,zones);
+        recyclerZones.setAdapter(zoneSettingsRecyclerAdapter);
 
     // set an exit transition
         getWindow().setExitTransition(new Explode());
