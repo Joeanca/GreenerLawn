@@ -1,11 +1,7 @@
 package com.greenerlawn.greenerlawn;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
-import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
@@ -14,29 +10,16 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.auth.AuthUI;
-import com.firebase.ui.auth.User;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.UserInfo;
-import com.greenerlawn.greenerlawn.R;
 
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -46,17 +29,18 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.kwabenaberko.openweathermaplib.Units;
-import com.kwabenaberko.openweathermaplib.implementation.OpenWeatherMapHelper;
-import com.kwabenaberko.openweathermaplib.models.currentweather.CurrentWeather;
 
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+
+import github.vatsal.easyweather.Helper.TempUnitConverter;
+import github.vatsal.easyweather.Helper.WeatherCallback;
+import github.vatsal.easyweather.WeatherMap;
+import github.vatsal.easyweather.retrofit.models.Weather;
+import github.vatsal.easyweather.retrofit.models.WeatherResponseModel;
 
 // TODO revise weather api which includes rain? precipitation
 // https://www.apixu.com/doc/current.aspx apikey: 708a2ed675de4b6a9fb171931170111
@@ -76,6 +60,7 @@ public class MainScreen extends AppCompatActivity {
     private ActionBarDrawerToggle abdt;
     private ListView mDrawerList;
     private static final int RC_SIGN_IN = 123;
+    private static final String OPEN_API_KEY = "bea4b929ff482f02d7ab334b6e015467";
 
     List<AuthUI.IdpConfig> providers;
 
@@ -164,10 +149,49 @@ public class MainScreen extends AppCompatActivity {
 //        TextView tvUserName,tvEmail;
 //        tvUserName = (TextView) headerDrawer.findViewById(R.id.tv_drawer_user);
 //        tvUserName.setText("someName");
+
+
         // Weather setup
-        setWeather();
+        WeatherMap weatherMap = new WeatherMap(this, OPEN_API_KEY);
+        setupWeather(weatherMap);
+
     }
 
+    private void setupWeather(WeatherMap weatherMap) {
+        UserSettings settings = new UserSettings();
+
+        weatherMap.getCityWeather(/*settings.getCity()*/ "Vancouver, US", new WeatherCallback() {
+            @Override
+            public void success(WeatherResponseModel response) {
+                Weather weather[] = response.getWeather();
+                String weatherMain = weather[0].getMain();
+                Double temperature = TempUnitConverter.convertToCelsius(response.getMain().getTemp());
+
+                //Initiate textViews
+                TextView tempTV = findViewById(R.id.currentTemp);
+                TextView humidityTV = findViewById(R.id.currentHumidity);
+                TextView conditionTV = findViewById(R.id.currentCondition);
+                TextView rainTV = findViewById(R.id.currentRainfall);
+                ImageView conditionIV = findViewById(R.id.conditionImage);
+
+                tempTV.setText(temperature.longValue() + "°");
+                humidityTV.setText(response.getMain().getHumidity() + "%");
+                conditionTV.setText(weatherMain);
+                rainTV.setText(response.getRain());
+                Glide.with(getApplicationContext())
+                        .load(weather[0].getIconLink())
+                        .into(conditionIV)
+                ;
+
+            }
+
+            @Override
+            public void failure(String message) {
+            }
+        });
+
+
+    }
     private void createUser(FirebaseUser user) {
         String profileEmail = user.getEmail();
         writeNewUser(user.getUid(),user.getDisplayName(),profileEmail);
@@ -215,37 +239,8 @@ public class MainScreen extends AppCompatActivity {
         }
 
     }
-    private void setWeather() {
-        UserSettings settings = new UserSettings();
-        OpenWeatherMapHelper helper = new OpenWeatherMapHelper();
 
-        configWeather(helper, settings);
 
-        helper.getCurrentWeatherByCityName(settings.getCity(), new OpenWeatherMapHelper.CurrentWeatherCallback() {
-            @Override
-            public void onSuccess(CurrentWeather currentWeather) {
-                TextView weatherBox = findViewById(R.id.currentTemp);
-                weatherBox.setText(new StringBuilder().append(getBaseContext().getString(R.string.current_temp)).append(currentWeather.getMain().getTemp()).append("°").toString());
-            }
-
-            @Override
-            public void onFailure(Throwable throwable) {
-                Log.v("ERROR", throwable.getMessage());
-            }
-        });
-
-    }
-  // TODO: create resource file which contains all the keys and logins for apis (good practice)
-    private void configWeather(OpenWeatherMapHelper helper, UserSettings settings) {
-        helper.setApiKey(getString(R.string.OPEN_WEATHER_MAP_API_KEY));
-
-        //@TODO Might change the settings heat unit to use same values as library for cleaner code.
-        if(settings.getHeatUnit() == settings.CELSIUS) {
-            helper.setUnits(Units.METRIC);
-        } else {
-            helper.setUnits(Units.IMPERIAL);
-        }
-    }
 
     public void openTimer(View view) {
         startActivity(new Intent(MainScreen.this, TimePopUp.class));
