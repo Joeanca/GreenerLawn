@@ -174,6 +174,8 @@ public class MainScreen extends AppCompatActivity {
                 TextView rainTV = findViewById(R.id.currentRainfall);
                 ImageView conditionIV = findViewById(R.id.conditionImage);
 
+
+                //@TODO Create a better resouse string in oreder to avoid warnings and bad practices
                 tempTV.setText(temperature.longValue() + "°");
                 humidityTV.setText(response.getMain().getHumidity() + "%");
                 conditionTV.setText(weatherMain);
