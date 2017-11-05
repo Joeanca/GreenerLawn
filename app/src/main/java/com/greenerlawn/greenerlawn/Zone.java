@@ -7,19 +7,19 @@ import java.util.Calendar;
  * Created by jason on 10/28/2017.
  */
 
-public class Zones {
+public class Zone {
 
-    private String zGUID,zName;
     private boolean zOnOff;
+    private String zGUID, zName;
     private ArrayList<zSchedule> zoneSchedule = new ArrayList<zSchedule>();
 
     //default constructor for empty zone
-    public Zones(String zGUID){
+    public Zone(String zGUID) {
         this.zGUID = zGUID;
     }
 
     //constructor allows for full zone config
-    public Zones(String zGUID, String zName, boolean zOnOff) {
+    public Zone(String zGUID, String zName, boolean zOnOff) {
         this.zGUID = zGUID;
         this.zName = zName;
         this.zOnOff = zOnOff;
@@ -57,11 +57,13 @@ public class Zones {
         this.zoneSchedule = zoneSchedule;
     }
 
-    public void addToSchedule(int aDay, Long aStartTime, Long aDuration){
-        zoneSchedule.add(new zSchedule(aDay,aStartTime,aDuration));
+    public void addToSchedule(int aDay, Long aStartTime, Long aDuration) {
+        zoneSchedule.add(new zSchedule(aDay, aStartTime, aDuration));
     }
 
-    private class zSchedule{
+    //TODO remove schedule function(s)
+
+    private class zSchedule {
         private int day;
         private Long startTime;
         private Long duration;
