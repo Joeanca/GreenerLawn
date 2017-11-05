@@ -1,13 +1,12 @@
 package com.greenerlawn.greenerlawn;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 /**
  * Created by jason on 10/28/2017.
  */
 
-public class Zone {
+    public class Zone {
 
     private boolean zOnOff;
     private String zGUID, zName;
