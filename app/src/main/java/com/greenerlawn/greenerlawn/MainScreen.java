@@ -1,7 +1,11 @@
 package com.greenerlawn.greenerlawn;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
@@ -10,16 +14,29 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.auth.AuthUI;
+import com.firebase.ui.auth.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.UserInfo;
+import com.greenerlawn.greenerlawn.R;
 
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,7 +46,10 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -149,8 +169,6 @@ public class MainScreen extends AppCompatActivity {
 //        TextView tvUserName,tvEmail;
 //        tvUserName = (TextView) headerDrawer.findViewById(R.id.tv_drawer_user);
 //        tvUserName.setText("someName");
-
-
         // Weather setup
         WeatherMap weatherMap = new WeatherMap(this, OPEN_API_KEY);
         setupWeather(weatherMap);
@@ -160,7 +178,7 @@ public class MainScreen extends AppCompatActivity {
     private void setupWeather(WeatherMap weatherMap) {
         UserSettings settings = new UserSettings();
 
-        weatherMap.getCityWeather(/*settings.getCity()*/ "Vancouver, US", new WeatherCallback() {
+        weatherMap.getCityWeather(/*settings.getCity()*/ "Calgary", new WeatherCallback() {
             @Override
             public void success(WeatherResponseModel response) {
                 Weather weather[] = response.getWeather();
@@ -241,8 +259,6 @@ public class MainScreen extends AppCompatActivity {
         }
 
     }
-
-
 
     public void openTimer(View view) {
         startActivity(new Intent(MainScreen.this, TimePopUp.class));
