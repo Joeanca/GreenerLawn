@@ -18,6 +18,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.firebase.ui.auth.AuthUI;
 
 
@@ -28,14 +29,21 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.kwabenaberko.openweathermaplib.Units;
-import com.kwabenaberko.openweathermaplib.implementation.OpenWeatherMapHelper;
-import com.kwabenaberko.openweathermaplib.models.currentweather.CurrentWeather;
+
+//import com.google.firebase.database.ValueEventListener;
+
+
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+
+import github.vatsal.easyweather.Helper.TempUnitConverter;
+import github.vatsal.easyweather.Helper.WeatherCallback;
+import github.vatsal.easyweather.WeatherMap;
+import github.vatsal.easyweather.retrofit.models.Weather;
+import github.vatsal.easyweather.retrofit.models.WeatherResponseModel;
 
 // TODO revise weather api which includes rain? precipitation
 // https://www.apixu.com/doc/current.aspx apikey: 708a2ed675de4b6a9fb171931170111
@@ -55,6 +63,7 @@ public class MainScreen extends AppCompatActivity {
     private ActionBarDrawerToggle abdt;
     private ListView mDrawerList;
     private static final int RC_SIGN_IN = 123;
+    private static final String OPEN_API_KEY = "bea4b929ff482f02d7ab334b6e015467";
 
     List<AuthUI.IdpConfig> providers;
 
@@ -144,9 +153,48 @@ public class MainScreen extends AppCompatActivity {
 //        tvUserName = (TextView) headerDrawer.findViewById(R.id.tv_drawer_user);
 //        tvUserName.setText("someName");
         // Weather setup
-        setWeather();
+        WeatherMap weatherMap = new WeatherMap(this, OPEN_API_KEY);
+        setupWeather(weatherMap);
+
     }
 
+    private void setupWeather(WeatherMap weatherMap) {
+        UserSettings settings = new UserSettings();
+
+        weatherMap.getCityWeather(/*settings.getCity()*/ "Calgary", new WeatherCallback() {
+            @Override
+            public void success(WeatherResponseModel response) {
+                Weather weather[] = response.getWeather();
+                String weatherMain = weather[0].getMain();
+                Double temperature = TempUnitConverter.convertToCelsius(response.getMain().getTemp());
+
+                //Initiate textViews
+                TextView tempTV = findViewById(R.id.currentTemp);
+                TextView humidityTV = findViewById(R.id.currentHumidity);
+                TextView conditionTV = findViewById(R.id.currentCondition);
+                TextView rainTV = findViewById(R.id.currentRainfall);
+                ImageView conditionIV = findViewById(R.id.conditionImage);
+
+
+                //@TODO Create a better resouse string in order to avoid warnings and bad practices
+                tempTV.setText(temperature.longValue() + "°");
+                humidityTV.setText(response.getMain().getHumidity() + "%");
+                conditionTV.setText(weatherMain);
+                rainTV.setText(response.getRain());
+                Glide.with(getApplicationContext())
+                        .load(weather[0].getIconLink())
+                        .into(conditionIV)
+                ;
+
+            }
+
+            @Override
+            public void failure(String message) {
+            }
+        });
+
+
+    }
     private void createUser(FirebaseUser user) {
         String profileEmail = user.getEmail();
         writeNewUser(user.getUid(),user.getDisplayName(),profileEmail);
@@ -193,37 +241,6 @@ public class MainScreen extends AppCompatActivity {
             //mMessagesDatabaseReference.addChildEventListener(mChildEventListener);
         }
 
-    }
-    private void setWeather() {
-        UserSettings settings = new UserSettings();
-        OpenWeatherMapHelper helper = new OpenWeatherMapHelper();
-
-        configWeather(helper, settings);
-
-        helper.getCurrentWeatherByCityName(settings.getCity(), new OpenWeatherMapHelper.CurrentWeatherCallback() {
-            @Override
-            public void onSuccess(CurrentWeather currentWeather) {
-                TextView weatherBox = findViewById(R.id.currentTemp);
-                weatherBox.setText(new StringBuilder().append(getBaseContext().getString(R.string.current_temp)).append(currentWeather.getMain().getTemp()).append("°").toString());
-            }
-
-            @Override
-            public void onFailure(Throwable throwable) {
-                Log.v("ERROR", throwable.getMessage());
-            }
-        });
-
-    }
-  // TODO: create resource file which contains all the keys and logins for apis (good practice)
-    private void configWeather(OpenWeatherMapHelper helper, UserSettings settings) {
-        helper.setApiKey(getString(R.string.OPEN_WEATHER_MAP_API_KEY));
-
-        //@TODO Might change the settings heat unit to use same values as library for cleaner code.
-        if(settings.getHeatUnit() == settings.CELSIUS) {
-            helper.setUnits(Units.METRIC);
-        } else {
-            helper.setUnits(Units.IMPERIAL);
-        }
     }
 
     public void openTimer(View view) {
