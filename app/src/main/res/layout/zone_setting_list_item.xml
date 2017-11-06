@@ -9,65 +9,51 @@
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="4dp"
+        app:contentPadding="2dp">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <CheckBox
-                android:id="@+id/zoneItem_chkBx"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_weight="1"
-                android:textAppearance="@android:style/TextAppearance.Material.Medium"
+            //static image to hold user thumbnail
+            <ImageView
+                android:id="@+id/zoneItem_Picture"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginBottom="4dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="4dp"
+                android:contentDescription="@string/zone_setting_item_configure"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toLeftOf="@+id/zoneItemStatus_tV"
+                app:layout_constraintEnd_toStartOf="@+id/zoneItemTitle_TextView"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0"
+                app:srcCompat="@android:drawable/ic_notification_overlay" />
+
+
+            <TextView
+                android:id="@+id/zoneItemTitle_TextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/zoneItem_Switch"
+                app:layout_constraintStart_toEndOf="@id/zoneItem_Picture"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:text="Zone Title" />
 
-            <Button
-                android:id="@+id/zoneItemConfig_btn"
-                style="@style/Widget.AppCompat.Button.Small"
+            <Switch
+                android:id="@+id/zoneItem_Switch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="0dp"
-                android:layout_marginTop="0dp"
-                android:layout_weight="1"
-                android:elevation="0dp"
-                android:text="@string/zone_setting_item_configure"
-                android:textAlignment="center"
-                android:textAppearance="@android:style/TextAppearance.Material.Large"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintLeft_toRightOf="@id/zoneItemStatus_tV"
+                android:layout_marginEnd="32dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintVertical_bias="0.333" />
-
-            <EditText
-                android:id="@+id/zoneItemStatus_tV"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:layout_marginRight="13dp"
-                android:layout_marginTop="8dp"
-                android:layout_weight="1"
-                android:ems="10"
-                android:inputType="textMultiLine"
-                android:textAppearance="@android:style/TextAppearance.Material.Small.Inverse"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintRight_toLeftOf="@+id/zoneItemConfig_btn"
-                app:layout_constraintLeft_toRightOf="@id/zoneItem_chkBx"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.2"
-                tools:text="Zone Status" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/zoneItemTitle_TextView"
+                app:layout_constraintTop_toTopOf="parent" />
         </android.support.constraint.ConstraintLayout>
 
     </android.support.v7.widget.CardView>

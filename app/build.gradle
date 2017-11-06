@@ -11,7 +11,9 @@ android {
     buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "com.greenerlawn.greenerlawn"
+        //lollipop
         minSdkVersion 21
+        //oreo
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
