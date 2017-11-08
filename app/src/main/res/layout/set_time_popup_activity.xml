@@ -2,10 +2,10 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/hourPicker"
-    android:background="@drawable/round_edge_border"
-    android:backgroundTint="@color/cardview_light_background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/round_edge_border"
+    android:backgroundTint="#F6c9dff1"
     android:visibility="visible">
 
 
@@ -16,10 +16,10 @@
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
+        android:backgroundTint="@color/primary"
         android:onClick="submitResult"
         android:text="@string/submit"
         android:textColor="@color/icons"
-        android:backgroundTint="@color/primary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
