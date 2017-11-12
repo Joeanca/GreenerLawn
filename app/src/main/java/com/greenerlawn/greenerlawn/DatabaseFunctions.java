@@ -1,10 +1,7 @@
 package com.greenerlawn.greenerlawn;
 
-import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.firebase.ui.auth.AuthUI;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -13,11 +10,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-
-import static android.support.v4.app.ActivityCompat.startActivityForResult;
 
 /**
  * Created by joeanca on 2017-11-08.
@@ -25,7 +18,7 @@ import static android.support.v4.app.ActivityCompat.startActivityForResult;
 
 public class DatabaseFunctions {
     public static final String ANONYMOUS = "anonymous";
-    private String mUsername, mEmail;
+    private String mUsername, mEmail,uID, email, username;
     private DatabaseReference mUserRef;
     private DatabaseReference mDatabaseReference,mZonesDatabaseReference;
     private FirebaseUser firebaseUser;
@@ -44,20 +37,17 @@ public class DatabaseFunctions {
     // LOCAL USER
     User currentUser;
 
-    String uID, email, name;
 
-    public User StartDB(FirebaseUser firebaseUser){
+    public void StartDB(FirebaseUser firebaseUser){
         this.firebaseUser = firebaseUser;
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mUserDatabaseReference = mFirebaseDatabase.getReference().child("users");
 
-        // TODO GET INFO FROM Firbase UI GUID, EMAIL, NAME
         uID = firebaseUser.getUid();
         email = firebaseUser.getEmail();
-        name = firebaseUser.getDisplayName();
-        Log.e("FIREBASEUSER", "StartDB: " + name);
+        Log.e("EMAIL", "StartDB: " + email );
+        username = firebaseUser.getDisplayName();
         retrieveUserFromDatabase(mUserDatabaseReference);
-        return currentUser;
     }
 
     private void retrieveUserFromDatabase(final DatabaseReference mUserDatabaseReference) {
@@ -67,7 +57,10 @@ public class DatabaseFunctions {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.hasChild(uID)){
-                    currentUser = (User) dataSnapshot.getValue(User.class);
+                        currentUser = dataSnapshot.child(uID).getValue(User.class);
+                        System.out.println("OVA HERE" + dataSnapshot.child(uID).getValue(User.class).getZoneList());
+                        System.out.println("OVA HERE" + currentUser.getUsername());
+
                 }
                 else{
                     mUserDatabaseReference.child(uID).setValue(currentUser);
@@ -81,7 +74,8 @@ public class DatabaseFunctions {
          mUserDatabaseReference.addValueEventListener(listener);
     }
 
-
+    public String getEmail(){return email;}
+    public String getUsername (){return username;}
     public void removeListener(){
         mUserDatabaseReference.removeEventListener(listener);
     }

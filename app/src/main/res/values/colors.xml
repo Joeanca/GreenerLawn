@@ -2,16 +2,19 @@
 <resources>
     <color name="primary">#2196F3</color>
     <color name="primary_dark">#db1a7ee1</color>
+    <color name="primary_dark_translucent">#F2c9dff1</color>
+    <color name="primary_darker">#00FFFFFF</color>
     <color name="primary_light">#CCc9dff1</color>
     <color name="primary_light_translucent">#BFc9dff1</color>
     <color name="accent">#4CAF50</color>
     <color name="primary_text">#212121</color>
     <color name="secondary_text">#757575</color>
     <color name="icons">#FFFFFF</color>
-    <color name="divider">#BDBDBD</color>
+    <color name="divider">#CCBDBDBD</color>
     <color name="transparent">#00FFFFFF</color>
     <color name="text_shadow">#7F000000</color>
     <color name="text_shadow_white">#FFFFFF</color>
+    <color name="drawer_background">#369679</color>
 </resources>
 
     <!--100% — FF-->

@@ -5,18 +5,16 @@
     android:id="@+id/main_screen_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     android:orientation="vertical"
-    tools:context="com.greenerlawn.greenerlawn.MainScreen"
-    >
+    tools:context="com.greenerlawn.greenerlawn.MainScreen">
     <!--<android.support.v7.widget.AppCompatImageView-->
-        <!--android:src="@drawable/bk_water_droplets"-->
-        <!--android:scaleType = "centerCrop"/>-->
+    <!--android:src="@drawable/bk_water_droplets"-->
+    <!--android:scaleType = "centerCrop"/>-->
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-
-       >
+        android:layout_height="match_parent">
 
         <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -104,9 +102,9 @@
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
+                    android:shadowColor="@color/text_shadow"
                     android:text="@string/main_quickon"
                     android:textColor="@color/icons"
-                    android:shadowColor="@color/text_shadow"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@+id/fab_startAllZone"
                     app:layout_constraintStart_toStartOf="@+id/fab_startAllZone"
@@ -120,9 +118,9 @@
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
+                    android:shadowColor="@color/text_shadow"
                     android:text="@string/main_zones"
                     android:textColor="@color/icons"
-                    android:shadowColor="@color/text_shadow"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@+id/fab_seeZonesButton"
                     app:layout_constraintHorizontal_bias="0.333"
@@ -138,9 +136,9 @@
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
+                    android:shadowColor="@color/text_shadow"
                     android:text="@string/main_underMenu"
                     android:textColor="@color/icons"
-                    android:shadowColor="@color/text_shadow"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@+id/fab_settingButton"
                     app:layout_constraintStart_toStartOf="@+id/fab_settingButton"
@@ -331,11 +329,13 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@color/primary_light_translucent"
+        android:layout_marginEnd="-65dp"
+        android:layout_marginRight="-65dp"
+        android:background="@color/text_shadow_white"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_drawer"
-        app:itemIconTint="@color/icons"
-        app:itemTextColor="@color/icons"
+        app:itemIconTint="@color/drawer_background"
+        app:itemTextColor="@color/drawer_background"
         app:menu="@menu/activity_drawer_drawer" />
 
 

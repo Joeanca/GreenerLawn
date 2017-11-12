@@ -1,8 +1,10 @@
 package com.greenerlawn.greenerlawn;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
@@ -11,6 +13,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.Layout;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,8 +27,10 @@ import com.bumptech.glide.Glide;
 import com.firebase.ui.auth.AuthUI;
 
 
+import com.firebase.ui.database.FirebaseIndexArray;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -87,8 +92,6 @@ public class MainScreen extends AppCompatActivity {
 
         // DRAWER FUNCTIONS
         InitializeDrawer();
-
-        // TODO place the username and password variables to the textviews
 
         // Weather setup
         WeatherMap weatherMap = new WeatherMap(this, OPEN_API_KEY);
@@ -156,7 +159,6 @@ public class MainScreen extends AppCompatActivity {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     //user is signed in
-                    Log.d("insideListener", "onAuthStateChanged: inside mAuthStateListener" + user.getDisplayName());
                     onSignedInInitialize(user);
                     userFunctions(user);
                 } else {
@@ -180,17 +182,53 @@ public class MainScreen extends AppCompatActivity {
     private void transparentBars() {
         int transparent = ContextCompat.getColor(this, R.color.transparent);
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         getWindow().setStatusBarColor(transparent);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(transparent));
     }
 
+    @SuppressLint("ResourceAsColor")
     private void InitializeDrawer() {
+//        mDrawerLayout = (DrawerLayout) findViewById(R.id.main_screen_layout);
+//        abdt = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.Open, R.string.Close);
+//        abdt.setDrawerIndicatorEnabled(true);
+//        mDrawerLayout.addDrawerListener(abdt);
+//        abdt.syncState();
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//
         mDrawerLayout = (DrawerLayout) findViewById(R.id.main_screen_layout);
         abdt = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.Open, R.string.Close);
         abdt.setDrawerIndicatorEnabled(true);
         mDrawerLayout.addDrawerListener(abdt);
         abdt.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        mDrawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
+
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+                //Called when a drawer's position changes.
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                //Called when a drawer has settled in a completely open state.
+                //The drawer is interactive at this point.
+                // If you have 2 drawers (left and right) you can distinguish
+                // them by using id of the drawerView. int id = drawerView.getId();
+                // id will be your layout's id: for example R.id.left_drawer
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                // Called when a drawer has settled in a completely closed state.
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+                // Called when the drawer motion state changes. The new state will be one of STATE_IDLE, STATE_DRAGGING or STATE_SETTLING.
+            }
+        });
         NavigationView nav_view = (NavigationView) findViewById(R.id.nav_view);
         nav_view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -235,7 +273,6 @@ public class MainScreen extends AppCompatActivity {
                 ;
 
             }
-
             @Override
             public void failure(String message) {
             }
@@ -246,7 +283,13 @@ public class MainScreen extends AppCompatActivity {
 
     private void userFunctions(FirebaseUser user) {
         dbFn = new DatabaseFunctions();
-        localUser = dbFn.StartDB(user);
+        dbFn.StartDB(user);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View headerLayout = navigationView.getHeaderView(0);
+        TextView headerEmail = headerLayout.findViewById(R.id.tv_drawer_email);
+        TextView headerName = headerLayout.findViewById(R.id.tv_drawer_user);
+        headerEmail.setText(dbFn.getEmail());
+        headerName.setText(dbFn.getUsername());
     }
 
     private void onSignedInInitialize(FirebaseUser users) {

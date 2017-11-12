@@ -9,7 +9,7 @@ import java.util.List;
  */
 
 public class User {
-    private String name;
+    private String username;
     private String email;
     private List<String> scheduleList = new ArrayList<>();
     private List<String> zoneList = new ArrayList<>();
@@ -18,7 +18,7 @@ public class User {
     private String deviceSerial;
 
     public User(){
-        String name;
+        String username;
         String email;
         List<Zone> zoneList = new ArrayList<>();
         String deviceSerial;
@@ -26,7 +26,7 @@ public class User {
 
     public User (String name, String email, List<String> scheduleList, List<String> zoneList){
         this.email = email;
-        this.name = name;
+        this.username = name;
         this.zoneList = zoneList;
         this.scheduleList = scheduleList;
 
@@ -34,17 +34,17 @@ public class User {
 
     public User( String email, String name) {
         this.email = email;
-        this.name = name;
+        this.username = name;
         this.zoneList = zoneList;
         this.scheduleList = scheduleList;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String name) {
+        this.username = name;
     }
 
     public String getEmail() {
