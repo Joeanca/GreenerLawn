@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +31,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.kwabenaberko.openweathermaplib.Units;
 import com.kwabenaberko.openweathermaplib.implementation.OpenWeatherMapHelper;
+import com.kwabenaberko.openweathermaplib.models.common.Weather;
 import com.kwabenaberko.openweathermaplib.models.currentweather.CurrentWeather;
 
 import java.util.ArrayList;
@@ -137,13 +139,13 @@ public class MainScreen extends AppCompatActivity {
             }
         };
         // TODO place the username and password variables to the textviews
-//        View drawerView = (DrawerLayout)findViewById(R.id.drawer_layout);
-//        NavigationView mNavView = (NavigationView) drawerView.findViewById(R.id.nav_view);
-//        LinearLayout headerDrawer = (LinearLayout) mNavView.findViewById( R.id.nav_header_drawer);
-//        TextView tvUserName,tvEmail;
-//        tvUserName = (TextView) headerDrawer.findViewById(R.id.tv_drawer_user);
-//        tvUserName.setText("someName");
-        // Weather setup
+        View drawerView = (DrawerLayout)findViewById(R.id.drawer_layout);
+        NavigationView mNavView = (NavigationView) drawerView.findViewById(R.id.nav_view);
+        LinearLayout headerDrawer = (LinearLayout) mNavView.findViewById( R.id.nav_header_drawer);
+        TextView tvUserName,tvEmail;
+        tvUserName = (TextView) headerDrawer.findViewById(R.id.tv_drawer_user);
+        tvUserName.setText("someName");
+         //Weather setup
         setWeather();
     }
 
