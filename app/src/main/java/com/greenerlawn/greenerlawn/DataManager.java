@@ -1,6 +1,18 @@
 package com.greenerlawn.greenerlawn;
 
 
+import android.net.Uri;
+import android.support.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -9,9 +21,11 @@ import java.util.ArrayList;
 
 public class DataManager {
     private ArrayList<Zone> zoneArrayList = new ArrayList<>();
+    private StorageReference mStorageRef;
 
     public DataManager() {
         pullZoneData();
+        mStorageRef = FirebaseStorage.getInstance().getReference();
     }
 
     //TODO set method to pull from firebse
@@ -21,10 +35,52 @@ public class DataManager {
         boolean status = false;
         for (int i = 0; i < 8; i++){
             zoneArrayList.add(new Zone(guidArray[i], nameArray[i], status));
+            try {
+                File temp = File.createTempFile(zoneArrayList.get(i).getzName(), "jpg");
+                zoneArrayList.get(i).setzImage(mStorageRef.getFile(temp).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                        // Successfully downloaded data to local file
+                        // ...
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // Handle failed download
+                        // ...
+                    }
+                });)
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
         }
     }
 
     public ArrayList<Zone> getZoneArrayList() {
         return zoneArrayList;
     }
+
+//upload example
+//    public  void uploadImage(){
+//
+//        Uri file = Uri.fromFile(new File("path/to/images/rivers.jpg"));
+//        StorageReference riversRef = storageRef.child("images/rivers.jpg");
+//
+//        riversRef.putFile(file)
+//                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//                    @Override
+//                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                        // Get a URL to the uploaded content
+//                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception exception) {
+//                        // Handle unsuccessful uploads
+//                        // ...
+//                    }
+//                });
+//    }
 }
