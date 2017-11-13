@@ -1,5 +1,6 @@
 package com.greenerlawn.greenerlawn;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -11,6 +12,7 @@ import java.util.ArrayList;
     private boolean zOnOff;
     private String zGUID, zName;
     private ArrayList<zSchedule> zoneSchedule = new ArrayList<zSchedule>();
+    private File zImage;
 
     //default constructor for empty zone
     public Zone(String zGUID) {
@@ -54,6 +56,14 @@ import java.util.ArrayList;
 
     public void setZoneSchedule(ArrayList<zSchedule> zoneSchedule) {
         this.zoneSchedule = zoneSchedule;
+    }
+
+    public File getzImage() {
+        return zImage;
+    }
+
+    public void setzImage(File zImage) {
+        this.zImage = zImage;
     }
 
     public void addToSchedule(int aDay, Long aStartTime, Long aDuration) {

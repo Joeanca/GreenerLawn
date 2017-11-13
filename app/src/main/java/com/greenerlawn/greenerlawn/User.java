@@ -1,24 +1,68 @@
 package com.greenerlawn.greenerlawn;
 
-import com.google.firebase.database.IgnoreExtraProperties;
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
- * Created by JC on 2017-11-04.
+ * Created by joeanca on 2017-11-08.
  */
 
-@IgnoreExtraProperties
 public class User {
+    private String username;
+    private String email;
+    private List<String> scheduleList = new ArrayList<>();
+    private List<String> zoneList = new ArrayList<>();
 
-    public String username;
-    public String email;
 
-    public User() {
-        // Default constructor required for calls to DataSnapshot.getValue(User.class)
+    private String deviceSerial;
+
+    public User(){
+        String username;
+        String email;
+        List<Zone> zoneList = new ArrayList<>();
+        String deviceSerial;
     }
 
-    public User(String username, String email) {
-        this.username = username;
+    public User (String name, String email, List<String> scheduleList, List<String> zoneList){
+        this.email = email;
+        this.username = name;
+        this.zoneList = zoneList;
+        this.scheduleList = scheduleList;
+
+    }
+
+    public User( String email, String name) {
+        this.email = email;
+        this.username = name;
+        this.zoneList = zoneList;
+        this.scheduleList = scheduleList;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String name) {
+        this.username = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
         this.email = email;
     }
 
+    public List<String> getZoneList() {return zoneList;}
+
+    public void setZoneList(List<String> zoneList) {this.zoneList = zoneList;}
+
+    public String getDeviceSerial() {return deviceSerial;}
+
+    public void setDeviceSerial(String deviceSerial) {this.deviceSerial = deviceSerial;}
+
+
 }
+

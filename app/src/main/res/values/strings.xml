@@ -4,26 +4,34 @@
     <string name="hour">Hour</string>
     <string name="minute">Minute</string>
     <string name="second">Second</string>
-    <string name="OPEN_WEATHER_MAP_API_KEY">bea4b929ff482f02d7ab334b6e015467</string>
     <string name="Open">NavBar</string>
     <string name="Close">NavBar</string>
     <string name="zone_setting_item_configure">...</string>
     <string name="main_underMenu">more settings</string>
     <string name="main_zones">zones</string>
     <string name="main_quickon">quick on</string>
-    <string name="current_temp">Current temperature: </string>
     <string name="sign_out">Sign out</string>
     <string name="title_activity_drawer">Drawer</string>
+
+    <!--Weather Strings -->
+    <string name="OPEN_WEATHER_MAP_API_KEY">bea4b929ff482f02d7ab334b6e015467</string>
+    <string name="current_temp">Current temperature: </string>
+    <string name="current_humidity">Humidity: </string>
+    <string name="current_condition">Condition: </string>
+    <string name="current_rain">Rainfall: </string>
+    <string name="last_rain">Last Rain: </string>
+    <string name="weather">Weather</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
-    <string name="nav_user">GreenLawn User </string>
+    <string name="nav_user">Some Juan</string>
     <string name="nav_email">AndroidDev@gmail.com</string>
 
     //zone item
     <string name="zoneItemPic_ImageView_Description">Zone Specific Thumbnail</string>
+    <string name="user_image">Your image</string>
 
 
 </resources>

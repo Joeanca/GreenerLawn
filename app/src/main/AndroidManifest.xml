@@ -35,17 +35,6 @@
 
         <activity android:name=".ZoneSettings"
             android:theme="@style/Theme.AppCompat.Light.myBase.zoneSettings">
-            <!--
-             to make this the starting activity uncomment the intent filter and the content within,
-             also comment it from any other classes which have the android.intent.action.MAIN
-            -->
-
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
-
         </activity>
         <activity
             android:name=".Drawer"
