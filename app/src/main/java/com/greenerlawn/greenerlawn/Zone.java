@@ -8,6 +8,8 @@ import java.util.ArrayList;
  */
 
     public class Zone {
+    //TODO multiple sprinklers
+    //todo multiple devices
 
     private boolean zOnOff;
     private String zGUID, zName;
