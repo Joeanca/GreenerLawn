@@ -15,6 +15,7 @@ import java.util.ArrayList;
     private File zImage;
 
     //default constructor for empty zone
+    public Zone(){}
     public Zone(String zGUID) {
         this.zGUID = zGUID;
     }
@@ -69,6 +70,7 @@ import java.util.ArrayList;
     public void addToSchedule(int aDay, Long aStartTime, Long aDuration) {
         zoneSchedule.add(new zSchedule(aDay, aStartTime, aDuration));
     }
+
 
     //TODO remove schedule function(s)
 

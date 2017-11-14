@@ -36,6 +36,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 //import com.google.firebase.database.ValueEventListener;
 
@@ -93,9 +94,38 @@ public class MainScreen extends AppCompatActivity {
         // DRAWER FUNCTIONS
         InitializeDrawer();
 
-        // Weather setup
-        WeatherMap weatherMap = new WeatherMap(this, OPEN_API_KEY);
-        setupWeather(weatherMap);
+
+
+        //test add to database use to add some zones for testing
+//        Zone zone = new Zone("1231", "zone2", true);
+          final DataManager dm = new DataManager();
+//        dm.uploadNewData(dm.ZONE_REF, zone);
+
+        mUserRef = dm.getReference(dm.USER_SETTING_REF);
+
+        mUserRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.exists()) {
+                    dm.uploadNewData(dm.USER_SETTING_REF, new UserSettings());
+                }
+                Iterable<DataSnapshot> children = dataSnapshot.getChildren();
+
+                UserSettings userSettings = null;
+                for (DataSnapshot child : children) {
+                    userSettings = child.getValue(UserSettings.class);
+                }
+                
+                // Weather setup
+                WeatherMap weatherMap = new WeatherMap(MainScreen.this, OPEN_API_KEY);
+                setupWeather(weatherMap, userSettings);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
     }
 
@@ -244,10 +274,9 @@ public class MainScreen extends AppCompatActivity {
         });
     }
 
-    private void setupWeather(WeatherMap weatherMap) {
-        UserSettings settings = new UserSettings();
+    private void setupWeather(WeatherMap weatherMap, UserSettings userSettings) {
 
-        weatherMap.getCityWeather(/*settings.getCity()*/ "Calgary", new WeatherCallback() {
+        weatherMap.getCityWeather(userSettings.getCity(), new WeatherCallback() {
             @Override
             public void success(WeatherResponseModel response) {
                 Weather weather[] = response.getWeather();
