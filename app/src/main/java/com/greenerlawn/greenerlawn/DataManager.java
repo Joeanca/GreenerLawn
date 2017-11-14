@@ -1,6 +1,7 @@
 package com.greenerlawn.greenerlawn;
 
 
+import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 
@@ -22,37 +23,22 @@ import java.util.ArrayList;
 public class DataManager {
     private ArrayList<Zone> zoneArrayList = new ArrayList<>();
     private StorageReference mStorageRef;
+    private  File imageDir;
 
     public DataManager() {
         pullZoneData();
         mStorageRef = FirebaseStorage.getInstance().getReference();
+
+
     }
 
-    //TODO set method to pull from firebse
+    //TODO set method to pull from firebase
     private void pullZoneData() {
         String[] guidArray = {"aa","ab","ac","ad","ae","af","ag","ah","ai"};
         String[] nameArray = {"name1","name2","name3","name4","name5","name6","name7","name8"};
         boolean status = false;
         for (int i = 0; i < 8; i++){
             zoneArrayList.add(new Zone(guidArray[i], nameArray[i], status));
-            try {
-                File temp = File.createTempFile(zoneArrayList.get(i).getzName(), "jpg");
-                zoneArrayList.get(i).setzImage(mStorageRef.getFile(temp).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                        // Successfully downloaded data to local file
-                        // ...
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        // Handle failed download
-                        // ...
-                    }
-                });)
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
 
         }
     }
