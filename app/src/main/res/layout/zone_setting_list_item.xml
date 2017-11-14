@@ -17,22 +17,16 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            //static image to hold user thumbnail
-            <ImageView
-                android:id="@+id/zoneItem_Picture"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginBottom="4dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="4dp"
-                android:contentDescription="@string/zone_setting_item_configure"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/zoneItemTitle_TextView"
+            <ImageButton
+                android:id="@+id/zoneITem_ImageBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/zoneItemPic_ImageView_Description"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/zoneItemTitle_TextView"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@android:drawable/ic_notification_overlay" />
-
+                app:srcCompat="@drawable/ic_menu_gallery" />
 
             <TextView
                 android:id="@+id/zoneItemTitle_TextView"
@@ -40,8 +34,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/zoneITem_ImageBtn"
                 app:layout_constraintEnd_toStartOf="@+id/zoneItem_Switch"
-                app:layout_constraintStart_toEndOf="@id/zoneItem_Picture"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Zone Title" />
 
