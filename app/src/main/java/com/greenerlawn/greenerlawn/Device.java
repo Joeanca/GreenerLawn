@@ -7,6 +7,10 @@ import java.util.List;
  * Created by jason on 11/14/2017.
  */
 
+//todo change to things
+    //todo dd device class for pi
+
+
 public abstract class Device {
     private String devGUID;
     private String zGUID;
