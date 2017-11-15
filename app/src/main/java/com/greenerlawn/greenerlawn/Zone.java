@@ -75,15 +75,16 @@ import java.util.ArrayList;
     //TODO remove schedule function(s)
 
     private class zSchedule {
+        private String schGUID;
         private int day;
         private Long startTime;
         private Long duration;
 
-        public zSchedule(int day, Long startTime, Long duration) {
+        public zSchedule(String schGUID, int day, Long startTime, Long duration) {
+            this.schGUID = schGUID;
             this.day = day;
             this.startTime = startTime;
             this.duration = duration;
         }
-
     }
 }

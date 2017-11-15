@@ -10,10 +10,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -23,11 +21,12 @@ import java.util.ArrayList;
 public class DataManager {
     private ArrayList<Zone> zoneArrayList = new ArrayList<>();
     private StorageReference mStorageRef;
-    private  File imageDir;
+
 
     public DataManager() {
         pullZoneData();
         mStorageRef = FirebaseStorage.getInstance().getReference();
+
 
 
     }
@@ -47,26 +46,4 @@ public class DataManager {
         return zoneArrayList;
     }
 
-//upload example
-//    public  void uploadImage(){
-//
-//        Uri file = Uri.fromFile(new File("path/to/images/rivers.jpg"));
-//        StorageReference riversRef = storageRef.child("images/rivers.jpg");
-//
-//        riversRef.putFile(file)
-//                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//                    @Override
-//                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                        // Get a URL to the uploaded content
-//                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
-//                    }
-//                })
-//                .addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception exception) {
-//                        // Handle unsuccessful uploads
-//                        // ...
-//                    }
-//                });
-//    }
 }
