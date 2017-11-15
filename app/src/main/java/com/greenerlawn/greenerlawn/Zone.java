@@ -13,7 +13,6 @@ import java.util.ArrayList;
 
     private boolean zOnOff;
     private String zGUID, zName;
-    private ArrayList<zSchedule> zoneSchedule = new ArrayList<zSchedule>();
     private File zImage;
 
     //default constructor for empty zone
@@ -52,14 +51,6 @@ import java.util.ArrayList;
         this.zOnOff = zOnOff;
     }
 
-    public ArrayList<zSchedule> getZoneSchedule() {
-        return zoneSchedule;
-    }
-
-    public void setZoneSchedule(ArrayList<zSchedule> zoneSchedule) {
-        this.zoneSchedule = zoneSchedule;
-    }
-
     public File getzImage() {
         return zImage;
     }
@@ -68,23 +59,4 @@ import java.util.ArrayList;
         this.zImage = zImage;
     }
 
-    public void addToSchedule(int aDay, Long aStartTime, Long aDuration) {
-        zoneSchedule.add(new zSchedule(aDay, aStartTime, aDuration));
-    }
-
-    //TODO remove schedule function(s)
-
-    private class zSchedule {
-        private String schGUID;
-        private int day;
-        private Long startTime;
-        private Long duration;
-
-        public zSchedule(String schGUID, int day, Long startTime, Long duration) {
-            this.schGUID = schGUID;
-            this.day = day;
-            this.startTime = startTime;
-            this.duration = duration;
-        }
-    }
 }
