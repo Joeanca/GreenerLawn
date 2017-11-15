@@ -1,5 +1,6 @@
 package com.greenerlawn.greenerlawn;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -7,10 +8,12 @@ import java.util.ArrayList;
  */
 
     public class Zone {
+    //TODO multiple sprinklers
+    //todo multiple devices
 
     private boolean zOnOff;
     private String zGUID, zName;
-    private ArrayList<zSchedule> zoneSchedule = new ArrayList<zSchedule>();
+    private File zImage;
 
     //default constructor for empty zone
     public Zone(String zGUID) {
@@ -48,30 +51,12 @@ import java.util.ArrayList;
         this.zOnOff = zOnOff;
     }
 
-    public ArrayList<zSchedule> getZoneSchedule() {
-        return zoneSchedule;
+    public File getzImage() {
+        return zImage;
     }
 
-    public void setZoneSchedule(ArrayList<zSchedule> zoneSchedule) {
-        this.zoneSchedule = zoneSchedule;
+    public void setzImage(File zImage) {
+        this.zImage = zImage;
     }
 
-    public void addToSchedule(int aDay, Long aStartTime, Long aDuration) {
-        zoneSchedule.add(new zSchedule(aDay, aStartTime, aDuration));
-    }
-
-    //TODO remove schedule function(s)
-
-    private class zSchedule {
-        private int day;
-        private Long startTime;
-        private Long duration;
-
-        public zSchedule(int day, Long startTime, Long duration) {
-            this.day = day;
-            this.startTime = startTime;
-            this.duration = duration;
-        }
-
-    }
 }

@@ -10,6 +10,7 @@ import android.view.Window;
 
 import com.firebase.ui.auth.AuthUI;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class ZoneSettings extends AppCompatActivity {
@@ -27,6 +28,7 @@ public class ZoneSettings extends AppCompatActivity {
         ArrayList<Zone> zones = dM.getZoneArrayList();
         final ZoneSettingsRecyclerAdapter zoneSettingsRecyclerAdapter = new ZoneSettingsRecyclerAdapter(this,zones);
         recyclerZones.setAdapter(zoneSettingsRecyclerAdapter);
+
 
     // set an exit transition
         getWindow().setExitTransition(new Explode());
