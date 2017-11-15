@@ -15,6 +15,30 @@
       },
       "oauth_client": [
         {
+          "client_id": "786096365295-n9pk9ihd427insbrrf3redjos877dl5t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.greenerlawn.greenerlawn",
+            "certificate_hash": "9f7129f1c24b96b9c88b81f4ad818d9ebc6db9f0"
+          }
+        },
+        {
+          "client_id": "786096365295-oslgepe7rit4pkme7j78nq9sd9rh5cc6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.greenerlawn.greenerlawn",
+            "certificate_hash": "58c6f7e21b4bb656131cc7dca3a7f2fd3096f8be"
+          }
+        },
+        {
+          "client_id": "786096365295-usjnpgeqenhj1soid966bcav97ftjvhh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.greenerlawn.greenerlawn",
+            "certificate_hash": "c586c5b4a729db69971b0ddbbdbe5bf463714e3e"
+          }
+        },
+        {
           "client_id": "786096365295-bnarfsnmdtukk36np901n5i2h0dc4ggo.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
