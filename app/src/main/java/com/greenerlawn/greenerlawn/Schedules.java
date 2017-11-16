@@ -15,31 +15,34 @@ public class Schedules {
 
     //0 - 7, 0 = Sunday, 1 = Monday... 7 = saturday
     private int day;
-    private Long startTime;
-    private Long duration;
-    private String zone;
+    private Long startTime, duration, endTime;
+    private String zGUID;
+    private boolean isValid, isRepeat;
     private List<Schedules> schedulesList = new ArrayList<Schedules>();
 
 
     //todo firebase updates
     //todo add cascade enforcement
 
+
     public Schedules() {
     }
 
-    public Schedules(String schGUID, int day, Long startTime, Long duration, String zone) {
+    public Schedules(String schGUID, int day, Long startTime, Long duration, Long endTime, String zGUID, boolean isRepeat) {
         this.schGUID = schGUID;
         this.day = day;
         this.startTime = startTime;
         this.duration = duration;
-        this.zone = zone;
+        this.endTime = endTime;
+        this.zGUID = zGUID;
+        this.isRepeat = isRepeat;
     }
 
     public void addSchedule(int day, Long startTime, Long duration, String zone) {
-        Schedules newItem = new Schedules(null, day, startTime, duration, zone);
+        Schedules newItem = new Schedules(null, day, startTime, duration, endTime, zone, isRepeat);
 
         for (int i = 0; i < schedulesList.size(); i++) {
-            if (schedulesList.get(i).zone.equals(zone) && schedulesList.get(i).startTime == startTime) {
+            if (schedulesList.get(i).zGUID.equals(zone) && schedulesList.get(i).startTime == startTime) {
                 schedulesList.remove(i);
             }
         }
@@ -97,12 +100,35 @@ public class Schedules {
         this.duration = duration;
     }
 
-    public String getZone() {
-        return zone;
+    public Long getEndTime() {
+        return endTime;
     }
 
-    public void setZone(String zone) {
-        this.zone = zone;
+    public void setEndTime(Long endTime) {
+        this.endTime = endTime;
     }
 
+    public String getzGUID() {
+        return zGUID;
+    }
+
+    public void setzGUID(String zGUID) {
+        this.zGUID = zGUID;
+    }
+
+    public boolean isValid() {
+        return isValid;
+    }
+
+    public void setValid(boolean valid) {
+        isValid = valid;
+    }
+
+    public boolean isRepeat() {
+        return isRepeat;
+    }
+
+    public void setRepeat(boolean repeat) {
+        isRepeat = repeat;
+    }
 }
