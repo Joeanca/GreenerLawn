@@ -43,8 +43,15 @@ public class GreenHub {
         return zoneList;
     }
 
-    public void setZoneList(List<Zone> zoneList) {
-        this.zoneList = zoneList;
+
+    public boolean setZoneList(List<Zone> zoneList) {
+        boolean valid = false
+        if(zoneList.size()<= this.getPorts()){
+            //i can't let you do that dave.
+            valid = true;
+            this.zoneList = zoneList;
+        }
+        return valid;
     }
 
     public List<Schedules> getSchedulesList() {
