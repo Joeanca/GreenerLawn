@@ -11,17 +11,17 @@ import java.util.List;
     //todo dd device class for pi
 
 
-public abstract class Device {
+public abstract class Things {
     private String devGUID;
     private String zGUID;
     private boolean isOn;
     private Long lastUsed;
-    private List<Device> deviceList = new ArrayList<>();
+    private List<Things> thingsList = new ArrayList<>();
 
-    public Device() {
+    public Things() {
     }
 
-    public Device(String devGUID, String zGUID, boolean isOn, Long lastUsed) {
+    public Things(String devGUID, String zGUID, boolean isOn, Long lastUsed) {
         this.devGUID = devGUID;
         this.zGUID = zGUID;
         this.isOn = isOn;

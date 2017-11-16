@@ -4,7 +4,7 @@ package com.greenerlawn.greenerlawn;
  * Created by jason on 11/14/2017.
  */
 
-public class Sprinkler extends Device {
+public class Sprinkler extends Things {
 
     public Sprinkler() {
     }
