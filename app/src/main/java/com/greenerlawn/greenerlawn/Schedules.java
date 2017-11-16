@@ -20,6 +20,10 @@ public class Schedules {
     private String zone;
     private List<Schedules> schedulesList = new ArrayList<Schedules>();
 
+
+    //todo firebase updates
+    //todo add cascade enforcement
+
     public Schedules() {
     }
 
