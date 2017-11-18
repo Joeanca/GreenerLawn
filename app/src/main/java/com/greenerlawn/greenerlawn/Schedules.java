@@ -17,7 +17,7 @@ public class Schedules {
     private int day;
     private Long startTime, duration, endTime;
     private String zGUID;
-    private boolean isValid, isRepeat;
+    private boolean isValid, isRepeat, isSuspended;
     private List<Schedules> schedulesList = new ArrayList<Schedules>();
 
 
@@ -28,7 +28,7 @@ public class Schedules {
     public Schedules() {
     }
 
-    public Schedules(String schGUID, int day, Long startTime, Long duration, Long endTime, String zGUID, boolean isRepeat) {
+    public Schedules(String schGUID, int day, Long startTime, Long duration, Long endTime, String zGUID, boolean isRepeat, boolean isSuspended, boolean isValid) {
         this.schGUID = schGUID;
         this.day = day;
         this.startTime = startTime;
@@ -36,10 +36,12 @@ public class Schedules {
         this.endTime = endTime;
         this.zGUID = zGUID;
         this.isRepeat = isRepeat;
+        this.isSuspended = isSuspended;
+        this.isValid = isValid;
     }
 
     public void addSchedule(int day, Long startTime, Long duration, String zone) {
-        Schedules newItem = new Schedules(null, day, startTime, duration, endTime, zone, isRepeat);
+        Schedules newItem = new Schedules(null, day, startTime, duration, , isSuspended);
 
         for (int i = 0; i < schedulesList.size(); i++) {
             if (schedulesList.get(i).zGUID.equals(zone) && schedulesList.get(i).startTime == startTime) {
