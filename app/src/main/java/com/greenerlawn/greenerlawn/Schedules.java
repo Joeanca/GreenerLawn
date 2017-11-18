@@ -17,7 +17,13 @@ public class Schedules {
     private int day;
     private Long startTime, duration, endTime;
     private String zGUID;
+
+    //todo remove is from names
     private boolean isValid, isRepeat, isSuspended;
+    private final boolean VALID_AT_CREATE = false;
+    private final boolean SUSPEND_AT_CREATE = true;
+
+    // needs to be extracted to a manager class
     private List<Schedules> schedulesList = new ArrayList<Schedules>();
 
 
@@ -40,15 +46,35 @@ public class Schedules {
         this.isValid = isValid;
     }
 
-    public void addSchedule(int day, Long startTime, Long duration, String zone) {
-        Schedules newItem = new Schedules(null, day, startTime, duration, , isSuspended);
+    public void addSchedule(int day, Long startTime, Long duration, String zGUID, boolean repeat) {
+        Schedules newSched  = new Schedules("",day, startTime, duration, null, zGUID, repeat, SUSPEND_AT_CREATE, VALID_AT_CREATE);
+        newSched.endTime = newSched.calcEndTime(newSched.startTime, newSched.duration);
+        //check if valid
+            // check for conflicts
+            // enforce cascade
+        verifyValid(newSched);
+    }
 
-        for (int i = 0; i < schedulesList.size(); i++) {
-            if (schedulesList.get(i).zGUID.equals(zone) && schedulesList.get(i).startTime == startTime) {
-                schedulesList.remove(i);
-            }
+    private void verifyValid(Schedules newSched) {
+        for (int i = 0; i < schedulesList.size(); i++){
+            Schedules tempCheck = schedulesList.get(i);
+            //checkOverlap
+            checkOverlap(newSched, tempCheck);
         }
-        schedulesList.add(newItem);
+    }
+
+    private void checkOverlap(Schedules newSched, Schedules tempCheck) {
+        if (newSched.day == tempCheck.getDay() && newSched.zGUID.equals(tempCheck.getzGUID())){
+            // (start < nstart < end) (start > nstart > end)
+            enforceTime(newSched, tempCheck);
+        }
+    }
+
+    private void enforceTime(Schedules newSched, Schedules tempCheck) {
+        if ((tempCheck.getStartTime()< newSched.getStartTime() && newSched.getStartTime() < tempCheck.getEndTime())
+                || (tempCheck.getStartTime()> newSched.getStartTime() && newSched.startTime > tempCheck.getEndTime() )){
+            newSched.setValid(false);
+        }
     }
 
     public void removeSchedule(String schGUID){
@@ -103,6 +129,12 @@ public class Schedules {
 
     public Long getEndTime() {
         return endTime;
+    }
+
+    public Long calcEndTime(Long startTime, Long duration){
+        Long cEndTime = startTime + duration;
+
+        return cEndTime;
     }
 
     public void setEndTime(Long endTime) {
