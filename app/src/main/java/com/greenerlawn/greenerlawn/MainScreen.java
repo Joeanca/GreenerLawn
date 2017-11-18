@@ -112,9 +112,8 @@ public class MainScreen extends AppCompatActivity {
                 Iterable<DataSnapshot> children = dataSnapshot.getChildren();
 
                 UserSettings userSettings = null;
-                for (DataSnapshot child : children) {
-                    userSettings = child.getValue(UserSettings.class);
-                }
+                userSettings = dataSnapshot.getValue(UserSettings.class);
+
                 
                 // Weather setup
                 WeatherMap weatherMap = new WeatherMap(MainScreen.this, OPEN_API_KEY);
@@ -393,6 +392,11 @@ public class MainScreen extends AppCompatActivity {
 
     public void modifyZones(View view) {
         startActivity(new Intent(MainScreen.this, ZoneSettings.class));
+
+    }
+
+    public void modifySettings(View view) {
+        startActivity(new Intent(MainScreen.this, SettingsMenu.class));
 
     }
 }

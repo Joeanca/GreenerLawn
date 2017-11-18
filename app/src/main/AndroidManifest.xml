@@ -31,10 +31,13 @@
         <activity
             android:name=".TimePopUp"
             android:theme="@style/Theme.AppCompat.Light.TimerPopup">
-    </activity>
+        </activity>
 
         <activity android:name=".ZoneSettings"
             android:theme="@style/Theme.AppCompat.Light.myBase.zoneSettings">
+        </activity>
+        <activity android:name=".SettingsMenu"
+            android:theme="@style/Theme.AppCompat.Light.main">
         </activity>
         <activity
             android:name=".Drawer"

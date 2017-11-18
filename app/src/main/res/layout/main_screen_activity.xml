@@ -45,6 +45,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="25dp"
                     android:clickable="true"
+                    android:onClick="modifySettings"
                     android:translationZ="20dp"
                     app:backgroundTint="@color/accent"
                     app:layout_constraintBottom_toBottomOf="parent"
