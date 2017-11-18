@@ -37,4 +37,8 @@ public class UserSettings {
         this.heatUnit = heatUnit;
     }
 
+    public void setFahrenheit(){this.heatUnit = FAHRENHEIT;}
+
+    public void setCelsius(){this.heatUnit = CELSIUS;}
+
 }

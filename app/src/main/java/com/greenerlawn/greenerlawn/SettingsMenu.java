@@ -3,6 +3,9 @@ package com.greenerlawn.greenerlawn;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,14 +29,11 @@ public class SettingsMenu extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_activity);
 
-
-
         settingsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                TextView tv = findViewById(R.id.textView6);
                 UserSettings us = dataSnapshot.getValue(UserSettings.class);
-                tv.setText(us.getCity());
+                setTextViews(us);
             }
 
             @Override
@@ -43,5 +43,38 @@ public class SettingsMenu extends Activity{
         });
 
 
+    }
+
+    private void setTextViews(UserSettings userSettings) {
+        EditText locationSetting = findViewById(R.id.locationSettingEnter);
+        RadioButton celsiusButt = findViewById(R.id.celsiusButton);
+        RadioButton fahrenheitButt = findViewById(R.id.fahrenheitButton);
+
+        if(userSettings.getHeatUnit() == 0){
+            celsiusButt.setChecked(true);
+        } else {
+            fahrenheitButt.setChecked(true);
+        }
+
+        locationSetting.setText(userSettings.getCity());
+
+    }
+
+    public void saveSettings(View view){
+        UserSettings newSettings = new UserSettings();
+
+        EditText locationSetting = findViewById(R.id.locationSettingEnter);
+        RadioButton celsiusButt = findViewById(R.id.celsiusButton);
+
+        if(celsiusButt.isChecked()){
+            newSettings.setCelsius();
+        } else {
+            newSettings.setFahrenheit();
+        }
+
+        newSettings.setCity(locationSetting.getText().toString());
+        settingsRef.setValue(newSettings);
+
+        finish();
     }
 }

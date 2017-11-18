@@ -29,9 +29,15 @@
     <string name="nav_user">Some Juan</string>
     <string name="nav_email">AndroidDev@gmail.com</string>
 
-    //zone item
+    <!--zone item-->
     <string name="zoneItemPic_ImageView_Description">Zone Specific Thumbnail</string>
     <string name="user_image">Your image</string>
+
+    <!--Settings Strings-->
+    <string name="location">Location</string>
+    <string name="temperature_unit">Temperature Unit</string>
+    <string name="celsius">Celsius</string>
+    <string name="fahrenheit">Fahrenheit</string>
 
 
 </resources>

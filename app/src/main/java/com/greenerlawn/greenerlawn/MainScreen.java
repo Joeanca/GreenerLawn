@@ -273,14 +273,20 @@ public class MainScreen extends AppCompatActivity {
         });
     }
 
-    private void setupWeather(WeatherMap weatherMap, UserSettings userSettings) {
+    private void setupWeather(WeatherMap weatherMap, final UserSettings userSettings) {
 
         weatherMap.getCityWeather(userSettings.getCity(), new WeatherCallback() {
             @Override
             public void success(WeatherResponseModel response) {
                 Weather weather[] = response.getWeather();
                 String weatherMain = weather[0].getMain();
-                Double temperature = TempUnitConverter.convertToCelsius(response.getMain().getTemp());
+                Double temperature;
+                if(userSettings.getHeatUnit() == 0){
+                    temperature = TempUnitConverter.convertToCelsius(response.getMain().getTemp());
+                } else {
+                    temperature = TempUnitConverter.convertToFahrenheit(response.getMain().getTemp());
+                }
+
 
                 //Initiate textViews
                 TextView tempTV = findViewById(R.id.currentTemp);
