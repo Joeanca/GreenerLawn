@@ -67,7 +67,6 @@ public class Schedules {
         this.schedulesList = schedulesList;
     }
 
-
     public String getSchGUID() {
         return schGUID;
     }
