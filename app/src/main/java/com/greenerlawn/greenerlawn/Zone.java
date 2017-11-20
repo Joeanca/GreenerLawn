@@ -8,82 +8,37 @@ import java.util.ArrayList;
  */
 
     public class Zone {
+    //TODO multiple sprinklers
+    //todo multiple devices
 
     private boolean zOnOff;
-    private String zGUID, zName;
-    private ArrayList<zSchedule> zoneSchedule = new ArrayList<zSchedule>();
-    private File zImage;
+    private String  zoneNumber;
+
 
     //default constructor for empty zone
     public Zone(){}
-    public Zone(String zGUID) {
-        this.zGUID = zGUID;
-    }
 
     //constructor allows for full zone config
-    public Zone(String zGUID, String zName, boolean zOnOff) {
-        this.zGUID = zGUID;
-        this.zName = zName;
+    public Zone(String zoneNumber, boolean zOnOff) {
+        this.zoneNumber = zoneNumber;
         this.zOnOff = zOnOff;
-    }
-
-    public String getzGUID() {
-        return zGUID;
-    }
-
-    public void setzGUID(String zGUID) {
-        this.zGUID = zGUID;
-    }
-
-    public String getzName() {
-        return zName;
-    }
-
-    public void setzName(String zName) {
-        this.zName = zName;
-    }
-
-    public boolean iszOnOff() {
-        return zOnOff;
     }
 
     public void setzOnOff(boolean zOnOff) {
         this.zOnOff = zOnOff;
     }
 
-    public ArrayList<zSchedule> getZoneSchedule() {
-        return zoneSchedule;
+    public String getZoneNumber() {
+        return zoneNumber;
     }
 
-    public void setZoneSchedule(ArrayList<zSchedule> zoneSchedule) {
-        this.zoneSchedule = zoneSchedule;
+    public void setZoneNumber(String zoneNumber) {
+        this.zoneNumber = zoneNumber;
     }
 
-    public File getzImage() {
-        return zImage;
-    }
-
-    public void setzImage(File zImage) {
-        this.zImage = zImage;
-    }
-
-    public void addToSchedule(int aDay, Long aStartTime, Long aDuration) {
-        zoneSchedule.add(new zSchedule(aDay, aStartTime, aDuration));
+    public boolean getzOnOff() {
+        return zOnOff;
     }
 
 
-    //TODO remove schedule function(s)
-
-    private class zSchedule {
-        private int day;
-        private Long startTime;
-        private Long duration;
-
-        public zSchedule(int day, Long startTime, Long duration) {
-            this.day = day;
-            this.startTime = startTime;
-            this.duration = duration;
-        }
-
-    }
 }

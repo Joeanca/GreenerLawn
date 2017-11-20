@@ -24,10 +24,12 @@ public class DataManager {
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     private DatabaseReference userRef = database.getReference().child("users").child(user.getUid());
 
-    public final static String ZONE_REF = "zone";
+    //@TODO make this better it is janky (Get the pi id from the user instead of just everyone using the same pi)
+    private DatabaseReference greenerHubRef = database.getReference().child("greennerHubs").child("pi1");
+
+    public final static String ZONE_REF = "zones";
     public final static String USER_SETTING_REF = "userSettings";
 
-    private ArrayList<Zone> zoneArrayList = new ArrayList<>();
 
     public DataManager() {
     }
@@ -39,7 +41,12 @@ public class DataManager {
     }
 
     public DatabaseReference getReference(String reference){
-        dataRef = userRef.child(reference);
+        if (reference.equals(ZONE_REF)){
+            dataRef = greenerHubRef.child(reference);
+        } else {
+            dataRef = userRef.child(reference);
+        }
+
         return dataRef;
     }
 

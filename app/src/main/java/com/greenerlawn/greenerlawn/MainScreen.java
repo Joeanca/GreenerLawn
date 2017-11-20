@@ -102,6 +102,7 @@ public class MainScreen extends AppCompatActivity {
 
         //test add to database use to add some zones for testing
 //        Zone zone = new Zone("1231", "zone2", true);
+
           final DataManager dm = new DataManager();
 //        dm.uploadNewData(dm.ZONE_REF, zone);
 
@@ -113,14 +114,11 @@ public class MainScreen extends AppCompatActivity {
                 if (!dataSnapshot.exists()) {
                     dm.uploadNewData(dm.USER_SETTING_REF, new UserSettings());
                 }
-                Iterable<DataSnapshot> children = dataSnapshot.getChildren();
-
                 UserSettings userSettings = null;
                 userSettings = dataSnapshot.getValue(UserSettings.class);
 
                 
                 // Weather setup
-                //WeatherMap weatherMap = new WeatherMap(MainScreen.this, OPEN_API_KEY);
                 setupWeather(userSettings);
             }
 
