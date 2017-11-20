@@ -36,7 +36,10 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
 
     //Weather api
-    compile 'com.github.code-crusher:EasyWeather:v1.2'
+    //compile 'com.github.code-crusher:EasyWeather:v1.2'
+    compile 'com.survivingwithandroid:weatherlib:1.6.0'
+    compile 'com.survivingwithandroid:weatherlib_okhttpclient:1.6.0'
+    compile 'com.squareup.okhttp:okhttp:2.0.+'
 
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:design:26.1.0'

@@ -37,6 +37,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.survivingwithandroid.weather.lib.WeatherClient;
+import com.survivingwithandroid.weather.lib.WeatherConfig;
+import com.survivingwithandroid.weather.lib.exception.WeatherLibException;
+import com.survivingwithandroid.weather.lib.exception.WeatherProviderInstantiationException;
+import com.survivingwithandroid.weather.lib.model.CurrentWeather;
+import com.survivingwithandroid.weather.lib.model.Weather;
+import com.survivingwithandroid.weather.lib.provider.openweathermap.OpenweathermapProviderType;
+import com.survivingwithandroid.weather.lib.request.WeatherRequest;
 
 //import com.google.firebase.database.ValueEventListener;
 
@@ -48,11 +56,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import github.vatsal.easyweather.Helper.TempUnitConverter;
-import github.vatsal.easyweather.Helper.WeatherCallback;
-import github.vatsal.easyweather.WeatherMap;
-import github.vatsal.easyweather.retrofit.models.Weather;
-import github.vatsal.easyweather.retrofit.models.WeatherResponseModel;
 
 // TODO revise weather api which includes rain? precipitation
 // https://www.apixu.com/doc/current.aspx apikey: 708a2ed675de4b6a9fb171931170111
@@ -116,8 +119,8 @@ public class MainScreen extends AppCompatActivity {
 
                 
                 // Weather setup
-                WeatherMap weatherMap = new WeatherMap(MainScreen.this, OPEN_API_KEY);
-                setupWeather(weatherMap, userSettings);
+                //WeatherMap weatherMap = new WeatherMap(MainScreen.this, OPEN_API_KEY);
+                setupWeather(userSettings);
             }
 
             @Override
@@ -273,44 +276,57 @@ public class MainScreen extends AppCompatActivity {
         });
     }
 
-    private void setupWeather(WeatherMap weatherMap, final UserSettings userSettings) {
+    private void setupWeather( final UserSettings userSettings) {
+        WeatherClient.ClientBuilder builder = new WeatherClient.ClientBuilder();
+        WeatherConfig config = new WeatherConfig();
 
-        weatherMap.getCityWeather(userSettings.getCity(), new WeatherCallback() {
-            @Override
-            public void success(WeatherResponseModel response) {
-                Weather weather[] = response.getWeather();
-                String weatherMain = weather[0].getMain();
-                Double temperature;
-                if(userSettings.getHeatUnit() == 0){
-                    temperature = TempUnitConverter.convertToCelsius(response.getMain().getTemp());
-                } else {
-                    temperature = TempUnitConverter.convertToFahrenheit(response.getMain().getTemp());
+        config.ApiKey = OPEN_API_KEY;
+        if(userSettings.getHeatUnit() == 0){
+            config.unitSystem = WeatherConfig.UNIT_SYSTEM.M;
+        } else {
+            config.unitSystem = WeatherConfig.UNIT_SYSTEM.I;
+        }
+        try {
+            WeatherClient client = builder.attach(MainScreen.this)
+                    .provider(new OpenweathermapProviderType())
+                    .httpClient(com.survivingwithandroid.weather.lib.client.okhttp.WeatherDefaultClient.class)
+                    .config(config)
+                    .build();
+            client.getCurrentCondition(new WeatherRequest(userSettings.getCityId()), new WeatherClient.WeatherEventListener() {
+                @Override
+                public void onWeatherRetrieved(CurrentWeather weather) {
+
+                    Weather currWeather = weather.weather;
+
+                    TextView tempTV = findViewById(R.id.currentTemp);
+                    TextView humidityTV = findViewById(R.id.currentHumidity);
+                    TextView conditionTV = findViewById(R.id.currentCondition);
+                    TextView rainTV = findViewById(R.id.currentRainfall);
+                    ImageView conditionIV = findViewById(R.id.conditionImage);
+
+                    tempTV.setText(((int) currWeather.temperature.getTemp())+ "°");
+                    humidityTV.setText(currWeather.currentCondition.getHumidity() + "%");
+                    conditionTV.setText(currWeather.currentCondition.getCondition());
+                    rainTV.setText(currWeather.rain[0].getAmmount()+"");
+                    Glide.with(getApplicationContext())
+                            .load("http://openweathermap.org/img/w/"+currWeather.currentCondition.getIcon()+".png")
+                            .into(conditionIV)
+                    ;
                 }
 
+                @Override
+                public void onWeatherError(WeatherLibException wle) {
 
-                //Initiate textViews
-                TextView tempTV = findViewById(R.id.currentTemp);
-                TextView humidityTV = findViewById(R.id.currentHumidity);
-                TextView conditionTV = findViewById(R.id.currentCondition);
-                TextView rainTV = findViewById(R.id.currentRainfall);
-                ImageView conditionIV = findViewById(R.id.conditionImage);
+                }
 
+                @Override
+                public void onConnectionError(Throwable t) {
 
-                //@TODO Create a better resouse string in order to avoid warnings and bad practices
-                tempTV.setText(temperature.longValue() + "°");
-                humidityTV.setText(response.getMain().getHumidity() + "%");
-                conditionTV.setText(weatherMain);
-                rainTV.setText(response.getRain());
-                Glide.with(getApplicationContext())
-                        .load(weather[0].getIconLink())
-                        .into(conditionIV)
-                ;
-
-            }
-            @Override
-            public void failure(String message) {
-            }
-        });
+                }
+            });
+        } catch (WeatherProviderInstantiationException e) {
+            e.printStackTrace();
+        }
 
 
     }
