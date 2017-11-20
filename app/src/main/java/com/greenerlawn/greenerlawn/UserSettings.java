@@ -9,6 +9,15 @@ public class UserSettings {
     private final int FAHRENHEIT = 1;
     private int heatUnit;
     private String city;
+    private String cityId;
+
+    public String getCityId() {
+        return cityId;
+    }
+
+    public void setCityId(String cityId) {
+        this.cityId = cityId;
+    }
 
     public UserSettings(int heatUnit, String city) {
         this.heatUnit = heatUnit;

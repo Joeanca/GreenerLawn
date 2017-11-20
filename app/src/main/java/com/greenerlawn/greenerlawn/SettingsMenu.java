@@ -1,12 +1,14 @@
 package com.greenerlawn.greenerlawn;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -24,6 +26,7 @@ public class SettingsMenu extends Activity{
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private String userId = FirebaseAuth.getInstance().getUid();
     private DatabaseReference settingsRef = database.getReference("/users/"+userId+"/userSettings");
+    static final int GET_CITY_ID = 69;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +49,8 @@ public class SettingsMenu extends Activity{
     }
 
     private void setTextViews(UserSettings userSettings) {
-        EditText locationSetting = findViewById(R.id.locationSettingEnter);
+        TextView cityId = findViewById(R.id.secretView);
+        TextView locationSetting = findViewById(R.id.locationSettingEnter);
         RadioButton celsiusButt = findViewById(R.id.celsiusButton);
         RadioButton fahrenheitButt = findViewById(R.id.fahrenheitButton);
 
@@ -56,6 +60,7 @@ public class SettingsMenu extends Activity{
             fahrenheitButt.setChecked(true);
         }
 
+        cityId.setText(userSettings.getCityId());
         locationSetting.setText(userSettings.getCity());
 
     }
@@ -63,7 +68,8 @@ public class SettingsMenu extends Activity{
     public void saveSettings(View view){
         UserSettings newSettings = new UserSettings();
 
-        EditText locationSetting = findViewById(R.id.locationSettingEnter);
+        TextView cityId = findViewById(R.id.secretView);
+        TextView locationSetting = findViewById(R.id.locationSettingEnter);
         RadioButton celsiusButt = findViewById(R.id.celsiusButton);
 
         if(celsiusButt.isChecked()){
@@ -72,9 +78,41 @@ public class SettingsMenu extends Activity{
             newSettings.setFahrenheit();
         }
 
+        newSettings.setCityId(cityId.getText().toString());
         newSettings.setCity(locationSetting.getText().toString());
         settingsRef.setValue(newSettings);
 
         finish();
+    }
+
+    public void modifyCity(View view) {
+        TextView text = (TextView) view;
+        Intent searchCity = new Intent(SettingsMenu.this, SearchCity.class);
+        searchCity.putExtra("Country", text.getText().toString());
+        startActivityForResult(searchCity, GET_CITY_ID);
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == GET_CITY_ID) {
+            if (resultCode == Activity.RESULT_OK){
+                TextView id = findViewById(R.id.secretView);
+                TextView country = findViewById(R.id.locationSettingEnter);
+
+                id.setText(data.getStringExtra("resultId"));
+
+                country.setText(data.getStringExtra("resultCountry"));
+
+                Toast.makeText(getApplicationContext(), "Location Changed", Toast.LENGTH_SHORT).show();
+            }
+
+            if(requestCode == RESULT_CANCELED) {
+                Toast.makeText(getApplicationContext(), "What", Toast.LENGTH_SHORT).show();
+
+            }
+        }
     }
 }
