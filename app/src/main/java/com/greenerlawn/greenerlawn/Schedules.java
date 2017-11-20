@@ -19,9 +19,15 @@ public class Schedules {
     private String zGUID;
 
     //todo remove is from names
-    private boolean isValid, isRepeat, isSuspended;
+    private boolean valid, repeat, suspended;
     private final boolean VALID_AT_CREATE = false;
     private final boolean SUSPEND_AT_CREATE = true;
+
+    //so what am i using my flags for
+    // valid is a running schedule
+    //suspended is a paused schedule
+    //repeat is the irepeat flag
+
 
     // needs to be extracted to a manager class
     private List<Schedules> schedulesList = new ArrayList<Schedules>();
@@ -34,25 +40,24 @@ public class Schedules {
     public Schedules() {
     }
 
-    public Schedules(String schGUID, int day, Long startTime, Long duration, Long endTime, String zGUID, boolean isRepeat, boolean isSuspended, boolean isValid) {
+    public Schedules(String schGUID, int day, Long startTime, Long duration, Long endTime, String zGUID, boolean isRepeat, boolean suspended, boolean valid) {
         this.schGUID = schGUID;
         this.day = day;
         this.startTime = startTime;
         this.duration = duration;
         this.endTime = endTime;
         this.zGUID = zGUID;
-        this.isRepeat = isRepeat;
-        this.isSuspended = isSuspended;
-        this.isValid = isValid;
+        this.repeat = isRepeat;
+        this.suspended = suspended;
+        this.valid = valid;
     }
 
     public void addSchedule(int day, Long startTime, Long duration, String zGUID, boolean repeat) {
         Schedules newSched  = new Schedules("",day, startTime, duration, null, zGUID, repeat, SUSPEND_AT_CREATE, VALID_AT_CREATE);
         newSched.endTime = newSched.calcEndTime(newSched.startTime, newSched.duration);
-        //check if valid
-            // check for conflicts
-            // enforce cascade
         verifyValid(newSched);
+
+        //if invalid go into error case
     }
 
     private void verifyValid(Schedules newSched) {
@@ -63,10 +68,12 @@ public class Schedules {
         }
     }
 
+    // don't need to check overlap only for conflict times
     private void checkOverlap(Schedules newSched, Schedules tempCheck) {
-        if (newSched.day == tempCheck.getDay() && newSched.zGUID.equals(tempCheck.getzGUID())){
-            // (start < nstart < end) (start > nstart > end)
-            enforceTime(newSched, tempCheck);
+        if (!tempCheck.isSuspended()) {
+            if (newSched.day == tempCheck.getDay()) {
+                enforceTime(newSched, tempCheck);
+            }
         }
     }
 
@@ -150,18 +157,26 @@ public class Schedules {
     }
 
     public boolean isValid() {
-        return isValid;
+        return valid;
     }
 
     public void setValid(boolean valid) {
-        isValid = valid;
+        this.valid = valid;
     }
 
     public boolean isRepeat() {
-        return isRepeat;
+        return repeat;
     }
 
     public void setRepeat(boolean repeat) {
-        isRepeat = repeat;
+        repeat = repeat;
+    }
+
+    public boolean isSuspended() {
+        return suspended;
+    }
+
+    public void setSuspended(boolean suspended) {
+        this.suspended = suspended;
     }
 }
