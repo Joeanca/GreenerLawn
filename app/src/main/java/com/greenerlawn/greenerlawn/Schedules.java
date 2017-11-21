@@ -21,7 +21,7 @@ public class Schedules {
 
     //todo remove is from names
     private boolean valid, repeat, suspended;
-    private final boolean VALID_AT_CREATE = false;
+    private final boolean VALID_AT_CREATE = true;
     private final boolean SUSPEND_AT_CREATE = true;
 
     //so what am i using my flags for
@@ -31,7 +31,7 @@ public class Schedules {
 
 
     // needs to be extracted to a manager class
-    private List<Schedules> schedulesList = new ArrayList<Schedules>();
+
 
 
     //todo firebase updates
@@ -53,6 +53,8 @@ public class Schedules {
         this.valid = valid;
     }
 
+    private List<Schedules> schedulesList = new ArrayList<Schedules>();
+
     public void addSchedule(int day, Long startTime, Long duration, String zGUID, boolean repeat) {
         // create new schedule item
         Schedules newSched  = new Schedules("",day, startTime, duration, null, zGUID, repeat, SUSPEND_AT_CREATE, VALID_AT_CREATE);
@@ -61,21 +63,24 @@ public class Schedules {
         //check to see that new schedule can be made
         verifyValid(newSched);
 
-        //if invalid go into error case
+        if(newSched.valid){
+            schedulesList.add(newSched);
+        }else{
+            //todo error handling
+        }
+
     }
 
     private void verifyValid(Schedules newSched) {
         //iterate over list
         for (int i = 0; i < schedulesList.size(); i++) {
             Schedules tempCheck = schedulesList.get(i);
-            //checkOverlap
             // check running schedules for conflicts
             // should check against all schedules
             // case
-            // pause sched A
-            //create sched B which conflicts with sched A
-            //resume sched A and problems
-
+                // pause sched A
+                //create sched B which conflicts with sched A
+                //resume sched A and problems
             if (newSched.day == tempCheck.getDay()) {
                 enforceTime(newSched, tempCheck);
             }
