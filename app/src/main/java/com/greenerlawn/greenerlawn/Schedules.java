@@ -8,6 +8,7 @@ import java.util.List;
  */
 
 // todo allow for IDFC setting
+    //need to figure out flag settings for tempSuspend
 public class Schedules {
 
     private String schGUID;
@@ -26,7 +27,7 @@ public class Schedules {
     //so what am i using my flags for
     // valid is a running schedule
     //suspended is a paused schedule
-    //repeat is the irepeat flag
+    //repeat is the repeat flag
 
 
     // needs to be extracted to a manager class
@@ -53,29 +54,34 @@ public class Schedules {
     }
 
     public void addSchedule(int day, Long startTime, Long duration, String zGUID, boolean repeat) {
+        // create new schedule item
         Schedules newSched  = new Schedules("",day, startTime, duration, null, zGUID, repeat, SUSPEND_AT_CREATE, VALID_AT_CREATE);
         newSched.endTime = newSched.calcEndTime(newSched.startTime, newSched.duration);
+
+        //check to see that new schedule can be made
         verifyValid(newSched);
 
         //if invalid go into error case
     }
 
     private void verifyValid(Schedules newSched) {
-        for (int i = 0; i < schedulesList.size(); i++){
+        //iterate over list
+        for (int i = 0; i < schedulesList.size(); i++) {
             Schedules tempCheck = schedulesList.get(i);
             //checkOverlap
-            checkOverlap(newSched, tempCheck);
-        }
-    }
+            // check running schedules for conflicts
+            // should check against all schedules
+            // case
+            // pause sched A
+            //create sched B which conflicts with sched A
+            //resume sched A and problems
 
-    // don't need to check overlap only for conflict times
-    private void checkOverlap(Schedules newSched, Schedules tempCheck) {
-        if (!tempCheck.isSuspended()) {
             if (newSched.day == tempCheck.getDay()) {
                 enforceTime(newSched, tempCheck);
             }
         }
     }
+
 
     private void enforceTime(Schedules newSched, Schedules tempCheck) {
         if ((tempCheck.getStartTime()< newSched.getStartTime() && newSched.getStartTime() < tempCheck.getEndTime())
