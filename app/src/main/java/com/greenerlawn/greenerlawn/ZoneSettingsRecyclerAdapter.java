@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -48,15 +49,15 @@ public class ZoneSettingsRecyclerAdapter extends RecyclerView.Adapter<ZoneSettin
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        //pulls the titles from the zones to use as a reference
-        //TODO add fields to pull picture and status for zone
         public final TextView zoneTitle_tv;
         public final Switch zoneStatus_sw;
+        public final ImageButton zoneImage_ib;
 
         public ViewHolder(View itemView) {
             super(itemView);
             zoneTitle_tv = (TextView) itemView.findViewById(R.id.zoneItemTitle_TextView);
             zoneStatus_sw = (Switch) itemView.findViewById(R.id.zoneItem_Switch);
+            zoneImage_ib = (ImageButton) itemView.findViewById(R.id.zoneITem_ImageBtn);
 
         }
     }
