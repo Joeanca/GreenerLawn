@@ -54,6 +54,9 @@ public class DataManager {
     //Schedule Manager
 
     //todo IDC sched functions
+        //method suspends all schedules, for those not suspended sets flad
+        // adds new sched item
+        // removes sched item and reverses changes afterweard.
     public void addSchedule(Schedules newSched) {
         if(newSched.isValid()){
             schedulesList.add(newSched);
