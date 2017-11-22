@@ -19,7 +19,7 @@ public class Schedules {
     private Long startTime, duration, endTime;
     private String zGUID;
 
-    //todo remove is from names
+
     private boolean valid, repeat, suspended;
 
 
