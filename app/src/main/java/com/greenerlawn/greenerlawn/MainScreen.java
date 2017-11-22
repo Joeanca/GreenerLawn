@@ -97,11 +97,6 @@ public class MainScreen extends AppCompatActivity {
 
         // DRAWER FUNCTIONS
         InitializeDrawer();
-
-
-
-
-
     }
 
     @Override
@@ -125,6 +120,8 @@ public class MainScreen extends AppCompatActivity {
 //        return true;
 //    }
 
+
+    // USE THIS FOR THE DRAWER OPTIONS TO GIVE THEM CONTEXT OR MAKE THE ACTIONABLE.
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -166,8 +163,6 @@ public class MainScreen extends AppCompatActivity {
                 if (user != null) {
                     //user is signed in
                     onSignedInInitialize(user);
-                    userFunctions(user);
-                    getWeather();
                 } else {
                     //user is signed out
                     onSignedOutCleanup();
@@ -213,7 +208,6 @@ public class MainScreen extends AppCompatActivity {
 
             }
         });
-
     }
 
     private void transparentBars() {
@@ -226,46 +220,37 @@ public class MainScreen extends AppCompatActivity {
 
     @SuppressLint("ResourceAsColor")
     private void InitializeDrawer() {
-//        mDrawerLayout = (DrawerLayout) findViewById(R.id.main_screen_layout);
-//        abdt = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.Open, R.string.Close);
-//        abdt.setDrawerIndicatorEnabled(true);
-//        mDrawerLayout.addDrawerListener(abdt);
-//        abdt.syncState();
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//
         mDrawerLayout = (DrawerLayout) findViewById(R.id.main_screen_layout);
         abdt = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.Open, R.string.Close);
         abdt.setDrawerIndicatorEnabled(true);
         mDrawerLayout.addDrawerListener(abdt);
         abdt.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        mDrawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
+//            @Override
+//            public void onDrawerSlide(View drawerView, float slideOffset) {
+//                //Called when a drawer's position changes.
+//            }
+//            @Override
+//            public void onDrawerOpened(View drawerView) {
+//                //Called when a drawer has settled in a completely open state.
+//                //The drawer is interactive at this point.
+//                // If you have 2 drawers (left and right) you can distinguish
+//                // them by using id of the drawerView. int id = drawerView.getId();
+//                // id will be your layout's id: for example R.id.left_drawer
+//            }
+//            @Override
+//            public void onDrawerClosed(View drawerView) {
+//                // Called when a drawer has settled in a completely closed state.
+//            }
+//
+//            @Override
+//            public void onDrawerStateChanged(int newState) {
+//                // Called when the drawer motion state changes. The new state will be one of STATE_IDLE, STATE_DRAGGING or STATE_SETTLING.
+//            }
+//        });
 
-        mDrawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
-
-            @Override
-            public void onDrawerSlide(View drawerView, float slideOffset) {
-                //Called when a drawer's position changes.
-            }
-
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                //Called when a drawer has settled in a completely open state.
-                //The drawer is interactive at this point.
-                // If you have 2 drawers (left and right) you can distinguish
-                // them by using id of the drawerView. int id = drawerView.getId();
-                // id will be your layout's id: for example R.id.left_drawer
-            }
-
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                // Called when a drawer has settled in a completely closed state.
-            }
-
-            @Override
-            public void onDrawerStateChanged(int newState) {
-                // Called when the drawer motion state changes. The new state will be one of STATE_IDLE, STATE_DRAGGING or STATE_SETTLING.
-            }
-        });
+        // HERE YOU CAN CHANGE THE ACTIONS FOR THE DRAWER
         NavigationView nav_view = (NavigationView) findViewById(R.id.nav_view);
         nav_view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -279,6 +264,95 @@ public class MainScreen extends AppCompatActivity {
                 return true;
             }
         });
+    }
+
+
+
+    private void userFunctions(FirebaseUser user) {
+        dbFn = new DatabaseFunctions();
+        dbFn.StartDB(user);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View headerLayout = navigationView.getHeaderView(0);
+        TextView headerEmail = headerLayout.findViewById(R.id.tv_drawer_email);
+        TextView headerName = headerLayout.findViewById(R.id.tv_drawer_user);
+        headerEmail.setText(dbFn.getEmail());
+        headerName.setText(dbFn.getUsername());
+    }
+
+    private void onSignedInInitialize(FirebaseUser user) {
+        attachDatabaseReadListener();
+        userFunctions(user);
+        getWeather();
+    }
+
+    private void onSignedOutCleanup() {
+        mUsername = ANONYMOUS;
+        detachDatabaseReadListener();
+
+    }
+
+    private void attachDatabaseReadListener() {
+        if (mChildEventListener == null) {
+            mChildEventListener = new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
+                }
+
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                }
+            };
+            //mMessagesDatabaseReference.addChildEventListener(mChildEventListener);
+        }
+
+    }
+
+    public void openTimer(View view) {
+        startActivity(new Intent(MainScreen.this, TimePopUp.class));
+
+    }
+
+    private void detachDatabaseReadListener() {
+        if (mChildEventListener != null) {
+            //mMessagesDatabaseReference.removeEventListener(mChildEventListener);
+            mChildEventListener = null;
+        }
+    }
+
+//    private void collectZones(Map<String, Object> users) {
+//
+//        ArrayList<Zone> zones = new ArrayList<>();
+//
+//        //iterate through each user, ignoring their UID
+//        for (Map.Entry<String, Object> entry : users.entrySet()) {
+//
+//            //Get user map
+//            Map singleUser = (Map) entry.getValue();
+//            //Get zone field and append to list
+//            zones.add((Zone) singleUser.get("zones"));
+//            Log.d("zonemssg", "collectZones: " + singleUser.toString());
+//        }
+//
+//        System.out.println(zones.toString());
+//    }
+
+    public void modifyZones(View view) {
+        startActivity(new Intent(MainScreen.this, ZoneSettings.class));
+
     }
 
     private void setupWeather( final UserSettings userSettings) {
@@ -336,91 +410,6 @@ public class MainScreen extends AppCompatActivity {
 
     }
 
-    private void userFunctions(FirebaseUser user) {
-        dbFn = new DatabaseFunctions();
-        dbFn.StartDB(user);
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        View headerLayout = navigationView.getHeaderView(0);
-        TextView headerEmail = headerLayout.findViewById(R.id.tv_drawer_email);
-        TextView headerName = headerLayout.findViewById(R.id.tv_drawer_user);
-        headerEmail.setText(dbFn.getEmail());
-        headerName.setText(dbFn.getUsername());
-    }
-
-    private void onSignedInInitialize(FirebaseUser users) {
-        attachDatabaseReadListener();
-    }
-
-    private void onSignedOutCleanup() {
-        mUsername = ANONYMOUS;
-        detachDatabaseReadListener();
-
-    }
-
-    private void attachDatabaseReadListener() {
-        if (mChildEventListener == null) {
-            mChildEventListener = new ChildEventListener() {
-                @Override
-                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                    //FriendlyMessage friendlyMessage = dataSnapshot.getValue(FriendlyMessage.class);
-                    //mMessageAdapter.add(friendlyMessage);
-                }
-
-                @Override
-                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                }
-
-                @Override
-                public void onChildRemoved(DataSnapshot dataSnapshot) {
-                }
-
-                @Override
-                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                }
-            };
-            //mMessagesDatabaseReference.addChildEventListener(mChildEventListener);
-        }
-
-    }
-
-    public void openTimer(View view) {
-        startActivity(new Intent(MainScreen.this, TimePopUp.class));
-
-    }
-
-    private void detachDatabaseReadListener() {
-        if (mChildEventListener != null) {
-            //mMessagesDatabaseReference.removeEventListener(mChildEventListener);
-            mChildEventListener = null;
-        }
-    }
-
-    private void collectZones(Map<String, Object> users) {
-
-        ArrayList<Zone> zones = new ArrayList<>();
-
-        //iterate through each user, ignoring their UID
-        for (Map.Entry<String, Object> entry : users.entrySet()) {
-
-            //Get user map
-            Map singleUser = (Map) entry.getValue();
-            //Get zone field and append to list
-            zones.add((Zone) singleUser.get("zones"));
-            Log.d("zonemssg", "collectZones: " + singleUser.toString());
-        }
-
-        System.out.println(zones.toString());
-    }
-
-    public void modifyZones(View view) {
-        startActivity(new Intent(MainScreen.this, ZoneSettings.class));
-
-    }
 
     public void modifySettings(View view) {
         startActivity(new Intent(MainScreen.this, SettingsMenu.class));
