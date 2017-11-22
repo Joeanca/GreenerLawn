@@ -127,6 +127,7 @@ public class DatabaseFunctions {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 // THIS IS WHEN SOMETHING IS INSERTED INTO THE CHILDREN OR AT START TO INSERT ALL THE ZONES/ SCHEDULES
+
             }
 
             @Override

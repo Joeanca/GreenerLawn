@@ -8,7 +8,7 @@ import java.util.List;
  * Created by joeanca on 2017-11-08.
  */
 
-public class User {
+public  class User {
     private String username;
     private String email;
     private List<String> scheduleList = new ArrayList<>();
@@ -16,6 +16,15 @@ public class User {
 
 
     private String deviceSerial;
+
+    private static  User instance;
+
+    public static User getInstance(){
+        if (instance == null){
+            instance = new User();
+        }
+        return instance;
+    }
 
     public User(){
         String username;
