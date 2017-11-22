@@ -32,7 +32,8 @@ public class DataManager {
 
     //SCHEDULE FIELDS
     private final boolean VALID_AT_CREATE = true;
-    private final boolean SUSPEND_AT_CREATE = true;
+    private final boolean SUSPEND_AT_CREATE = false;
+    private final boolean IDC_FLAG = false;
     private List<Schedules> schedulesList = new ArrayList<Schedules>();
 
     public DataManager() {
@@ -51,6 +52,8 @@ public class DataManager {
 
 
     //Schedule Manager
+
+    //todo IDC sched functions
     public void addSchedule(Schedules newSched) {
         if(newSched.isValid()){
             schedulesList.add(newSched);
@@ -163,7 +166,7 @@ public class DataManager {
            int sDay = dayArr[i];
            Long sStart = startTimeArr[i];
            String zGuid = expandedZoneList.get(i);
-           tempSchedList.add(new Schedules(null, sDay,sStart, duration, endTime, zGuid, repeat,SUSPEND_AT_CREATE, VALID_AT_CREATE));
+           tempSchedList.add(new Schedules(null, sDay,sStart, duration, endTime, zGuid, repeat,SUSPEND_AT_CREATE, VALID_AT_CREATE, IDC_FLAG));
         }
 
         for (Schedules temp: tempSchedList) {
