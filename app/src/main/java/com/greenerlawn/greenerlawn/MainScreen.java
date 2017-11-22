@@ -76,6 +76,7 @@ public class MainScreen extends AppCompatActivity {
     List<AuthUI.IdpConfig> providers;
     private DatabaseFunctions dbFn;
     private User localUser;
+    private  DataManager dm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,36 +97,7 @@ public class MainScreen extends AppCompatActivity {
 
 
 
-        //test add to database use to add some zones for testing
-//        Zone zone = new Zone("1231", "zone2", true);
-          final DataManager dm = new DataManager();
-//        dm.uploadNewData(dm.ZONE_REF, zone);
 
-        mUserRef = dm.getReference(dm.USER_SETTING_REF);
-
-        mUserRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (!dataSnapshot.exists()) {
-                    dm.uploadNewData(dm.USER_SETTING_REF, new UserSettings());
-                }
-                Iterable<DataSnapshot> children = dataSnapshot.getChildren();
-
-                UserSettings userSettings = null;
-                for (DataSnapshot child : children) {
-                    userSettings = child.getValue(UserSettings.class);
-                }
-                
-                // Weather setup
-                WeatherMap weatherMap = new WeatherMap(MainScreen.this, OPEN_API_KEY);
-                setupWeather(weatherMap, userSettings);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
 
     }
 
@@ -142,6 +114,7 @@ public class MainScreen extends AppCompatActivity {
             }
         }
     }
+
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
 //        MenuInflater inflater = getMenuInflater();
@@ -191,6 +164,7 @@ public class MainScreen extends AppCompatActivity {
                     //user is signed in
                     onSignedInInitialize(user);
                     userFunctions(user);
+                    getWeather();
                 } else {
                     //user is signed out
                     onSignedOutCleanup();
@@ -207,6 +181,39 @@ public class MainScreen extends AppCompatActivity {
                 }
             }
         };
+    }
+
+    private void getWeather() {
+        //test add to database use to add some zones for testing
+//        Zone zone = new Zone("1231", "zone2", true);
+        dm = new DataManager();
+//        dm.uploadNewData(dm.ZONE_REF, zone);
+
+        mUserRef = dm.getReference(dm.USER_SETTING_REF);
+
+        mUserRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.exists()) {
+                    dm.uploadNewData(dm.USER_SETTING_REF, new UserSettings());
+                }
+                Iterable<DataSnapshot> children = dataSnapshot.getChildren();
+
+                UserSettings userSettings = null;
+                for (DataSnapshot child : children) {
+                    userSettings = child.getValue(UserSettings.class);
+                }
+
+                // Weather setup
+                WeatherMap weatherMap = new WeatherMap(MainScreen.this, OPEN_API_KEY);
+                setupWeather(weatherMap, userSettings);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void transparentBars() {
