@@ -52,6 +52,8 @@ public class DataManager {
 
 
     //Schedule Manager
+
+    //todo IDC sched functions
     public void addSchedule(Schedules newSched) {
         if(newSched.isValid()){
             schedulesList.add(newSched);
