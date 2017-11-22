@@ -62,6 +62,7 @@ public class DataManager {
         }
     }
 
+    // TODO  don't check against suspended schedules
     private void verifyValid(Schedules newSched) {
         //iterate over list
         for (int i = 0; i < schedulesList.size(); i++) {
@@ -105,7 +106,7 @@ public class DataManager {
 
 
     // todo condense expand calls
-    public void  configureSchedule(ArrayList<String> zoneIDList, Long startTime, Long duration, int timeFlag, int[]dayArr, boolean repeat){
+    public void  configureScpowhedule(ArrayList<String> zoneIDList, Long startTime, Long duration, int timeFlag, int[]dayArr, boolean repeat){
         // holds cascading start times
         Long endTime = Long.valueOf(0);
         Long[] startTimeArr = new Long[zoneIDList.size()];
@@ -138,7 +139,7 @@ public class DataManager {
         }
 
         //fills array with repeating day entries
-        // ex MWF turns into MMWWFF
+        // ex MWF turns into Mwfmwf
         for(int i =0; i < expandedDays.length; i++){
             expandedDays[i] = dayArr[i%dayArr.length];
         }
