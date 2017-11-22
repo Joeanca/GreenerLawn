@@ -20,7 +20,7 @@ public class Schedules {
     private String zGUID;
 
     //todo remove is from names
-    private boolean valid, repeat, suspended;
+    private boolean valid, repeat, suspended, pausedByIDC;
     private final boolean VALID_AT_CREATE = true;
     private final boolean SUSPEND_AT_CREATE = true;
 
@@ -41,7 +41,7 @@ public class Schedules {
     public Schedules() {
     }
 
-    public Schedules(String schGUID, int day, Long startTime, Long duration, Long endTime, String zGUID, boolean isRepeat, boolean suspended, boolean valid) {
+    public Schedules(String schGUID, int day, Long startTime, Long duration, Long endTime, String zGUID, boolean isRepeat, boolean suspended, boolean valid, boolean pausedByIDC) {
         this.schGUID = schGUID;
         this.day = day;
         this.startTime = startTime;
@@ -51,13 +51,14 @@ public class Schedules {
         this.repeat = isRepeat;
         this.suspended = suspended;
         this.valid = valid;
+        this.pausedByIDC = pausedByIDC;
     }
 
     private List<Schedules> schedulesList = new ArrayList<Schedules>();
 
     public void addSchedule(int day, Long startTime, Long duration, String zGUID, boolean repeat) {
         // create new schedule item
-        Schedules newSched  = new Schedules("",day, startTime, duration, null, zGUID, repeat, SUSPEND_AT_CREATE, VALID_AT_CREATE);
+        Schedules newSched  = new Schedules("",day, startTime, duration, null, zGUID, repeat, SUSPEND_AT_CREATE, VALID_AT_CREATE, pausedByIDC);
         newSched.endTime = newSched.calcEndTime(newSched.startTime, newSched.duration);
 
         //check to see that new schedule can be made
@@ -189,5 +190,13 @@ public class Schedules {
 
     public void setSuspended(boolean suspended) {
         this.suspended = suspended;
+    }
+
+    public boolean isPausedByIDC() {
+        return pausedByIDC;
+    }
+
+    public void setPausedByIDC(boolean pausedByIDC) {
+        this.pausedByIDC = pausedByIDC;
     }
 }
