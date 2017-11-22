@@ -30,7 +30,7 @@ public class DataManager {
 
     private ArrayList<Zone> zoneArrayList = new ArrayList<>();
 
-    //ZCHEDULE FIELDS
+    //SCHEDULE FIELDS
     private final boolean VALID_AT_CREATE = true;
     private final boolean SUSPEND_AT_CREATE = true;
     private List<Schedules> schedulesList = new ArrayList<Schedules>();
@@ -49,20 +49,14 @@ public class DataManager {
         return dataRef;
     }
 
-    public void addSchedule(int day, Long startTime, Long duration, String zGUID, boolean repeat) {
-        // create new schedule item
-        Schedules newSched  = new Schedules("",day, startTime, duration, null, zGUID, repeat, SUSPEND_AT_CREATE, VALID_AT_CREATE);
-        newSched.setEndTime(newSched.calcEndTime(newSched.getStartTime(), newSched.getDuration()));
 
-        //check to see that new schedule can be made
-        verifyValid(newSched);
-
+    //Schedule Manager
+    public void addSchedule(Schedules newSched) {
         if(newSched.isValid()){
             schedulesList.add(newSched);
         }else{
             //todo error handling
         }
-
     }
 
     private void verifyValid(Schedules newSched) {
@@ -80,7 +74,6 @@ public class DataManager {
             }
         }
     }
-
 
     private void enforceTime(Schedules newSched, Schedules tempCheck) {
         if ((tempCheck.getStartTime()< newSched.getStartTime() && newSched.getStartTime() < tempCheck.getEndTime())
@@ -106,5 +99,79 @@ public class DataManager {
     public void setSchedulesList(List<Schedules> schedulesList) {
         this.schedulesList = schedulesList;
     }
+
+
+    // todo condense expand calls
+    public void  configureSchedule(ArrayList<String> zoneIDList, Long startTime, Long duration, int timeFlag, int[]dayArr, boolean repeat){
+        // holds cascading start times
+        Long endTime = Long.valueOf(0);
+        Long[] startTimeArr = new Long[zoneIDList.size()];
+        // holds redundant day entries for each sched item
+        int[] expandedDays = new int[zoneIDList.size()*dayArr.length];
+        // timeFlag is a 0 or 1
+        // where 0 sets the duration param as the duration for each zone
+        // 1 sets the duration as total for duration for all zones in the schedule item
+            //IE pass 2 zones, start at 8, run for 20 min, flag = 1
+                //results in each zone running for 10 minutes
+            // if flag is set to 0
+                // each zone runs for 20 minutes
+
+        //determines the duration for each scheduleitem
+        if (timeFlag == 1){duration = duration/zoneIDList.size();}
+
+        //creates array with single cascading start times based on durations
+        // ex 8, 8:20
+        for(int i = 0,ii =1; i <startTimeArr.length; i++, ii++ ){
+            startTimeArr[i] = startTime;
+            startTimeArr[i] +=duration*ii;
+        }
+
+        ArrayList<Long> expandStartTimeArr = new ArrayList<>();
+        //must use ArrayList as Array's require you to know the position to insert
+        for(int i=0; i < startTimeArr.length; i++){
+            for(int ii= 0; i < dayArr.length; ii++){
+                expandStartTimeArr.add(startTimeArr[i]);
+            }
+        }
+
+        //fills array with repeating day entries
+        // ex MWF turns into MMWWFF
+        for(int i =0; i < expandedDays.length; i++){
+            expandedDays[i] = dayArr[i%dayArr.length];
+        }
+
+        //fills arraylist of redundant zone entries corresponding to each day in the sched
+        // ex z1,z2 turns into z1,z1,z1,z2,z2,z2
+        ArrayList<String> expandedZoneList = new ArrayList();
+        for (int i = 0; i < zoneIDList.size(); i++ ){
+            // addreasses each zone
+            for(int ii = 0; ii < dayArr.length; ii++){
+                // addreasses each day
+                expandedZoneList.add(zoneIDList.get(i));
+                // adds each zone to new list according to the # of days it will run
+            }
+        }
+
+        createScheduleItems(duration, dayArr, repeat, endTime, startTimeArr, expandedDays, expandedZoneList);
+    }
+
+    public void createScheduleItems(Long duration, int[] dayArr, boolean repeat, Long endTime, Long[] startTimeArr, int[] expandedDays, ArrayList<String> expandedZoneList) {
+        //creates and validates, sends to add method for error handling
+
+        ArrayList<Schedules> tempSchedList = new ArrayList<>();
+        for (int i = 0; i< expandedDays.length; i++){
+           int sDay = dayArr[i];
+           Long sStart = startTimeArr[i];
+           String zGuid = expandedZoneList.get(i);
+           tempSchedList.add(new Schedules(null, sDay,sStart, duration, endTime, zGuid, repeat,SUSPEND_AT_CREATE, VALID_AT_CREATE));
+        }
+
+        for (Schedules temp: tempSchedList) {
+            verifyValid(temp);
+            addSchedule(temp);
+        }
+    }
+
+
 
 }
