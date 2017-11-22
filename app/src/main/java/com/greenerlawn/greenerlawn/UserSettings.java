@@ -5,10 +5,10 @@ package com.greenerlawn.greenerlawn;
  */
 
 public class UserSettings {
-    final int CELSIUS = 0;
-    final int FAHRENHEIT = 1;
-    int heatUnit;
-    String city;
+    private final int CELSIUS = 0;
+    private final int FAHRENHEIT = 1;
+    private int heatUnit;
+    private String city;
 
     public UserSettings(int heatUnit, String city) {
         this.heatUnit = heatUnit;
@@ -16,7 +16,7 @@ public class UserSettings {
     }
 
     public UserSettings() {
-        this.heatUnit = 0;
+        this.heatUnit = CELSIUS;
         this.city = "Calgary";
 
     }

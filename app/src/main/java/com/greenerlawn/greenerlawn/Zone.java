@@ -16,6 +16,7 @@ import java.util.ArrayList;
     private File zImage;
 
     //default constructor for empty zone
+    public Zone(){}
     public Zone(String zGUID) {
         this.zGUID = zGUID;
     }
