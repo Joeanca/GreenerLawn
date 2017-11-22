@@ -377,6 +377,7 @@ public class MainScreen extends AppCompatActivity {
 
                     Weather currWeather = weather.weather;
 
+                    Log.d("Weatherhahasdf", "onWeatherRetrieved: "+ currWeather.rain[1].getAmmount());
                     TextView tempTV = findViewById(R.id.currentTemp);
                     TextView humidityTV = findViewById(R.id.currentHumidity);
                     TextView conditionTV = findViewById(R.id.currentCondition);
