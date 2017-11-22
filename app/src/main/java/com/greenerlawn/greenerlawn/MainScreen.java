@@ -94,11 +94,6 @@ public class MainScreen extends AppCompatActivity {
 
         // DRAWER FUNCTIONS
         InitializeDrawer();
-
-
-
-
-
     }
 
     @Override
@@ -122,6 +117,8 @@ public class MainScreen extends AppCompatActivity {
 //        return true;
 //    }
 
+
+    // USE THIS FOR THE DRAWER OPTIONS TO GIVE THEM CONTEXT OR MAKE THE ACTIONABLE.
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -163,8 +160,6 @@ public class MainScreen extends AppCompatActivity {
                 if (user != null) {
                     //user is signed in
                     onSignedInInitialize(user);
-                    userFunctions(user);
-                    getWeather();
                 } else {
                     //user is signed out
                     onSignedOutCleanup();
@@ -226,46 +221,37 @@ public class MainScreen extends AppCompatActivity {
 
     @SuppressLint("ResourceAsColor")
     private void InitializeDrawer() {
-//        mDrawerLayout = (DrawerLayout) findViewById(R.id.main_screen_layout);
-//        abdt = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.Open, R.string.Close);
-//        abdt.setDrawerIndicatorEnabled(true);
-//        mDrawerLayout.addDrawerListener(abdt);
-//        abdt.syncState();
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//
         mDrawerLayout = (DrawerLayout) findViewById(R.id.main_screen_layout);
         abdt = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.Open, R.string.Close);
         abdt.setDrawerIndicatorEnabled(true);
         mDrawerLayout.addDrawerListener(abdt);
         abdt.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        mDrawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
+//            @Override
+//            public void onDrawerSlide(View drawerView, float slideOffset) {
+//                //Called when a drawer's position changes.
+//            }
+//            @Override
+//            public void onDrawerOpened(View drawerView) {
+//                //Called when a drawer has settled in a completely open state.
+//                //The drawer is interactive at this point.
+//                // If you have 2 drawers (left and right) you can distinguish
+//                // them by using id of the drawerView. int id = drawerView.getId();
+//                // id will be your layout's id: for example R.id.left_drawer
+//            }
+//            @Override
+//            public void onDrawerClosed(View drawerView) {
+//                // Called when a drawer has settled in a completely closed state.
+//            }
+//
+//            @Override
+//            public void onDrawerStateChanged(int newState) {
+//                // Called when the drawer motion state changes. The new state will be one of STATE_IDLE, STATE_DRAGGING or STATE_SETTLING.
+//            }
+//        });
 
-        mDrawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
-
-            @Override
-            public void onDrawerSlide(View drawerView, float slideOffset) {
-                //Called when a drawer's position changes.
-            }
-
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                //Called when a drawer has settled in a completely open state.
-                //The drawer is interactive at this point.
-                // If you have 2 drawers (left and right) you can distinguish
-                // them by using id of the drawerView. int id = drawerView.getId();
-                // id will be your layout's id: for example R.id.left_drawer
-            }
-
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                // Called when a drawer has settled in a completely closed state.
-            }
-
-            @Override
-            public void onDrawerStateChanged(int newState) {
-                // Called when the drawer motion state changes. The new state will be one of STATE_IDLE, STATE_DRAGGING or STATE_SETTLING.
-            }
-        });
+        // HERE YOU CAN CHANGE THE ACTIONS FOR THE DRAWER
         NavigationView nav_view = (NavigationView) findViewById(R.id.nav_view);
         nav_view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -281,41 +267,7 @@ public class MainScreen extends AppCompatActivity {
         });
     }
 
-    private void setupWeather(WeatherMap weatherMap, UserSettings userSettings) {
 
-        weatherMap.getCityWeather(userSettings.getCity(), new WeatherCallback() {
-            @Override
-            public void success(WeatherResponseModel response) {
-                Weather weather[] = response.getWeather();
-                String weatherMain = weather[0].getMain();
-                Double temperature = TempUnitConverter.convertToCelsius(response.getMain().getTemp());
-
-                //Initiate textViews
-                TextView tempTV = findViewById(R.id.currentTemp);
-                TextView humidityTV = findViewById(R.id.currentHumidity);
-                TextView conditionTV = findViewById(R.id.currentCondition);
-                TextView rainTV = findViewById(R.id.currentRainfall);
-                ImageView conditionIV = findViewById(R.id.conditionImage);
-
-
-                //@TODO Create a better resouse string in order to avoid warnings and bad practices
-                tempTV.setText(temperature.longValue() + "°");
-                humidityTV.setText(response.getMain().getHumidity() + "%");
-                conditionTV.setText(weatherMain);
-                rainTV.setText(response.getRain());
-                Glide.with(getApplicationContext())
-                        .load(weather[0].getIconLink())
-                        .into(conditionIV)
-                ;
-
-            }
-            @Override
-            public void failure(String message) {
-            }
-        });
-
-
-    }
 
     private void userFunctions(FirebaseUser user) {
         dbFn = new DatabaseFunctions();
@@ -328,8 +280,10 @@ public class MainScreen extends AppCompatActivity {
         headerName.setText(dbFn.getUsername());
     }
 
-    private void onSignedInInitialize(FirebaseUser users) {
+    private void onSignedInInitialize(FirebaseUser user) {
         attachDatabaseReadListener();
+        userFunctions(user);
+        getWeather();
     }
 
     private void onSignedOutCleanup() {
@@ -343,8 +297,7 @@ public class MainScreen extends AppCompatActivity {
             mChildEventListener = new ChildEventListener() {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                    //FriendlyMessage friendlyMessage = dataSnapshot.getValue(FriendlyMessage.class);
-                    //mMessageAdapter.add(friendlyMessage);
+
                 }
 
                 @Override
@@ -381,25 +334,62 @@ public class MainScreen extends AppCompatActivity {
         }
     }
 
-    private void collectZones(Map<String, Object> users) {
-
-        ArrayList<Zone> zones = new ArrayList<>();
-
-        //iterate through each user, ignoring their UID
-        for (Map.Entry<String, Object> entry : users.entrySet()) {
-
-            //Get user map
-            Map singleUser = (Map) entry.getValue();
-            //Get zone field and append to list
-            zones.add((Zone) singleUser.get("zones"));
-            Log.d("zonemssg", "collectZones: " + singleUser.toString());
-        }
-
-        System.out.println(zones.toString());
-    }
+//    private void collectZones(Map<String, Object> users) {
+//
+//        ArrayList<Zone> zones = new ArrayList<>();
+//
+//        //iterate through each user, ignoring their UID
+//        for (Map.Entry<String, Object> entry : users.entrySet()) {
+//
+//            //Get user map
+//            Map singleUser = (Map) entry.getValue();
+//            //Get zone field and append to list
+//            zones.add((Zone) singleUser.get("zones"));
+//            Log.d("zonemssg", "collectZones: " + singleUser.toString());
+//        }
+//
+//        System.out.println(zones.toString());
+//    }
 
     public void modifyZones(View view) {
         startActivity(new Intent(MainScreen.this, ZoneSettings.class));
+
+    }
+
+    private void setupWeather(WeatherMap weatherMap, UserSettings userSettings) {
+
+        weatherMap.getCityWeather(userSettings.getCity(), new WeatherCallback() {
+            @Override
+            public void success(WeatherResponseModel response) {
+                Weather weather[] = response.getWeather();
+                String weatherMain = weather[0].getMain();
+                Double temperature = TempUnitConverter.convertToCelsius(response.getMain().getTemp());
+
+                //Initiate textViews
+                TextView tempTV = findViewById(R.id.currentTemp);
+                TextView humidityTV = findViewById(R.id.currentHumidity);
+                TextView conditionTV = findViewById(R.id.currentCondition);
+                TextView rainTV = findViewById(R.id.currentRainfall);
+                ImageView conditionIV = findViewById(R.id.conditionImage);
+
+
+                //@TODO Create a better resouse string in order to avoid warnings and bad practices
+                tempTV.setText(temperature.longValue() + "°");
+                humidityTV.setText(response.getMain().getHumidity() + "%");
+                conditionTV.setText(weatherMain);
+                rainTV.setText(response.getRain());
+                Glide.with(getApplicationContext())
+                        .load(weather[0].getIconLink())
+                        .into(conditionIV)
+                ;
+
+            }
+            @Override
+            public void failure(String message) {
+                Toast.makeText(MainScreen.this, message, Toast.LENGTH_SHORT).show();
+            }
+        });
+
 
     }
 }
