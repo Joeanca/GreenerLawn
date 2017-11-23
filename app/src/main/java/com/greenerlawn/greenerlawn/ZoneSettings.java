@@ -49,10 +49,10 @@ public class ZoneSettings extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                Iterable<DataSnapshot> childern = dataSnapshot.getChildren();
+                Iterable<DataSnapshot> children = dataSnapshot.getChildren();
 
                 ArrayList<Zone> zones = new ArrayList<>();
-                for (DataSnapshot child : childern) {
+                for (DataSnapshot child : children) {
                     Zone zone = child.getValue(Zone.class);
                     zones.add(zone);
                 }

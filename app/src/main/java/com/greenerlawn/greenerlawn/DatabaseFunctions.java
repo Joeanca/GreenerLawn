@@ -12,7 +12,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * Created by joeanca on 2017-11-08.
@@ -25,7 +27,7 @@ public class DatabaseFunctions {
     private DatabaseReference deviceDBRef,mZonesDatabaseReference;
     private FirebaseUser firebaseUser;
     private static final int RC_SIGN_IN = 123;
-
+    private ChildEventListener mZoneChildEventListener;
 
     // ENTRY POINT FOR THE APP TO ACCESS THE DATABASE
     private FirebaseDatabase mFirebaseDatabase;
@@ -92,22 +94,24 @@ public class DatabaseFunctions {
                     Iterable<DataSnapshot> zones = dataSnapshot.child(User.getInstance().getDeviceSerial()).child("zones").getChildren();
                     List<Zone> actualZones = new ArrayList<>();
                     for (DataSnapshot zone: zones){
-                        actualZones.add(zone.getValue(Zone.class));
+                        Zone tempZone = zone.getValue(Zone.class);
+                        tempZone.dbRefSet(zone.getKey());
+                        actualZones.add(tempZone);
                     }
                     User.getInstance().zoneListSet(actualZones);
-                    mZonesDatabaseReference.child("zones").addChildEventListener(new ChildEventListener() {
+                    mZoneChildEventListener = new ChildEventListener() {
                         @Override
                         public void onChildAdded(DataSnapshot dataSnapshot, String s) {}
                         @Override
                         public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                            Zone port = dataSnapshot.getValue(Zone.class);
+                            Zone zone = dataSnapshot.getValue(Zone.class);
                             for (Zone z : User.getInstance().zoneListGet()){
-                                if (z.getZoneNumber() == port.getZoneNumber()){
-                                    z.setzOnOff(port.getzOnOff());
+                                if (z.getZoneNumber() == zone.getZoneNumber()){
+                                    z.setzOnOff(zone.getzOnOff());
                                 }
                             }
 
-                            Log.e("CHANGE", "onChildChanged: "+ port.getZoneNumber() );
+                            Log.e("CHANGE", "onChildChanged: "+ zone.getZoneNumber() );
                         }
                         @Override
                         public void onChildRemoved(DataSnapshot dataSnapshot) {}
@@ -117,7 +121,8 @@ public class DatabaseFunctions {
 
                         @Override
                         public void onCancelled(DatabaseError databaseError) {}
-                    });
+                    };
+                    mZonesDatabaseReference.child("zones").addChildEventListener(mZoneChildEventListener);
                 }else{
                     // SETUP THE DEVICE FOR THE FIRST TIME
                     Log.e("SOMETHING", "onDataChange: DEVICE DOESN'T EXIST");
@@ -163,5 +168,12 @@ public class DatabaseFunctions {
             }
         };
         mScheduleDBReference.addChildEventListener(mChildEventListener);
+    }
+    public void SwitchToggleZone(int zoneNumber, Boolean status){
+        // TODO SET THE OTHER ZONES OFF
+        User.getInstance().zoneListGet().get(zoneNumber-1).setzOnOff(status);
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference("greennerHubs/" + User.getInstance().getDeviceSerial() + "/zones/" + User.getInstance().zoneListGet().get(zoneNumber-1).dbRefGet());
+        ref.child("zOnOff").setValue(status);
     }
 }

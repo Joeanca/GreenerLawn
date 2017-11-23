@@ -14,7 +14,7 @@ import java.util.Observable;
 
     private boolean zOnOff;
     private String  zoneNumber;
-
+    private String dbRef;
 
     //default constructor for empty zone
     public Zone(){
@@ -41,6 +41,9 @@ import java.util.Observable;
     public boolean getzOnOff() {
         return zOnOff;
     }
+
+    public void dbRefSet(String ref){ this.dbRef= ref;}
+    public String dbRefGet(){return dbRef;}
 
 
 }
