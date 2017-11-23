@@ -24,7 +24,7 @@ import com.survivingwithandroid.weather.lib.provider.openweathermap.Openweatherm
 
 import java.util.List;
 
-public class SearchCity extends AppCompatActivity {
+public class SearchCity extends Activity {
     private static final String OPEN_API_KEY = "bea4b929ff482f02d7ab334b6e015467";
 
     @Override
