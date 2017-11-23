@@ -2,6 +2,7 @@ package com.greenerlawn.greenerlawn;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Observable;
 
 /**
  * Created by jason on 10/28/2017.
@@ -16,7 +17,8 @@ import java.util.ArrayList;
 
 
     //default constructor for empty zone
-    public Zone(){}
+    public Zone(){
+    }
 
     //constructor allows for full zone config
     public Zone(String zoneNumber, boolean zOnOff) {

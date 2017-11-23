@@ -46,7 +46,7 @@ public class DatabaseFunctions {
 
         uID = firebaseUser.getUid();
         retrieveUserFromDatabase(mUserDatabaseReference);
-        User.getInstance().setDeviceSerial("pi2");
+        User.getInstance().setDeviceSerial("pi1");
 
         StartZones();
     }

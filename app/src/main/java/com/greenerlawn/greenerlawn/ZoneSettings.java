@@ -21,6 +21,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 public class ZoneSettings extends AppCompatActivity {
     DataManager dM = new DataManager();
@@ -38,32 +40,31 @@ public class ZoneSettings extends AppCompatActivity {
         final RecyclerView recyclerZones = (RecyclerView) findViewById(R.id.zone_recycler);
         final LinearLayoutManager zoneLayoutManager = new LinearLayoutManager(this);
         recyclerZones.setLayoutManager(zoneLayoutManager);
-        List<Zone> zones = User.getInstance().zoneListGet();
-        for (Zone zone: User.getInstance().zoneListGet()){
-            Log.e("ZONE", "onCreate: "+ zone.getZoneNumber() );
-        }
-//        DatabaseReference dataRef = dM.getReference(dM.ZONE_REF);
-//        dataRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//
-//                Iterable<DataSnapshot> childern = dataSnapshot.getChildren();
-//
-//                ArrayList<Zone> zones = new ArrayList<>();
-//                for (DataSnapshot child : childern) {
-//                    Zone zone = child.getValue(Zone.class);
-//                    zones.add(zone);
-//                }
-//
-//                doRecyclerStuff(zones, recyclerZones);
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
-        doRecyclerStuff(zones, recyclerZones);
+//        List<Zone> zones = User.getInstance().zoneListGet();
+//        for (Zone zone: User.getInstance().zoneListGet()){
+//            Log.e("ZONE", "onCreate: "+ zone.getZoneNumber() );
+//        }
+        DatabaseReference dataRef = dM.getReference(dM.ZONE_REF);
+        dataRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                Iterable<DataSnapshot> childern = dataSnapshot.getChildren();
+
+                ArrayList<Zone> zones = new ArrayList<>();
+                for (DataSnapshot child : childern) {
+                    Zone zone = child.getValue(Zone.class);
+                    zones.add(zone);
+                }
+                doRecyclerStuff(zones, recyclerZones);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+//        doRecyclerStuff(zones, recyclerZones);
 
 
 
