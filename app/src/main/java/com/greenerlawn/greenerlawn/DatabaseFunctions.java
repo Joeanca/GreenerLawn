@@ -18,12 +18,12 @@ import java.util.List;
 
 public class DatabaseFunctions {
     public static final String ANONYMOUS = "anonymous";
-    private String mUsername, mEmail,uID, email, username;
+    private String uID;
     private DatabaseReference mUserRef;
     private DatabaseReference mDatabaseReference,mZonesDatabaseReference;
     private FirebaseUser firebaseUser;
     private static final int RC_SIGN_IN = 123;
-
+    private User currentUser = User.getInstance();
 
     // ENTRY POINT FOR THE APP TO ACCESS THE DATABASE
     private FirebaseDatabase mFirebaseDatabase;
@@ -35,7 +35,6 @@ public class DatabaseFunctions {
     ChildEventListener mChildEventListener;
     ValueEventListener listener;
     // LOCAL USER
-    User currentUser;
 
 
     public void StartDB(FirebaseUser firebaseUser){
@@ -44,9 +43,6 @@ public class DatabaseFunctions {
         mUserDatabaseReference = mFirebaseDatabase.getReference().child("users");
 
         uID = firebaseUser.getUid();
-        email = firebaseUser.getEmail();
-        Log.e("EMAIL", "StartDB: " + email );
-        username = firebaseUser.getDisplayName();
         retrieveUserFromDatabase(mUserDatabaseReference);
     }
 
@@ -58,9 +54,6 @@ public class DatabaseFunctions {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.hasChild(uID)){
                         currentUser = dataSnapshot.child(uID).getValue(User.class);
-                        System.out.println("OVA HERE" + dataSnapshot.child(uID).getValue(User.class).getZoneList());
-                        System.out.println("OVA HERE" + currentUser.getUsername());
-
                 }
                 else{
                     mUserDatabaseReference.child(uID).setValue(currentUser);
@@ -74,8 +67,8 @@ public class DatabaseFunctions {
          mUserDatabaseReference.addValueEventListener(listener);
     }
 
-    public String getEmail(){return email;}
-    public String getUsername (){return username;}
+
+
     public void removeListener(){
         mUserDatabaseReference.removeEventListener(listener);
     }
@@ -83,9 +76,56 @@ public class DatabaseFunctions {
         mUserDatabaseReference.addValueEventListener(listener);
     }
 
-    private void StartZones(DatabaseReference userReference){
-        List<Zone> zoneList;
-        DatabaseReference mZonesDBReference = mUserDatabaseReference.child("zones");
+    private void StartZones(final DatabaseReference userReference){
+        final List<Zone> zoneList = null;
+        // GET REFERENCE FROM PI
+        final DatabaseReference mZonesDBReference = mFirebaseDatabase.getReference().child("greenerHubs");
+        // check if exists
+        mZonesDBReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.hasChild(currentUser.getDeviceSerial())){
+                    Iterable<DataSnapshot> zones = dataSnapshot.child(currentUser.getDeviceSerial()).child("zones").getChildren();
+                    for (DataSnapshot zone: zones){
+                        zoneList.add(zone.getValue(Zone.class));
+                    }
+                    currentUser.zoneListSet(zoneList);
+                    mZonesDBReference.child("zones").addChildEventListener(new ChildEventListener() {
+                        @Override
+                        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+                        }
+
+                        @Override
+                        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                        }
+
+                        @Override
+                        public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                        }
+
+                        @Override
+                        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
         // TO ADD A USER. OR PUSH INFORMATION TO THE DATABASE SETTING UP LISTENERS
         mChildEventListener = new ChildEventListener() {
             @Override

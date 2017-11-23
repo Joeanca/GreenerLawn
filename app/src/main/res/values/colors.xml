@@ -6,6 +6,7 @@
     <color name="primary_darker">#00FFFFFF</color>
     <color name="primary_light">#CCc9dff1</color>
     <color name="primary_light_translucent">#BFc9dff1</color>
+    <color name="primary_light_accent">#F6c9dff1</color>
     <color name="accent">#4CAF50</color>
     <color name="primary_text">#212121</color>
     <color name="secondary_text">#757575</color>

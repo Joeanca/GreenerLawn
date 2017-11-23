@@ -1,6 +1,8 @@
 package com.greenerlawn.greenerlawn;
 
 
+import android.graphics.drawable.ColorDrawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,7 +27,10 @@ public class ZoneSettings extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.zone_settings_activity);
         // TO GET THE BACK ARROW ON THE ACTION BAR
+        int transparent = ContextCompat.getColor(this, R.color.transparent);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(transparent));
+
 
         final RecyclerView recyclerZones = (RecyclerView) findViewById(R.id.zone_recycler);
         final LinearLayoutManager zoneLayoutManager = new LinearLayoutManager(this);

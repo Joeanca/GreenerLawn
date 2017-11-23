@@ -32,11 +32,11 @@
             android:theme="@style/Theme.AppCompat.Light.TimerPopup"></activity>
         <activity
             android:name=".ZoneSettings"
-            android:theme="@style/Theme.AppCompat.Light.myBase.zoneSettings">
+            android:theme="@style/Theme.AppCompat.Light.zones">
         </activity>
         <activity
             android:name=".SettingsMenu"
-            android:theme="@style/Theme.AppCompat.Light.main">
+            android:theme="@style/Theme.AppCompat.Light.settings">
         </activity>
 
         <activity

@@ -11,8 +11,8 @@ import java.util.List;
 public  class User {
     private String username;
     private String email;
-    private List<String> scheduleList = new ArrayList<>();
-    private List<String> zoneList = new ArrayList<>();
+    private List<Schedules> scheduleList = new ArrayList<>();
+    private List<Zone> zoneList = new ArrayList<>();
 
 
     private String deviceSerial;
@@ -33,7 +33,7 @@ public  class User {
         String deviceSerial;
     }
 
-    public User (String name, String email, List<String> scheduleList, List<String> zoneList){
+    public User (String name, String email, List<Schedules> scheduleList, List<Zone> zoneList){
         this.email = email;
         this.username = name;
         this.zoneList = zoneList;
@@ -64,9 +64,9 @@ public  class User {
         this.email = email;
     }
 
-    public List<String> getZoneList() {return zoneList;}
+    public List<Zone> zoneListGet() {return zoneList;}
 
-    public void setZoneList(List<String> zoneList) {this.zoneList = zoneList;}
+    public void zoneListSet(List<Zone> zoneList) {this.zoneList = zoneList;}
 
     public String getDeviceSerial() {return deviceSerial;}
 

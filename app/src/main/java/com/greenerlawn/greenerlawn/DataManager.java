@@ -72,7 +72,6 @@ public class DataManager {
             //todo error handling
         }
     }
-
     private void verifyValid(Schedules newSched) {
         //iterate over list
         for (int i = 0; i < schedulesList.size(); i++) {

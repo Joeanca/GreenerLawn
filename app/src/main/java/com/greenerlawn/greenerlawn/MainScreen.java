@@ -62,7 +62,7 @@ import java.util.Map;
 public class MainScreen extends AppCompatActivity {
 
     public static final String ANONYMOUS = "anonymous";
-    private String mUsername, mEmail, uid;
+    private String mUsername;
     private ImageView mImage;
     private DatabaseReference mUserRef;
     private FirebaseDatabase mFirebaseDatabase;
@@ -73,22 +73,28 @@ public class MainScreen extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener mAuthStateListener;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle abdt;
-    private ListView mDrawerList;
+//    private ListView mDrawerList;
     private static final int RC_SIGN_IN = 123;
     private static final String OPEN_API_KEY = "bea4b929ff482f02d7ab334b6e015467";
     List<AuthUI.IdpConfig> providers;
     private DatabaseFunctions dbFn;
-    private User localUser;
     private  DataManager dm;
+    User user = User.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // TODO SETUP THE ACTIVITY TO SETUP THE DEVICE ON USERS FIRST INTERACTION WITH DEVICE
+        user.setDeviceSerial("pi2");
+        // TODO IF PI ZONES HAVE NEVER BEEN INITIALIZED THEN SETUP THROUGH USER APP
+
+
         // TRANSLUCENT STATUS AND ACTION BAR
         transparentBars();
 
-        // SETUP USER
-        getFirebaseUser();
+
+
 
         //set content view AFTER ABOVE sequence (to avoid crash)
         this.setContentView(R.layout.main_screen_activity);
@@ -97,6 +103,9 @@ public class MainScreen extends AppCompatActivity {
 
         // DRAWER FUNCTIONS
         InitializeDrawer();
+
+        // SETUP USER
+        getFirebaseUser();
     }
 
     @Override
@@ -157,12 +166,15 @@ public class MainScreen extends AppCompatActivity {
 
         //get Firebase user
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
+            @SuppressLint("ResourceType")
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
+                FirebaseUser fbuser = firebaseAuth.getInstance().getCurrentUser();
+                if (fbuser != null) {
                     //user is signed in
-                    onSignedInInitialize(user);
+                    user.setEmail(fbuser.getEmail());
+                    user.setUsername(fbuser.getDisplayName());
+                    onSignedInInitialize(fbuser);
                 } else {
                     //user is signed out
                     onSignedOutCleanup();
@@ -174,6 +186,8 @@ public class MainScreen extends AppCompatActivity {
                                     .setAvailableProviders(
                                             Arrays.asList(new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
                                                     new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build()))
+                                    .setLogo(R.drawable.droplet)      // Set logo drawable
+                                    .setTheme(R.style.Theme_AppCompat_Light_main)      // Set theme
                                     .build(),
                             RC_SIGN_IN);
                 }
@@ -268,15 +282,17 @@ public class MainScreen extends AppCompatActivity {
 
 
 
-    private void userFunctions(FirebaseUser user) {
+    private void userFunctions(FirebaseUser fbuser) {
+        //TO PULL EVERYTHING FROM THE DB
         dbFn = new DatabaseFunctions();
-        dbFn.StartDB(user);
+        dbFn.StartDB(fbuser);
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View headerLayout = navigationView.getHeaderView(0);
         TextView headerEmail = headerLayout.findViewById(R.id.tv_drawer_email);
         TextView headerName = headerLayout.findViewById(R.id.tv_drawer_user);
-        headerEmail.setText(dbFn.getEmail());
-        headerName.setText(dbFn.getUsername());
+        headerEmail.setText(user.getEmail());
+        headerName.setText(user.getUsername());
     }
 
     private void onSignedInInitialize(FirebaseUser user) {

@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.greenerlawn.greenerlawn.SettingsMenu"
-    tools:layout_editor_absoluteY="81dp"
-    tools:layout_editor_absoluteX="0dp"> <!---Change this once the settings java is set up -->
+    tools:layout_editor_absoluteX="0dp"
+    tools:layout_editor_absoluteY="81dp"> <!---Change this once the settings java is set up -->
 
     <TextView
         android:id="@+id/locationText"
