@@ -86,7 +86,6 @@ public class MainScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         // TODO SETUP THE ACTIVITY TO SETUP THE DEVICE ON USERS FIRST INTERACTION WITH DEVICE
-        user.setDeviceSerial("pi2");
         // TODO IF PI ZONES HAVE NEVER BEEN INITIALIZED THEN SETUP THROUGH USER APP
 
 
@@ -106,6 +105,7 @@ public class MainScreen extends AppCompatActivity {
 
         // SETUP USER
         getFirebaseUser();
+
     }
 
     @Override

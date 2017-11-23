@@ -26,14 +26,14 @@ public  class User {
         return instance;
     }
 
-    public User(){
+    private User(){
         String username;
         String email;
         List<Zone> zoneList = new ArrayList<>();
         String deviceSerial;
     }
 
-    public User (String name, String email, List<Schedules> scheduleList, List<Zone> zoneList){
+    private User (String name, String email, List<Schedules> scheduleList, List<Zone> zoneList){
         this.email = email;
         this.username = name;
         this.zoneList = zoneList;
@@ -41,7 +41,7 @@ public  class User {
 
     }
 
-    public User( String email, String name) {
+    private User( String email, String name) {
         this.email = email;
         this.username = name;
         this.zoneList = zoneList;

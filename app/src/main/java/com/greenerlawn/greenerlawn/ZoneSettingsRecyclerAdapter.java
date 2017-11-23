@@ -18,11 +18,11 @@ import java.util.List;
 public class ZoneSettingsRecyclerAdapter extends RecyclerView.Adapter<ZoneSettingsRecyclerAdapter.ViewHolder> {
     private final Context adapterContext;
     private final LayoutInflater zoneInflater;
-    private final ArrayList<Zone> zoneList;
+    private final List<Zone> zoneList;
 
 
 
-    public ZoneSettingsRecyclerAdapter(Context context, ArrayList<Zone> zList) {
+    public ZoneSettingsRecyclerAdapter(Context context, List<Zone> zList) {
         adapterContext = context;
         zoneList = zList;
         zoneInflater = LayoutInflater.from(adapterContext);
