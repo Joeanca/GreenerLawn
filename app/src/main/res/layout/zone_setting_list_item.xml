@@ -17,7 +17,7 @@
             android:layout_height="match_parent">
 
             <ImageButton
-                android:id="@+id/zoneITem_ImageBtn"
+                android:id="@+id/zoneItem_ImageBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/zoneItemPic_ImageView_Description"
@@ -34,7 +34,7 @@
                 android:layout_marginEnd="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/zoneItem_Switch"
-                app:layout_constraintStart_toEndOf="@id/zoneITem_ImageBtn"
+                app:layout_constraintStart_toEndOf="@id/zoneItem_ImageBtn"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Zone Title" />
 

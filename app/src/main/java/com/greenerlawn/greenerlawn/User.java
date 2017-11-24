@@ -13,6 +13,7 @@ public  class User {
     private String email;
     private List<Schedules> scheduleList = new ArrayList<>();
     private List<Zone> zoneList = new ArrayList<>();
+    private String uID;
 
 
     private String deviceSerial;
@@ -72,6 +73,8 @@ public  class User {
 
     public void setDeviceSerial(String deviceSerial) {this.deviceSerial = deviceSerial;}
 
+    public String uIDGet(){ return uID; }
 
+    public void uIDSet(String uID){ this.uID = uID; }
 }
 

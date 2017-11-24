@@ -10,6 +10,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,6 +30,7 @@ public class DatabaseFunctions {
     private FirebaseUser firebaseUser;
     private static final int RC_SIGN_IN = 123;
     private ChildEventListener mZoneChildEventListener;
+    private StorageReference storageRef;
 
     // ENTRY POINT FOR THE APP TO ACCESS THE DATABASE
     private FirebaseDatabase mFirebaseDatabase;
@@ -46,11 +49,16 @@ public class DatabaseFunctions {
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mUserDatabaseReference = mFirebaseDatabase.getReference().child("users");
 
-        uID = firebaseUser.getUid();
+        User.getInstance().uIDSet(firebaseUser.getUid());
         retrieveUserFromDatabase(mUserDatabaseReference);
         User.getInstance().setDeviceSerial("pi1");
 
         StartZones();
+        getZonePics();
+    }
+
+    private void getZonePics() {
+        storageRef = FirebaseStorage.getInstance().getReference().child("greennerHub/" + User.getInstance().getDeviceSerial());
     }
 
     private void retrieveUserFromDatabase(final DatabaseReference mUserDatabaseReference) {
@@ -58,12 +66,12 @@ public class DatabaseFunctions {
         ValueEventListener listener  = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.hasChild(uID)){
-                    User temp = dataSnapshot.child(uID).getValue(User.class);
+                if (dataSnapshot.hasChild(User.getInstance().uIDGet())){
+                    User temp = dataSnapshot.child(User.getInstance().uIDGet()).getValue(User.class);
                 }
                 else{
                     // REMOVE ME ONCE THE SETUP OF THE DEVICE ON INITIAL IS SETUP
-                    mUserDatabaseReference.child(uID).setValue(User.getInstance());
+                    mUserDatabaseReference.child(User.getInstance().uIDGet()).setValue(User.getInstance());
                 }
             }
             @Override
