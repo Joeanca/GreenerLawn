@@ -39,6 +39,8 @@
     <string name="celsius">Celsius</string>
     <string name="fahrenheit">Fahrenheit</string>
     <string name="device_serial">Device Serial:</string>
+    <string name="new_information">new information</string>
+    <string name="enter_new_serial_number">Enter new serial number:</string>
 
 
 </resources>

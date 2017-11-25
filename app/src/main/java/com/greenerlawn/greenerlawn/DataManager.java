@@ -19,6 +19,7 @@ import java.util.List;
  */
 
 public class DataManager {
+
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference dataRef = null;
 
@@ -26,8 +27,7 @@ public class DataManager {
     private DatabaseReference userRef = database.getReference().child("users").child(user.getUid());
 
     //@TODO make this better it is janky (Get the pi id from the user instead of just everyone using the same pi)
-    private DatabaseReference greenerHubRef = database.getReference().child("greennerHubs").child("pi1");
-
+    private DatabaseReference greenerHubRef;
     public final static String ZONE_REF = "zones";
     public final static String USER_SETTING_REF = "userSettings";
 
@@ -40,6 +40,7 @@ public class DataManager {
     private List<Schedules> schedulesList = new ArrayList<Schedules>();
 
     public DataManager() {
+        greenerHubRef = database.getReference().child("greennerHubs").child("pi1");
     }
 
     public <T> void uploadNewData(String reference,  T upData) {

@@ -34,12 +34,21 @@ import static android.support.v4.app.ActivityCompat.startActivityForResult;
 public class DatabaseFunctions {
     public static final String ANONYMOUS = "anonymous";
     private String uID;
-    private DatabaseReference mUserRef;
-    private DatabaseReference deviceDBRef,mZonesDatabaseReference;
+    private DatabaseReference deviceDBRef,mZonesDatabaseReference, mUserRef;
     private FirebaseUser firebaseUser;
     private static final int RC_SIGN_IN = 123;
     private ChildEventListener mZoneChildEventListener;
     private StorageReference storageRef;
+    private static  DatabaseFunctions instance;
+
+
+    public static DatabaseFunctions getInstance(){
+        if (instance == null){
+            instance = new DatabaseFunctions();
+        }
+        return instance;
+    }
+
 
     // ENTRY POINT FOR THE APP TO ACCESS THE DATABASE
     private FirebaseDatabase mFirebaseDatabase;
@@ -57,17 +66,15 @@ public class DatabaseFunctions {
         this.firebaseUser = firebaseUser;
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mUserDatabaseReference = mFirebaseDatabase.getReference().child("users");
-
         User.getInstance().uIDSet(firebaseUser.getUid());
         retrieveUserFromDatabase(mUserDatabaseReference);
-        User.getInstance().setDeviceSerial("pi1");
-
+        // TODO CREATE METHOD TO CHOOSE THE DEVICE IF UNKNOWN
         StartZones();
         getZonePics();
     }
 
     private void getZonePics() {
-        storageRef = FirebaseStorage.getInstance().getReference().child("greennerHub/" + User.getInstance().getDeviceSerial());
+//        storageRef = FirebaseStorage.getInstance().getReference().child("greennerHub/" + User.getInstance().getUserSettings().getDeviceSerial());
     }
 
     private void retrieveUserFromDatabase(final DatabaseReference mUserDatabaseReference) {
@@ -76,7 +83,9 @@ public class DatabaseFunctions {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.hasChild(User.getInstance().uIDGet())){
-                    User temp = dataSnapshot.child(User.getInstance().uIDGet()).getValue(User.class);
+                    // TODO SETUP USER FIELDS.
+                    mUserRef = mUserDatabaseReference.child(User.getInstance().uIDGet());
+                    mUserRef.setValue(User.getInstance());
                 }
                 else{
                     // REMOVE ME ONCE THE SETUP OF THE DEVICE ON INITIAL IS SETUP
@@ -106,9 +115,9 @@ public class DatabaseFunctions {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //iterate
-                if (dataSnapshot.child(User.getInstance().getDeviceSerial()).exists()){
-                    mZonesDatabaseReference = deviceDBRef.child(User.getInstance().getDeviceSerial());
-                    Iterable<DataSnapshot> zones = dataSnapshot.child(User.getInstance().getDeviceSerial()).child("zones").getChildren();
+                if (dataSnapshot.child(User.getInstance().getUserSettings().getDeviceSerial()).exists()){
+                    mZonesDatabaseReference = deviceDBRef.child(User.getInstance().getUserSettings().getDeviceSerial());
+                    Iterable<DataSnapshot> zones = dataSnapshot.child(User.getInstance().getUserSettings().getDeviceSerial()).child("zones").getChildren();
                     List<Zone> actualZones = new ArrayList<>();
                     for (DataSnapshot zone: zones){
                         Zone tempZone = zone.getValue(Zone.class);
@@ -190,14 +199,16 @@ public class DatabaseFunctions {
         // TODO SET THE OTHER ZONES OFF
         User.getInstance().zoneListGet().get(zoneNumber-1).setzOnOff(status);
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference("greennerHubs/" + User.getInstance().getDeviceSerial() + "/zones/" + User.getInstance().zoneListGet().get(zoneNumber-1).dbRefGet());
+        DatabaseReference ref = database.getReference("greennerHubs/" + User.getInstance().getUserSettings().getDeviceSerial() + "/zones/" + User.getInstance().zoneListGet().get(zoneNumber-1).dbRefGet());
         ref.child("zOnOff").setValue(status);
     }
     public void getImage(int imageButtonId){
         Log.e("IMAGE BUTTON ID", "getImage"+ imageButtonId);
-
-
-
+    }
+    public void updateSerialNumber(String newSerial){
+        // TODO UPDATE FIREBASE
+        //mUserRef.child("userSettings").child("deviceSerial").setValue(newSerial);
+        User.getInstance().getUserSettings().setDeviceSerial(newSerial);
 
     }
 }

@@ -34,6 +34,7 @@ public class ZoneSettings extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.zone_settings_activity);
+
         // TO GET THE BACK ARROW ON THE ACTION BAR
         int transparent = ContextCompat.getColor(this, R.color.transparent);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -43,10 +44,6 @@ public class ZoneSettings extends AppCompatActivity {
         final RecyclerView recyclerZones = (RecyclerView) findViewById(R.id.zone_recycler);
         final LinearLayoutManager zoneLayoutManager = new LinearLayoutManager(this);
         recyclerZones.setLayoutManager(zoneLayoutManager);
-//        List<Zone> zones = User.getInstance().zoneListGet();
-//        for (Zone zone: User.getInstance().zoneListGet()){
-//            Log.e("ZONE", "onCreate: "+ zone.getZoneNumber() );
-//        }
         DatabaseReference dataRef = dM.getReference(dM.ZONE_REF);
         dataRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -59,6 +56,7 @@ public class ZoneSettings extends AppCompatActivity {
                     Zone zone = child.getValue(Zone.class);
                     zones.add(zone);
                 }
+                User.getInstance().zoneListSet(zones);
                 doRecyclerStuff(zones, recyclerZones);
             }
 
@@ -67,9 +65,6 @@ public class ZoneSettings extends AppCompatActivity {
 
             }
         });
-//        doRecyclerStuff(zones, recyclerZones);
-
-
 
     // set an exit transition
         getWindow().setExitTransition(new Explode());
