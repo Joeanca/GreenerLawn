@@ -27,12 +27,12 @@
             android:layout_width="51dp"
             android:layout_height="48dp"
             android:layout_marginStart="10dp"
+            android:background="@drawable/irrigation"
             android:contentDescription="@string/zoneItemPic_ImageView_Description"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/zoneItemTitle_TextView"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_menu_gallery" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/zoneItemTitle_TextView"
@@ -52,14 +52,16 @@
 
         <Switch
             android:id="@+id/zoneItem_Switch"
-            android:layout_width="69dp"
-            android:layout_height="42dp"
+            android:layout_width="56dp"
+            android:layout_height="38dp"
             android:layout_marginEnd="10dp"
+            android:switchTextAppearance="@style/TextAppearance.AppCompat.Widget.Switch"
+            android:theme="@style/SwitchCompatTheme"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/zoneItemTitle_TextView"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.515" />
+            app:layout_constraintVertical_bias="0.529" />
     </android.support.constraint.ConstraintLayout>
 
 </FrameLayout>

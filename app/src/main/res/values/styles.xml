@@ -104,6 +104,9 @@
     <style name="Theme.AppCompat.Light.zones" parent="Theme.AppCompat.Light.main" >
 
     </style>
+    <style name="SwitchCompatTheme" >
+        <item name="colorControlActivated">@color/primary</item>
+    </style>
 
 
 
