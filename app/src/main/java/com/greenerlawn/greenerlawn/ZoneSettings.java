@@ -1,6 +1,7 @@
 package com.greenerlawn.greenerlawn;
 
 
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -26,6 +27,8 @@ import java.util.Observer;
 
 public class ZoneSettings extends AppCompatActivity {
     DataManager dM = new DataManager();
+    private static final int GALLERY_INTENT = 2;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,5 +84,14 @@ public class ZoneSettings extends AppCompatActivity {
     private void doRecyclerStuff(List<Zone> zones, RecyclerView recyclerZones){
         final ZoneSettingsRecyclerAdapter zoneSettingsRecyclerAdapter = new ZoneSettingsRecyclerAdapter(this,zones);
         recyclerZones.setAdapter(zoneSettingsRecyclerAdapter);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == GALLERY_INTENT && resultCode == RESULT_OK){
+            Log.e("PICTURE TIME", "onActivityResult: " + data.toString() + data.getStringExtra("ZONEID") + requestCode);
+        }
+
     }
 }

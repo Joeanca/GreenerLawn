@@ -1,7 +1,14 @@
 package com.greenerlawn.greenerlawn;
 
+import android.app.Activity;
+import android.app.ActivityManager;
+import android.content.Context;
+import android.content.Intent;
 import android.provider.ContactsContract;
+import android.provider.MediaStore;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.ImageButton;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -17,6 +24,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.function.Consumer;
+
+import static android.support.v4.app.ActivityCompat.startActivityForResult;
 
 /**
  * Created by joeanca on 2017-11-08.
@@ -183,5 +192,12 @@ public class DatabaseFunctions {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("greennerHubs/" + User.getInstance().getDeviceSerial() + "/zones/" + User.getInstance().zoneListGet().get(zoneNumber-1).dbRefGet());
         ref.child("zOnOff").setValue(status);
+    }
+    public void getImage(int imageButtonId){
+        Log.e("IMAGE BUTTON ID", "getImage"+ imageButtonId);
+
+
+
+
     }
 }
