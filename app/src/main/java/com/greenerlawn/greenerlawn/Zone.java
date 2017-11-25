@@ -14,16 +14,48 @@ import java.util.Observable;
 
     private boolean zOnOff;
     private String  zoneNumber;
+
+    public String getzGUID() {
+        return zGUID;
+    }
+
+    public void setzGUID(String zGUID) {
+        this.zGUID = zGUID;
+    }
+
+    public String getzName() {
+        return zName;
+    }
+
+    public void setzName(String zName) {
+        this.zName = zName;
+    }
+
+    private String zGUID;
+    private String zName;
     private String dbRef;
+
+    public File getzImage() {
+        return zImage;
+    }
+
+    public void setzImage(File zImage) {
+        this.zImage = zImage;
+    }
+
+    private File zImage;
 
     //default constructor for empty zone
     public Zone(){
     }
+    public Zone(String zGUID){this.zGUID = zGUID;}
 
     //constructor allows for full zone config
-    public Zone(String zoneNumber, boolean zOnOff) {
+    public Zone(String zGUID, String zName, String zoneNumber, boolean zOnOff) {
         this.zoneNumber = zoneNumber;
         this.zOnOff = zOnOff;
+        this.zName = zName;
+        this.zGUID = zGUID;
     }
 
     public void setzOnOff(boolean zOnOff) {

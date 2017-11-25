@@ -12,6 +12,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -37,6 +38,8 @@ public class DataManager {
     private final boolean VALID_AT_CREATE = true;
     private final boolean SUSPEND_AT_CREATE = false;
     private final boolean IDC_FLAG = false;
+
+    //should update FB as there is a listener
     private List<Schedules> schedulesList = new ArrayList<Schedules>();
 
     public DataManager() {
@@ -62,17 +65,8 @@ public class DataManager {
 
     //Schedule Manager
 
-    //todo IDC sched functions
-        //method suspends all schedules, for those not suspended sets flad
-        // adds new sched item
-        // removes sched item and reverses changes afterweard.
-    public void addSchedule(Schedules newSched) {
-        if(newSched.isValid()){
-            schedulesList.add(newSched);
-        }else{
-            //todo error handling
-        }
-    }
+    // TODO  don't check against suspended schedules
+
     private void verifyValid(Schedules newSched) {
         //iterate over list
         for (int i = 0; i < schedulesList.size(); i++) {
@@ -116,7 +110,7 @@ public class DataManager {
 
 
     // todo condense expand calls
-    public void  configureSchedule(ArrayList<String> zoneIDList, Long startTime, Long duration, int timeFlag, int[]dayArr, boolean repeat){
+    public void  configureScpowhedule(ArrayList<String> zoneIDList, Long startTime, Long duration, int timeFlag, int[]dayArr, boolean repeat){
         // holds cascading start times
         Long endTime = Long.valueOf(0);
         Long[] startTimeArr = new Long[zoneIDList.size()];
@@ -149,7 +143,7 @@ public class DataManager {
         }
 
         //fills array with repeating day entries
-        // ex MWF turns into MMWWFF
+        // ex MWF turns into Mwfmwf
         for(int i =0; i < expandedDays.length; i++){
             expandedDays[i] = dayArr[i%dayArr.length];
         }
@@ -184,6 +178,43 @@ public class DataManager {
             verifyValid(temp);
             addSchedule(temp);
         }
+    }
+
+    //todo RunAllNow sched functions
+    public void addSchedule(Schedules newSched) {
+        if(newSched.isValid()){
+            schedulesList.add(newSched);
+        }else{
+            //todo error handling
+        }
+    }
+
+    //RUN ALL METHOD
+    public void runAllNow(Long rANduration){
+        pauseAll();
+        Calendar today = Calendar.getInstance();
+        int day = today.DAY_OF_WEEK;
+        int[] oneDay = new int[]{day};
+        Long rANStart = System.currentTimeMillis();
+        //start all in 5 minutes
+        rANStart += 300000;
+        ArrayList zoneID = new ArrayList();
+        for (Zone zone: zoneArrayList) {
+            zoneID.add(zone.getzGUID());
+        }
+
+        configureScpowhedule(zoneID,rANStart,rANduration,0, oneDay, false);
+
+    }
+
+    public void pauseAll(){
+        for (Schedules current: schedulesList) {
+            if (!current.isSuspended()){
+                current.setPausedByIDC(true);
+                current.setSuspended(true);
+            }
+        }
+
     }
 
 
