@@ -12,6 +12,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -34,6 +35,8 @@ public class DataManager {
     private final boolean VALID_AT_CREATE = true;
     private final boolean SUSPEND_AT_CREATE = false;
     private final boolean IDC_FLAG = false;
+
+    //should update FB as there is a listener
     private List<Schedules> schedulesList = new ArrayList<Schedules>();
 
     public DataManager() {
@@ -53,14 +56,7 @@ public class DataManager {
 
     //Schedule Manager
 
-    //todo IDC sched functions
-    public void addSchedule(Schedules newSched) {
-        if(newSched.isValid()){
-            schedulesList.add(newSched);
-        }else{
-            //todo error handling
-        }
-    }
+
 
     // TODO  don't check against suspended schedules
     private void verifyValid(Schedules newSched) {
@@ -174,6 +170,43 @@ public class DataManager {
             verifyValid(temp);
             addSchedule(temp);
         }
+    }
+
+    //todo RunAllNow sched functions
+    public void addSchedule(Schedules newSched) {
+        if(newSched.isValid()){
+            schedulesList.add(newSched);
+        }else{
+            //todo error handling
+        }
+    }
+
+    //RUN ALL METHOD
+    public void runAllNow(Long rANduration){
+        pauseAll();
+        Calendar today = Calendar.getInstance();
+        int day = today.DAY_OF_WEEK;
+        int[] oneDay = new int[]{day};
+        Long rANStart = System.currentTimeMillis();
+        //start all in 5 minutes
+        rANStart += 300000;
+        ArrayList zoneID = new ArrayList();
+        for (Zone zone: zoneArrayList) {
+            zoneID.add(zone.getzGUID());
+        }
+
+        configureScpowhedule(zoneID,rANStart,rANduration,0, oneDay, false);
+
+    }
+
+    public void pauseAll(){
+        for (Schedules current: schedulesList) {
+            if (!current.isSuspended()){
+                current.setPausedByIDC(true);
+                current.setSuspended(true);
+            }
+        }
+
     }
 
 
