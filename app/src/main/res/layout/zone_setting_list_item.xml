@@ -6,14 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <!--<android.support.v7.widget.CardView-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--app:cardCornerRadius="4dp"-->
-    <!--app:contentPadding="2dp">-->
-
-    <!--</android.support.v7.widget.CardView>-->
-
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"

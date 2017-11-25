@@ -4,7 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.InputType;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -51,6 +54,13 @@ public class SettingsMenu extends Activity{
     private void setTextViews(UserSettings userSettings) {
         TextView cityId = findViewById(R.id.secretView);
         TextView locationSetting = findViewById(R.id.locationSettingEnter);
+        TextView tv_deviceIDtext = findViewById(R.id.tv_deviceID);
+        tv_deviceIDtext.setText(User.getInstance().getDeviceSerial());
+        // TODO TIE THE ON CLICK METHOD TO GET THE NEW DEVICE ID
+//        tv_deviceIDtext.setFocusableInTouchMode(true);
+//        tv_deviceIDtext.setInputType(InputType.TYPE_CLASS_TEXT);
+//        tv_deviceIDtext.requestFocus();
+
         RadioButton celsiusButt = findViewById(R.id.celsiusButton);
         RadioButton fahrenheitButt = findViewById(R.id.fahrenheitButton);
 
