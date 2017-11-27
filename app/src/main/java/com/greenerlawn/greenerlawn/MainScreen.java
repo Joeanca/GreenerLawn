@@ -181,7 +181,7 @@ public class MainScreen extends AppCompatActivity {
                                     .setAvailableProviders(
                                             Arrays.asList(new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
                                                     new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build()))
-                                    .setTheme(R.style.AppThemeFirebaseAuth)
+                                    .setTheme(R.style.LoginTheme)
                                     .setLogo(R.drawable.irrigation)      // Set logo drawable
                                     .setTheme(R.style.Theme_AppCompat_Light_main)      // Set theme
                                     .build(),
