@@ -85,7 +85,8 @@ public class DatabaseFunctions {
                 if (dataSnapshot.hasChild(User.getInstance().uIDGet())){
                     // TODO SETUP USER FIELDS.
                     mUserRef = mUserDatabaseReference.child(User.getInstance().uIDGet());
-                    mUserRef.setValue(User.getInstance());
+                    User.getInstance().setUserSettings(dataSnapshot.child(User.getInstance().uIDGet()).getValue(UserSettings.class));
+
                 }
                 else{
                     // REMOVE ME ONCE THE SETUP OF THE DEVICE ON INITIAL IS SETUP
@@ -136,7 +137,6 @@ public class DatabaseFunctions {
                                     z.setzOnOff(zone.getzOnOff());
                                 }
                             }
-
                             Log.e("CHANGE", "onChildChanged: "+ zone.getZoneNumber() );
                         }
                         @Override

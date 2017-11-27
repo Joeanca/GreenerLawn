@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -180,7 +181,8 @@ public class MainScreen extends AppCompatActivity {
                                     .setAvailableProviders(
                                             Arrays.asList(new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
                                                     new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build()))
-                                    .setLogo(R.drawable.droplet)      // Set logo drawable
+                                    .setTheme(R.style.AppThemeFirebaseAuth)
+                                    .setLogo(R.drawable.irrigation)      // Set logo drawable
                                     .setTheme(R.style.Theme_AppCompat_Light_main)      // Set theme
                                     .build(),
                             RC_SIGN_IN);
@@ -312,23 +314,6 @@ public class MainScreen extends AppCompatActivity {
             mChildEventListener = null;
         }
     }
-
-//    private void collectZones(Map<String, Object> users) {
-//
-//        ArrayList<Zone> zones = new ArrayList<>();
-//
-//        //iterate through each user, ignoring their UID
-//        for (Map.Entry<String, Object> entry : users.entrySet()) {
-//
-//            //Get user map
-//            Map singleUser = (Map) entry.getValue();
-//            //Get zone field and append to list
-//            zones.add((Zone) singleUser.get("zones"));
-//            Log.d("zonemssg", "collectZones: " + singleUser.toString());
-//        }
-//
-//        System.out.println(zones.toString());
-//    }
 
     public void modifyZones(View view) {
         startActivity(new Intent(MainScreen.this, ZoneSettings.class));
