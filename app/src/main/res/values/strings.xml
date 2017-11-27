@@ -42,5 +42,9 @@
     <string name="new_information">new information</string>
     <string name="enter_new_serial_number">Enter new serial number:</string>
 
+    <!-- Firebase UI Strings -->
+    <string name="fui_progress_dialog_signing_up">Creating your Green Lawn new account...</string>
+
+
 
 </resources>

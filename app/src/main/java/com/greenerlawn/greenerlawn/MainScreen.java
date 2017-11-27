@@ -158,7 +158,7 @@ public class MainScreen extends AppCompatActivity {
         mFirebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = mFirebaseAuth.getCurrentUser();
         providers = new ArrayList<>();
-
+        getSupportActionBar().hide();
         //get Firebase user
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @SuppressLint("ResourceType")
@@ -183,12 +183,12 @@ public class MainScreen extends AppCompatActivity {
                                                     new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build()))
                                     .setTheme(R.style.LoginTheme)
                                     .setLogo(R.drawable.irrigation)      // Set logo drawable
-                                    .setTheme(R.style.Theme_AppCompat_Light_main)      // Set theme
                                     .build(),
                             RC_SIGN_IN);
                 }
             }
         };
+        getSupportActionBar().show();
     }
 
 

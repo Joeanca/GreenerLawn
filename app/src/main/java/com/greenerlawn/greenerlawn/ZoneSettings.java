@@ -48,10 +48,8 @@ public class ZoneSettings extends AppCompatActivity {
         dataRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
-                Iterable<DataSnapshot> children = dataSnapshot.getChildren();
-
                 ArrayList<Zone> zones = new ArrayList<>();
+                Iterable<DataSnapshot> children = dataSnapshot.getChildren();
                 for (DataSnapshot child : children) {
                     Zone zone = child.getValue(Zone.class);
                     zones.add(zone);

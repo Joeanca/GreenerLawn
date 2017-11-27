@@ -86,7 +86,6 @@ public class DatabaseFunctions {
                     // TODO SETUP USER FIELDS.
                     mUserRef = mUserDatabaseReference.child(User.getInstance().uIDGet());
                     User.getInstance().setUserSettings(dataSnapshot.child(User.getInstance().uIDGet()).getValue(UserSettings.class));
-
                 }
                 else{
                     // REMOVE ME ONCE THE SETUP OF THE DEVICE ON INITIAL IS SETUP
@@ -133,7 +132,7 @@ public class DatabaseFunctions {
                         public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                             Zone zone = dataSnapshot.getValue(Zone.class);
                             for (Zone z : User.getInstance().zoneListGet()){
-                                if (z.getZoneNumber() == zone.getZoneNumber()){
+                                if (Integer.parseInt(z.getZoneNumber())-1 == Integer.parseInt(zone.getZoneNumber())){
                                     z.setzOnOff(zone.getzOnOff());
                                 }
                             }
@@ -197,9 +196,9 @@ public class DatabaseFunctions {
     }
     public void SwitchToggleZone(int zoneNumber, Boolean status){
         // TODO SET THE OTHER ZONES OFF
-        User.getInstance().zoneListGet().get(zoneNumber-1).setzOnOff(status);
+        User.getInstance().zoneListGet().get(zoneNumber).setzOnOff(status);
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference("greennerHubs/" + User.getInstance().getUserSettings().getDeviceSerial() + "/zones/" + User.getInstance().zoneListGet().get(zoneNumber-1).dbRefGet());
+        DatabaseReference ref = database.getReference("greennerHubs/" + User.getInstance().getUserSettings().getDeviceSerial() + "/zones/" + User.getInstance().zoneListGet().get(zoneNumber).dbRefGet());
         ref.child("zOnOff").setValue(status);
     }
     public void getImage(int imageButtonId){
