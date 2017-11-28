@@ -16,156 +16,27 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
 
             <android.support.constraint.ConstraintLayout
-                android:id="@+id/linearLayout"
-                android:layout_width="match_parent"
-                android:layout_height="162dp"
-                android:background="@drawable/custom_border"
-                android:backgroundTint="@color/primary_light_translucent"
-                android:gravity="center_vertical|center"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent">
-
-                <android.support.design.widget.FloatingActionButton
-                    android:id="@+id/fab_settingButton"
-                    android:layout_width="77dp"
-                    android:layout_height="77dp"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="25dp"
-                    android:clickable="true"
-                    android:onClick="modifySettings"
-                    android:translationZ="20dp"
-                    app:backgroundTint="@color/accent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.591"
-                    app:layout_constraintStart_toEndOf="@+id/fab_seeZonesButton"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.0"
-                    app:srcCompat="@drawable/ic_more_vert_black_24dp" />
-
-                <android.support.design.widget.FloatingActionButton
-                    android:id="@+id/fab_seeZonesButton"
-                    android:layout_width="77dp"
-                    android:layout_height="77dp"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="25dp"
-                    android:clickable="true"
-                    android:onClick="modifyZones"
-                    android:translationZ="20dp"
-                    app:backgroundTint="@color/accent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.0"
-                    app:srcCompat="@drawable/ic_device_hub_black_24dp" />
-
-                <android.support.design.widget.FloatingActionButton
-                    android:id="@+id/fab_startAllZone"
-                    android:layout_width="77dp"
-                    android:layout_height="136dp"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="6dp"
-                    android:layout_marginTop="25dp"
-                    android:clickable="true"
-                    android:onClick="openTimer"
-                    android:translationZ="20dp"
-                    app:backgroundTint="@color/accent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/fab_seeZonesButton"
-                    app:layout_constraintHorizontal_bias="0.437"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.039"
-                    app:srcCompat="@drawable/ic_opacity_24dp" />
-
-                <TextView
-                    android:id="@+id/tv_main_underMenu"
-                    android:layout_width="wrap_content"
-                    android:layout_height="21dp"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:shadowColor="@color/text_shadow"
-                    android:text="@string/main_quickon"
-                    android:textColor="@color/icons"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/fab_startAllZone"
-                    app:layout_constraintStart_toStartOf="@+id/fab_startAllZone"
-                    app:layout_constraintTop_toBottomOf="@+id/fab_startAllZone" />
-
-                <TextView
-                    android:id="@+id/tv_main_quickon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:shadowColor="@color/text_shadow"
-                    android:text="@string/main_zones"
-                    android:textColor="@color/icons"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/fab_seeZonesButton"
-                    app:layout_constraintHorizontal_bias="0.333"
-                    app:layout_constraintStart_toStartOf="@+id/fab_seeZonesButton"
-                    app:layout_constraintTop_toBottomOf="@+id/fab_seeZonesButton"
-                    app:layout_constraintVertical_bias="0.428" />
-
-                <TextView
-                    android:id="@+id/tv_main_zones"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:shadowColor="@color/text_shadow"
-                    android:text="@string/main_underMenu"
-                    android:textColor="@color/icons"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/fab_settingButton"
-                    app:layout_constraintStart_toStartOf="@+id/fab_settingButton"
-                    app:layout_constraintTop_toBottomOf="@+id/fab_settingButton" />
-
-
-            </android.support.constraint.ConstraintLayout>
-
-            <android.support.constraint.ConstraintLayout
                 android:id="@+id/weatherLayout"
                 android:layout_width="match_parent"
                 android:layout_height="235dp"
-                android:layout_marginBottom="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="16dp"
                 android:background="@drawable/round_edge_border"
                 android:backgroundTint="@color/common_google_signin_btn_text_light_focused"
                 android:gravity="center_vertical|center"
                 android:padding="15dp"
-                app:layout_constraintBottom_toTopOf="@+id/linearLayout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0">
+                app:layout_constraintTop_toTopOf="parent">
 
                 <android.support.design.widget.FloatingActionButton
                     android:id="@+id/floatingActionButton"
@@ -182,8 +53,7 @@
                     app:layout_constraintHorizontal_bias="0.974"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="1.0"
-                     />
+                    app:layout_constraintVertical_bias="1.0" />
 
                 <TextView
                     android:id="@+id/currentTemp"
@@ -248,7 +118,7 @@
                                 android:layout_weight="1"
                                 android:gravity="bottom"
                                 android:shadowColor="@color/text_shadow"
-                                android:text="@string/current_rain"
+                                android:text="Rainfall "
                                 android:textColor="@color/icons"
                                 tools:layout_editor_absoluteX="216dp"
                                 tools:layout_editor_absoluteY="172dp" />
@@ -285,7 +155,7 @@
                                 android:foregroundGravity="left"
                                 android:gravity="left|center_vertical"
                                 android:shadowColor="@color/text_shadow"
-                                android:text="need  data"
+                                android:text="4 Days ago"
                                 android:textColor="@color/icons"
                                 tools:layout_editor_absoluteX="126dp"
                                 tools:layout_editor_absoluteY="204dp" />
@@ -368,6 +238,365 @@
 
             </android.support.constraint.ConstraintLayout>
 
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/last_run"
+                android:layout_width="170dp"
+                android:layout_height="90dp"
+                android:layout_margin="10dp"
+                android:layout_marginStart="16dp"
+                android:background="@drawable/round_edge_border"
+                android:backgroundTint="@color/common_google_signin_btn_text_light_focused"
+                android:padding="5dp"
+                app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/weatherLayout"
+                app:layout_constraintVertical_bias="0.0">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <android.support.v7.widget.FitWindowsLinearLayout
+                            android:layout_width="131dp"
+                            android:layout_height="60dp"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:adjustViewBounds="true"
+                            android:background="@drawable/ic_feedbin_icon_calendar"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tv_last_run_day"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="Tuesday"
+                                android:textAlignment="center"
+                                android:textColor="@color/text_shadow_white"
+                                android:textSize="12sp"
+                                tools:layout_editor_absoluteX="8dp"
+                                tools:layout_editor_absoluteY="0dp" />
+
+                            <TextView
+                                android:id="@+id/tv_last_run_date"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text=" Nov 24"
+                                android:textAlignment="center"
+                                android:textColor="@android:color/white" />
+
+                        </android.support.v7.widget.FitWindowsLinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tv_last_run_constant"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:padding="5dp"
+                                android:paddingBottom="0dp"
+                                android:text="Last run: "
+                                android:textColor="@color/text_shadow_white"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:id="@+id/tv_last_run_start_time"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:autoSizeTextType="uniform"
+                                android:autoText="false"
+                                android:gravity="center"
+                                android:paddingEnd="5dp"
+                                android:paddingStart="5dp"
+                                android:text="3:00 pm"
+                                android:textColor="@color/text_shadow_white"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/tv_last_run_minutes"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:autoSizeTextType="uniform"
+                                android:autoText="false"
+                                android:gravity="center"
+                                android:paddingBottom="5dp"
+                                android:paddingEnd="5dp"
+                                android:paddingStart="5dp"
+                                android:text="20 minutes"
+                                android:textColor="@color/text_shadow_white"
+                                android:textSize="14sp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/next_run"
+                android:layout_width="170dp"
+                android:layout_height="90dp"
+                android:layout_margin="10dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/round_edge_border"
+                android:backgroundTint="@color/common_google_signin_btn_text_light_focused"
+                android:padding="5dp"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp"
+                app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/last_run"
+                app:layout_constraintTop_toBottomOf="@+id/weatherLayout"
+                app:layout_constraintVertical_bias="0.0">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <android.support.v7.widget.FitWindowsLinearLayout
+                            android:layout_width="131dp"
+                            android:layout_height="60dp"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:adjustViewBounds="true"
+                            android:background="@drawable/ic_feedbin_icon_calendar"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tv_next_run_day"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="Monday"
+                                android:textAlignment="center"
+                                android:textColor="@color/text_shadow_white"
+                                android:textSize="12sp"
+                                tools:layout_editor_absoluteX="8dp"
+                                tools:layout_editor_absoluteY="0dp" />
+
+                            <TextView
+                                android:id="@+id/tv_next_run_date"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text=" Dec 11"
+                                android:textAlignment="center"
+                                android:textColor="@android:color/white" />
+
+                        </android.support.v7.widget.FitWindowsLinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tv_next_run_constant"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="Next run: "
+                                android:textColor="@color/text_shadow_white"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:id="@+id/tv_next_run_start_time2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:autoSizeTextType="uniform"
+                                android:autoText="false"
+                                android:gravity="center"
+                                android:paddingEnd="5dp"
+                                android:paddingStart="5dp"
+                                android:text="3:00 pm"
+                                android:textColor="@color/text_shadow_white"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/tv_next_run_minutes"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:autoSizeTextType="uniform"
+                                android:autoText="false"
+                                android:gravity="center"
+                                android:paddingBottom="5dp"
+                                android:paddingLeft="5dp"
+                                android:text="25 minutes"
+                                android:textColor="@color/text_shadow_white"
+                                android:textSize="14sp" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </LinearLayout>
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="137dp"
+                android:background="@drawable/custom_border"
+                android:backgroundTint="@color/primary_light_translucent"
+                android:gravity="center_vertical|center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/fab_settingButton"
+                    android:layout_width="77dp"
+                    android:layout_height="77dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:clickable="true"
+                    android:onClick="modifySettings"
+                    android:translationZ="20dp"
+                    app:backgroundTint="@color/accent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.591"
+                    app:layout_constraintStart_toEndOf="@+id/fab_seeZonesButton"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0"
+                    app:srcCompat="@drawable/ic_more_vert_black_24dp" />
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/fab_seeZonesButton"
+                    android:layout_width="77dp"
+                    android:layout_height="77dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:clickable="true"
+                    android:onClick="modifyZones"
+                    android:translationZ="20dp"
+                    app:backgroundTint="@color/accent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0"
+                    app:srcCompat="@drawable/ic_device_hub_black_24dp" />
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/fab_startAllZone"
+                    android:layout_width="77dp"
+                    android:layout_height="136dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="6dp"
+                    android:layout_marginTop="8dp"
+                    android:clickable="true"
+                    android:onClick="openTimer"
+                    android:translationZ="20dp"
+                    app:backgroundTint="@color/accent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/fab_seeZonesButton"
+                    app:layout_constraintHorizontal_bias="0.437"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.039"
+                    app:srcCompat="@drawable/ic_opacity_24dp" />
+
+                <TextView
+                    android:id="@+id/tv_main_underMenu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="21dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:shadowColor="@color/text_shadow"
+                    android:text="@string/main_quickon"
+                    android:textColor="@color/icons"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/fab_startAllZone"
+                    app:layout_constraintStart_toStartOf="@+id/fab_startAllZone"
+                    app:layout_constraintTop_toBottomOf="@+id/fab_startAllZone" />
+
+                <TextView
+                    android:id="@+id/tv_main_quickon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:shadowColor="@color/text_shadow"
+                    android:text="@string/main_zones"
+                    android:textColor="@color/icons"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/fab_seeZonesButton"
+                    app:layout_constraintHorizontal_bias="0.333"
+                    app:layout_constraintStart_toStartOf="@+id/fab_seeZonesButton"
+                    app:layout_constraintTop_toBottomOf="@+id/fab_seeZonesButton"
+                    app:layout_constraintVertical_bias="0.428" />
+
+                <TextView
+                    android:id="@+id/tv_main_zones"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:shadowColor="@color/text_shadow"
+                    android:text="@string/main_underMenu"
+                    android:textColor="@color/icons"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/fab_settingButton"
+                    app:layout_constraintStart_toStartOf="@+id/fab_settingButton"
+                    app:layout_constraintTop_toBottomOf="@+id/fab_settingButton" />
+
+
+            </android.support.constraint.ConstraintLayout>
+
 
         </android.support.constraint.ConstraintLayout>
 
@@ -385,7 +614,9 @@
         app:headerLayout="@layout/nav_header_drawer"
         app:itemIconTint="@color/drawer_background"
         app:itemTextColor="@color/drawer_background"
-        app:menu="@menu/activity_drawer_drawer" />
+        app:menu="@menu/activity_drawer_drawer" >
+
+    </android.support.design.widget.NavigationView>
 
 
 </android.support.v4.widget.DrawerLayout>
