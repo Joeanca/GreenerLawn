@@ -261,7 +261,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:layout_marginEnd="8dp"
-                    android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:background="@drawable/round_edge_border"
                     android:backgroundTint="@color/common_google_signin_btn_text_light_focused"
@@ -295,7 +294,8 @@
                                 android:layout_width="70dp"
                                 android:layout_height="match_parent"
                                 android:layout_gravity="center"
-                                android:layout_margin="5dp"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginTop="10dp"
                                 android:layout_weight="1"
                                 android:adjustViewBounds="true"
                                 android:background="@drawable/ic_feedbin_icon_calendar"
@@ -305,6 +305,7 @@
                                     android:id="@+id/tv_last_run_day"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
+                                    android:layout_marginTop="5dp"
                                     android:layout_weight="1"
                                     android:gravity="center"
                                     android:text="Tuesday"
@@ -318,9 +319,10 @@
                                     android:id="@+id/tv_last_run_date"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
+                                    android:layout_marginBottom="5dp"
                                     android:layout_weight="1"
                                     android:gravity="center"
-                                    android:text=" Nov 24"
+                                    android:text=" Nov \n24"
                                     android:textAlignment="center"
                                     android:textColor="@android:color/white" />
 
@@ -368,7 +370,7 @@
                                     android:paddingBottom="5dp"
                                     android:paddingEnd="5dp"
                                     android:paddingStart="5dp"
-                                    android:text="20 minutes"
+                                    android:text="20 min"
                                     android:textColor="@color/text_shadow_white"
                                     android:textSize="14sp" />
 
@@ -385,7 +387,6 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:background="@drawable/round_edge_border"
@@ -419,7 +420,8 @@
                                 android:layout_width="70dp"
                                 android:layout_height="match_parent"
                                 android:layout_gravity="center"
-                                android:layout_margin="5dp"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginTop="10dp"
                                 android:layout_weight="1"
                                 android:adjustViewBounds="true"
                                 android:background="@drawable/ic_feedbin_icon_calendar"
@@ -429,6 +431,7 @@
                                     android:id="@+id/tv_next_run_day"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
+                                    android:layout_marginTop="5dp"
                                     android:layout_weight="1"
                                     android:gravity="center"
                                     android:text="Monday"
@@ -442,9 +445,10 @@
                                     android:id="@+id/tv_next_run_date"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
+                                    android:layout_marginBottom="5dp"
                                     android:layout_weight="1"
                                     android:gravity="center"
-                                    android:text=" Dec 11"
+                                    android:text=" Dec \n11"
                                     android:textAlignment="center"
                                     android:textColor="@android:color/white" />
 
@@ -492,7 +496,7 @@
                                     android:paddingBottom="5dp"
                                     android:paddingEnd="5dp"
                                     android:paddingStart="5dp"
-                                    android:text="25 minutes"
+                                    android:text="25 min"
                                     android:textColor="@color/text_shadow_white"
                                     android:textSize="14sp" />
                             </LinearLayout>
