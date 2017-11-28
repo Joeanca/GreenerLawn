@@ -35,8 +35,7 @@ public class UserSettings {
         this.heatUnit = CELSIUS;
         this.city = "Calgary";
         this.cityId = "5913490";
-        this.deviceSerial = "pi1";
-
+        this.deviceSerial = "pi2";
     }
 
     public String getCity() {

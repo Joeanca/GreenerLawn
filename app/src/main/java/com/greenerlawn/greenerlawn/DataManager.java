@@ -43,7 +43,7 @@ public class DataManager {
     private List<Schedules> schedulesList = new ArrayList<Schedules>();
 
     public DataManager() {
-        greenerHubRef = database.getReference().child("greennerHubs").child("pi1");
+        greenerHubRef = database.getReference().child("greennerHubs").child(User.getInstance().getUserSettings().getDeviceSerial());
     }
 
     public <T> void uploadNewData(String reference,  T upData) {

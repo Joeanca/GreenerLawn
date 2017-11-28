@@ -67,6 +67,8 @@ public class DatabaseFunctions {
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mUserDatabaseReference = mFirebaseDatabase.getReference().child("users");
         User.getInstance().uIDSet(firebaseUser.getUid());
+        User.getInstance().setEmail(firebaseUser.getEmail());
+        User.getInstance().setUsername(firebaseUser.getDisplayName());
         retrieveUserFromDatabase(mUserDatabaseReference);
         // TODO CREATE METHOD TO CHOOSE THE DEVICE IF UNKNOWN
         StartZones();
@@ -86,6 +88,7 @@ public class DatabaseFunctions {
                     // TODO SETUP USER FIELDS.
                     mUserRef = mUserDatabaseReference.child(User.getInstance().uIDGet());
                     User.getInstance().setUserSettings(dataSnapshot.child(User.getInstance().uIDGet()).getValue(UserSettings.class));
+
                 }
                 else{
                     // REMOVE ME ONCE THE SETUP OF THE DEVICE ON INITIAL IS SETUP
@@ -116,7 +119,7 @@ public class DatabaseFunctions {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //iterate
                 if (dataSnapshot.child(User.getInstance().getUserSettings().getDeviceSerial()).exists()){
-                    mZonesDatabaseReference = deviceDBRef.child(User.getInstance().getUserSettings().getDeviceSerial());
+                    mZonesDatabaseReference = deviceDBRef.child(User.getInstance().getUserSettings().getDeviceSerial()).child("zones");
                     Iterable<DataSnapshot> zones = dataSnapshot.child(User.getInstance().getUserSettings().getDeviceSerial()).child("zones").getChildren();
                     List<Zone> actualZones = new ArrayList<>();
                     for (DataSnapshot zone: zones){
@@ -125,6 +128,9 @@ public class DatabaseFunctions {
                         actualZones.add(tempZone);
                     }
                     User.getInstance().zoneListSet(actualZones);
+                    for (Zone z: User.getInstance().zoneListGet()){
+                        Log.e("array of zones ", "onDataChange: " + z.dbRefGet() + " zone number " + z.getZoneNumber()   + " state " + z.getzOnOff());
+                    }
                     mZoneChildEventListener = new ChildEventListener() {
                         @Override
                         public void onChildAdded(DataSnapshot dataSnapshot, String s) {}
@@ -132,8 +138,9 @@ public class DatabaseFunctions {
                         public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                             Zone zone = dataSnapshot.getValue(Zone.class);
                             for (Zone z : User.getInstance().zoneListGet()){
-                                if (Integer.parseInt(z.getZoneNumber())-1 == Integer.parseInt(zone.getZoneNumber())){
+                                if (z.getZoneNumber() == zone.getZoneNumber()){
                                     z.setzOnOff(zone.getzOnOff());
+                                    Log.e("ZONE CHANGE", "DBFUNCTIONS LINE 143 onChildChanged: " + z.getZoneNumber()  );
                                 }
                             }
                             Log.e("CHANGE", "onChildChanged: "+ zone.getZoneNumber() );
@@ -147,7 +154,7 @@ public class DatabaseFunctions {
                         @Override
                         public void onCancelled(DatabaseError databaseError) {}
                     };
-                    mZonesDatabaseReference.child("zones").addChildEventListener(mZoneChildEventListener);
+                    mZonesDatabaseReference.addChildEventListener(mZoneChildEventListener);
                 }else{
                     // SETUP THE DEVICE FOR THE FIRST TIME
                     Log.e("SOMETHING", "onDataChange: DEVICE DOESN'T EXIST");

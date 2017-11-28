@@ -135,9 +135,7 @@ public class MainScreen extends AppCompatActivity {
                 return true;
             default:
                 return abdt.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
-
         }
-
     }
 
     @Override
@@ -158,7 +156,6 @@ public class MainScreen extends AppCompatActivity {
         mFirebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = mFirebaseAuth.getCurrentUser();
         providers = new ArrayList<>();
-        getSupportActionBar().hide();
         //get Firebase user
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @SuppressLint("ResourceType")
@@ -188,7 +185,6 @@ public class MainScreen extends AppCompatActivity {
                 }
             }
         };
-        getSupportActionBar().show();
     }
 
 
@@ -228,6 +224,7 @@ public class MainScreen extends AppCompatActivity {
 
     private void userFunctions(FirebaseUser fbuser) {
         //TO PULL EVERYTHING FROM THE DB
+        DatabaseFunctions.getInstance();
         DatabaseFunctions.getInstance().StartDB(fbuser);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View headerLayout = navigationView.getHeaderView(0);
@@ -238,7 +235,6 @@ public class MainScreen extends AppCompatActivity {
     }
 
     private void onSignedInInitialize(FirebaseUser user) {
-        attachDatabaseReadListener();
         userFunctions(user);
         getWeather();
     }
@@ -254,9 +250,12 @@ public class MainScreen extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (!dataSnapshot.exists()) {
-                    dm.uploadNewData(dm.USER_SETTING_REF, new UserSettings());
+                    UserSettings settings = new UserSettings();
+                    dm.uploadNewData(dm.USER_SETTING_REF,settings);
+                    User.getInstance().setUserSettings(settings);
+                }else {
+                    User.getInstance().setUserSettings(dataSnapshot.getValue(UserSettings.class));
                 }
-                User.getInstance().setUserSettings(dataSnapshot.getValue(UserSettings.class));
                 // Weather setup
                 setupWeather();
             }
@@ -322,7 +321,6 @@ public class MainScreen extends AppCompatActivity {
     private void setupWeather() {
         WeatherClient.ClientBuilder builder = new WeatherClient.ClientBuilder();
         WeatherConfig config = new WeatherConfig();
-
         config.ApiKey = OPEN_API_KEY;
         if(User.getInstance().getUserSettings().getHeatUnit() == 0){
             config.unitSystem = WeatherConfig.UNIT_SYSTEM.M;
@@ -338,9 +336,7 @@ public class MainScreen extends AppCompatActivity {
             client.getCurrentCondition(new WeatherRequest(User.getInstance().getUserSettings().getCityId()), new WeatherClient.WeatherEventListener() {
                 @Override
                 public void onWeatherRetrieved(CurrentWeather weather) {
-
                     Weather currWeather = weather.weather;
-
                     Log.d("Weatherhahasdf", "onWeatherRetrieved: "+ currWeather.rain[1].getAmmount());
                     TextView tempTV = findViewById(R.id.currentTemp);
                     TextView humidityTV = findViewById(R.id.currentHumidity);

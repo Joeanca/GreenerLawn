@@ -43,10 +43,6 @@ public class ZoneSettingsRecyclerAdapter extends RecyclerView.Adapter<ZoneSettin
     private Activity context;
     private static final int GALLERY_INTENT = 2;
 
-
-
-
-
     public ZoneSettingsRecyclerAdapter(Activity context, List<Zone> zList) {
         this.context = context;
         zoneList = zList;
@@ -73,23 +69,12 @@ public class ZoneSettingsRecyclerAdapter extends RecyclerView.Adapter<ZoneSettin
                 Log.e("HOLDER", "onCheckedChanged: "+ (Integer.parseInt(zoneInstance.getZoneNumber())));
             }
         });
-
-
-//        holder.zoneItem_ImageBtn.setOnClickListener(this);
-//        holder.zoneItem_ImageBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                    db.getImage(view.getId());
-//            }
-//        });
     }
-
 
     @Override
     public int getItemCount() {
         return zoneList.size();
     }
-
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         //pulls the titles from the zones to use as a reference
@@ -131,7 +116,6 @@ public class ZoneSettingsRecyclerAdapter extends RecyclerView.Adapter<ZoneSettin
                 }
             });
             itemView.setOnClickListener(this);
-
         }
         @Override
         public void onClick(View view) {
