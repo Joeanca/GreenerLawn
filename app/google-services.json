@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "786096365295-88ibacuck2oi0a112mstrp2n3kodemk4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.greenerlawn.greenerlawn",
+            "certificate_hash": "08ebf35b6b9171a8bfbf598cd1e4e4e1f7b71e03"
+          }
+        },
+        {
           "client_id": "786096365295-n9pk9ihd427insbrrf3redjos877dl5t.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -42,6 +50,118 @@
           "client_type": 1,
           "android_info": {
             "package_name": "com.greenerlawn.greenerlawn",
+            "certificate_hash": "698a2ed6d9bfd67afee7f343f5db93582d5165af"
+          }
+        },
+        {
+          "client_id": "786096365295-08u55vlu24iao5hssevvbtdc1algi5vu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDi7W-4g3qfQPNrpnF3QQ5cXEqu4dUUOFM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "786096365295-08u55vlu24iao5hssevvbtdc1algi5vu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:786096365295:android:1cdcb5edefff1280",
+        "android_client_info": {
+          "package_name": "rocks.androidthings.hellothings"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "786096365295-hpdgkpslfuh38ioqhinmqealr03htd45.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "rocks.androidthings.hellothings",
+            "certificate_hash": "698a2ed6d9bfd67afee7f343f5db93582d5165af"
+          }
+        },
+        {
+          "client_id": "786096365295-69f8bvhvpcb2o2fgtl35e1vpefgsnv7v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "rocks.androidthings.hellothings",
+            "certificate_hash": "c586c5b4a729db69971b0ddbbdbe5bf463714e3e"
+          }
+        },
+        {
+          "client_id": "786096365295-08u55vlu24iao5hssevvbtdc1algi5vu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDi7W-4g3qfQPNrpnF3QQ5cXEqu4dUUOFM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "786096365295-08u55vlu24iao5hssevvbtdc1algi5vu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:786096365295:android:ac41c5ed61b1a268",
+        "android_client_info": {
+          "package_name": "greenerLawn.androidthings.hellothings"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "786096365295-bu6ohev6eb6sne4k9b2k8aooh1256elg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "greenerLawn.androidthings.hellothings",
+            "certificate_hash": "08ebf35b6b9171a8bfbf598cd1e4e4e1f7b71e03"
+          }
+        },
+        {
+          "client_id": "786096365295-vhcivo1l8gngqba662itn5l6792sht7k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "greenerLawn.androidthings.hellothings",
+            "certificate_hash": "c586c5b4a729db69971b0ddbbdbe5bf463714e3e"
+          }
+        },
+        {
+          "client_id": "786096365295-7qkab9jluqfqd35drtu3llddv6qd7o2m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "greenerLawn.androidthings.hellothings",
             "certificate_hash": "698a2ed6d9bfd67afee7f343f5db93582d5165af"
           }
         },
