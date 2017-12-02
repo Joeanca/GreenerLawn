@@ -52,6 +52,8 @@ public class ZoneSettings extends AppCompatActivity {
                 Iterable<DataSnapshot> children = dataSnapshot.getChildren();
                 for (DataSnapshot child : children) {
                     Zone zone = child.getValue(Zone.class);
+                    zone.setzGUID(child.getKey());
+                    zone.dbRefSet(child.getKey());
                     zones.add(zone);
                 }
                 User.getInstance().zoneListSet(zones);

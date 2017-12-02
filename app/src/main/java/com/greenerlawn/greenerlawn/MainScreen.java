@@ -249,8 +249,10 @@ public class MainScreen extends AppCompatActivity {
         mUserRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (!dataSnapshot.exists()) {
+                Log.e("LINE 252 main", "onDataChange: " + dataSnapshot );
+                if (dataSnapshot == null) {
                     UserSettings settings = new UserSettings();
+                    settings.setDeviceSerial("pi1");
                     dm.uploadNewData(dm.USER_SETTING_REF,settings);
                     User.getInstance().setUserSettings(settings);
                 }else {

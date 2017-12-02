@@ -65,8 +65,9 @@ public class ZoneSettingsRecyclerAdapter extends RecyclerView.Adapter<ZoneSettin
         holder.zoneStatus_sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                db.SwitchToggleZone(Integer.parseInt(zoneInstance.getZoneNumber())-1, b);
-                Log.e("HOLDER", "onCheckedChanged: "+ (Integer.parseInt(zoneInstance.getZoneNumber())));
+                User.getInstance().zoneListGet().get(Integer.parseInt(zoneInstance.getZoneNumber())-1).setzOnOff(b);
+               db.SwitchToggleZone(Integer.parseInt(zoneInstance.getZoneNumber())-1, b);
+                //Log.e("HOLDER", "onCheckedChanged: "+ (Integer.parseInt(zoneInstance.getZoneNumber())));
             }
         });
     }

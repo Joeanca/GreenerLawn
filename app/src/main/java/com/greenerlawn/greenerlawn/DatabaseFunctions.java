@@ -34,7 +34,7 @@ import static android.support.v4.app.ActivityCompat.startActivityForResult;
 public class DatabaseFunctions {
     public static final String ANONYMOUS = "anonymous";
     private String uID;
-    private DatabaseReference deviceDBRef,mZonesDatabaseReference, mUserRef;
+    private DatabaseReference deviceDBRef,mZonesDatabaseReference, mUserRef, mZoneUpdater;
     private FirebaseUser firebaseUser;
     private static final int RC_SIGN_IN = 123;
     private ChildEventListener mZoneChildEventListener;
@@ -120,17 +120,16 @@ public class DatabaseFunctions {
                 //iterate
                 if (dataSnapshot.child(User.getInstance().getUserSettings().getDeviceSerial()).exists()){
                     mZonesDatabaseReference = deviceDBRef.child(User.getInstance().getUserSettings().getDeviceSerial()).child("zones");
+                    mZoneUpdater = mZonesDatabaseReference;
                     Iterable<DataSnapshot> zones = dataSnapshot.child(User.getInstance().getUserSettings().getDeviceSerial()).child("zones").getChildren();
                     List<Zone> actualZones = new ArrayList<>();
                     for (DataSnapshot zone: zones){
                         Zone tempZone = zone.getValue(Zone.class);
                         tempZone.dbRefSet(zone.getKey());
+                        tempZone.setzGUID(zone.getKey());
                         actualZones.add(tempZone);
                     }
                     User.getInstance().zoneListSet(actualZones);
-                    for (Zone z: User.getInstance().zoneListGet()){
-                        Log.e("array of zones ", "onDataChange: " + z.dbRefGet() + " zone number " + z.getZoneNumber()   + " state " + z.getzOnOff());
-                    }
                     mZoneChildEventListener = new ChildEventListener() {
                         @Override
                         public void onChildAdded(DataSnapshot dataSnapshot, String s) {}
@@ -202,8 +201,7 @@ public class DatabaseFunctions {
         mScheduleDBReference.addChildEventListener(mChildEventListener);
     }
     public void SwitchToggleZone(int zoneNumber, Boolean status){
-        // TODO SET THE OTHER ZONES OFF
-        User.getInstance().zoneListGet().get(zoneNumber).setzOnOff(status);
+        // TODO SET THE OTHER ZONES OFF;
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("greennerHubs/" + User.getInstance().getUserSettings().getDeviceSerial() + "/zones/" + User.getInstance().zoneListGet().get(zoneNumber).dbRefGet());
         ref.child("zOnOff").setValue(status);
@@ -213,7 +211,7 @@ public class DatabaseFunctions {
     }
     public void updateSerialNumber(String newSerial){
         // TODO UPDATE FIREBASE
-        //mUserRef.child("userSettings").child("deviceSerial").setValue(newSerial);
+        mUserRef.child("userSettings").child("deviceSerial").setValue(newSerial);
         User.getInstance().getUserSettings().setDeviceSerial(newSerial);
 
     }
