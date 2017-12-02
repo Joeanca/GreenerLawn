@@ -4,52 +4,56 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/zoneItem_FrameLayout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    >
+    android:layout_height="wrap_content">
 
-    <android.support.v7.widget.CardView
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardCornerRadius="4dp"
-        app:contentPadding="2dp">
+        android:layout_height="60dp"
+        android:layout_marginBottom="3dp"
+        android:layout_marginTop="3dp"
+        android:background="@drawable/round_edge_border"
+        android:backgroundTint="@color/common_google_signin_btn_text_light_focused">
 
-        <android.support.constraint.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        <ImageButton
+            android:id="@+id/zoneItem_ImageBtn"
+            android:layout_width="51dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/irrigation"
+            android:contentDescription="@string/zoneItemPic_ImageView_Description"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/zoneItemTitle_TextView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageButton
-                android:id="@+id/zoneITem_ImageBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/zoneItemPic_ImageView_Description"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/zoneItemTitle_TextView"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_menu_gallery" />
+        <TextView
+            android:id="@+id/zoneItemTitle_TextView"
+            android:layout_width="183dp"
+            android:layout_height="39dp"
+            android:layout_marginEnd="8dp"
+            android:autoSizeTextType="uniform"
+            android:gravity="center_vertical"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:textColor="@color/icons"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/zoneItem_Switch"
+            app:layout_constraintStart_toEndOf="@id/zoneItem_ImageBtn"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Zone Title" />
 
-            <TextView
-                android:id="@+id/zoneItemTitle_TextView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@id/zoneITem_ImageBtn"
-                app:layout_constraintEnd_toStartOf="@+id/zoneItem_Switch"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="Zone Title" />
-
-            <Switch
-                android:id="@+id/zoneItem_Switch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="32dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/zoneItemTitle_TextView"
-                app:layout_constraintTop_toTopOf="parent" />
-        </android.support.constraint.ConstraintLayout>
-
-    </android.support.v7.widget.CardView>
+        <Switch
+            android:id="@+id/zoneItem_Switch"
+            android:layout_width="56dp"
+            android:layout_height="38dp"
+            android:layout_marginEnd="10dp"
+            android:switchTextAppearance="@style/TextAppearance.AppCompat.Widget.Switch"
+            android:theme="@style/SwitchCompatTheme"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/zoneItemTitle_TextView"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.529" />
+    </android.support.constraint.ConstraintLayout>
 
 </FrameLayout>

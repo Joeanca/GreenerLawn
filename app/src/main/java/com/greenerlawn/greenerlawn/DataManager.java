@@ -20,13 +20,16 @@ import java.util.List;
  */
 
 public class DataManager {
+
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference dataRef = null;
 
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     private DatabaseReference userRef = database.getReference().child("users").child(user.getUid());
 
-    public final static String ZONE_REF = "zone";
+    //@TODO make this better it is janky (Get the pi id from the user instead of just everyone using the same pi)
+    private DatabaseReference greenerHubRef;
+    public final static String ZONE_REF = "zones";
     public final static String USER_SETTING_REF = "userSettings";
 
     private ArrayList<Zone> zoneArrayList = new ArrayList<>();
@@ -40,6 +43,7 @@ public class DataManager {
     private List<Schedules> schedulesList = new ArrayList<Schedules>();
 
     public DataManager() {
+        greenerHubRef = database.getReference().child("greennerHubs").child(User.getInstance().getUserSettings().getDeviceSerial());
     }
 
     public <T> void uploadNewData(String reference,  T upData) {
@@ -49,16 +53,20 @@ public class DataManager {
     }
 
     public DatabaseReference getReference(String reference){
-        dataRef = userRef.child(reference);
+        if (reference.equals(ZONE_REF)){
+            dataRef = greenerHubRef.child(reference);
+        } else {
+            dataRef = userRef.child(reference);
+        }
+
         return dataRef;
     }
 
 
     //Schedule Manager
 
-
-
     // TODO  don't check against suspended schedules
+
     private void verifyValid(Schedules newSched) {
         //iterate over list
         for (int i = 0; i < schedulesList.size(); i++) {

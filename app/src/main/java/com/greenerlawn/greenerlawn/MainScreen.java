@@ -5,10 +5,12 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -37,6 +39,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.survivingwithandroid.weather.lib.WeatherClient;
+import com.survivingwithandroid.weather.lib.WeatherConfig;
+import com.survivingwithandroid.weather.lib.exception.WeatherLibException;
+import com.survivingwithandroid.weather.lib.exception.WeatherProviderInstantiationException;
+import com.survivingwithandroid.weather.lib.model.CurrentWeather;
+import com.survivingwithandroid.weather.lib.model.Weather;
+import com.survivingwithandroid.weather.lib.provider.openweathermap.OpenweathermapProviderType;
+import com.survivingwithandroid.weather.lib.request.WeatherRequest;
 
 //import com.google.firebase.database.ValueEventListener;
 
@@ -48,84 +58,48 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import github.vatsal.easyweather.Helper.TempUnitConverter;
-import github.vatsal.easyweather.Helper.WeatherCallback;
-import github.vatsal.easyweather.WeatherMap;
-import github.vatsal.easyweather.retrofit.models.Weather;
-import github.vatsal.easyweather.retrofit.models.WeatherResponseModel;
 
 // TODO revise weather api which includes rain? precipitation
 // https://www.apixu.com/doc/current.aspx apikey: 708a2ed675de4b6a9fb171931170111
 public class MainScreen extends AppCompatActivity {
 
     public static final String ANONYMOUS = "anonymous";
-    private String mUsername, mEmail, uid;
+    private String mUsername;
     private ImageView mImage;
-    private DatabaseReference mUserRef;
     private FirebaseDatabase mFirebaseDatabase;
-    private DatabaseReference mDatabaseReference, mZonesDatabaseReference;
+    private DatabaseReference mDatabaseReference, mZonesDatabaseReference,mUserRef;
     private FirebaseUser firebaseUser;
     private ChildEventListener mChildEventListener;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle abdt;
-    private ListView mDrawerList;
     private static final int RC_SIGN_IN = 123;
     private static final String OPEN_API_KEY = "bea4b929ff482f02d7ab334b6e015467";
     List<AuthUI.IdpConfig> providers;
-    private DatabaseFunctions dbFn;
-    private User localUser;
+    private  DataManager dm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // TODO SETUP THE ACTIVITY TO SETUP THE DEVICE ON USERS FIRST INTERACTION WITH DEVICE
+        // TODO IF PI ZONES HAVE NEVER BEEN INITIALIZED THEN SETUP THROUGH USER APP
+
         // TRANSLUCENT STATUS AND ACTION BAR
         transparentBars();
-
-        // SETUP USER
-        getFirebaseUser();
 
         //set content view AFTER ABOVE sequence (to avoid crash)
         this.setContentView(R.layout.main_screen_activity);
         mImage = findViewById(R.id.iv_drawer_user);
 
-
         // DRAWER FUNCTIONS
         InitializeDrawer();
 
+        User.getInstance();
 
-
-        //test add to database use to add some zones for testing
-//        Zone zone = new Zone("1231", "zone2", true);
-          final DataManager dm = new DataManager();
-//        dm.uploadNewData(dm.ZONE_REF, zone);
-
-        mUserRef = dm.getReference(dm.USER_SETTING_REF);
-
-        mUserRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (!dataSnapshot.exists()) {
-                    dm.uploadNewData(dm.USER_SETTING_REF, new UserSettings());
-                }
-                Iterable<DataSnapshot> children = dataSnapshot.getChildren();
-
-                UserSettings userSettings = null;
-                for (DataSnapshot child : children) {
-                    userSettings = child.getValue(UserSettings.class);
-                }
-                
-                // Weather setup
-                WeatherMap weatherMap = new WeatherMap(MainScreen.this, OPEN_API_KEY);
-                setupWeather(weatherMap, userSettings);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+        // SETUP USER
+        getFirebaseUser();
 
     }
 
@@ -142,6 +116,7 @@ public class MainScreen extends AppCompatActivity {
             }
         }
     }
+
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
 //        MenuInflater inflater = getMenuInflater();
@@ -149,6 +124,8 @@ public class MainScreen extends AppCompatActivity {
 //        return true;
 //    }
 
+
+    // USE THIS FOR THE DRAWER OPTIONS TO GIVE THEM CONTEXT OR MAKE THE ACTIONABLE.
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -158,9 +135,7 @@ public class MainScreen extends AppCompatActivity {
                 return true;
             default:
                 return abdt.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
-
         }
-
     }
 
     @Override
@@ -181,16 +156,17 @@ public class MainScreen extends AppCompatActivity {
         mFirebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = mFirebaseAuth.getCurrentUser();
         providers = new ArrayList<>();
-
         //get Firebase user
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
+            @SuppressLint("ResourceType")
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
+                FirebaseUser fbuser = firebaseAuth.getInstance().getCurrentUser();
+                if (fbuser != null) {
                     //user is signed in
-                    onSignedInInitialize(user);
-                    userFunctions(user);
+                    User.getInstance().setEmail(fbuser.getEmail());
+                    User.getInstance().setUsername(fbuser.getDisplayName());
+                    onSignedInInitialize(fbuser);
                 } else {
                     //user is signed out
                     onSignedOutCleanup();
@@ -202,12 +178,16 @@ public class MainScreen extends AppCompatActivity {
                                     .setAvailableProviders(
                                             Arrays.asList(new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
                                                     new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build()))
+                                    .setTheme(R.style.LoginTheme)
+                                    .setLogo(R.drawable.irrigation)      // Set logo drawable
                                     .build(),
                             RC_SIGN_IN);
                 }
             }
         };
     }
+
+
 
     private void transparentBars() {
         int transparent = ContextCompat.getColor(this, R.color.transparent);
@@ -219,13 +199,6 @@ public class MainScreen extends AppCompatActivity {
 
     @SuppressLint("ResourceAsColor")
     private void InitializeDrawer() {
-//        mDrawerLayout = (DrawerLayout) findViewById(R.id.main_screen_layout);
-//        abdt = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.Open, R.string.Close);
-//        abdt.setDrawerIndicatorEnabled(true);
-//        mDrawerLayout.addDrawerListener(abdt);
-//        abdt.syncState();
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//
         mDrawerLayout = (DrawerLayout) findViewById(R.id.main_screen_layout);
         abdt = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.Open, R.string.Close);
         abdt.setDrawerIndicatorEnabled(true);
@@ -233,32 +206,7 @@ public class MainScreen extends AppCompatActivity {
         abdt.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mDrawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
-
-            @Override
-            public void onDrawerSlide(View drawerView, float slideOffset) {
-                //Called when a drawer's position changes.
-            }
-
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                //Called when a drawer has settled in a completely open state.
-                //The drawer is interactive at this point.
-                // If you have 2 drawers (left and right) you can distinguish
-                // them by using id of the drawerView. int id = drawerView.getId();
-                // id will be your layout's id: for example R.id.left_drawer
-            }
-
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                // Called when a drawer has settled in a completely closed state.
-            }
-
-            @Override
-            public void onDrawerStateChanged(int newState) {
-                // Called when the drawer motion state changes. The new state will be one of STATE_IDLE, STATE_DRAGGING or STATE_SETTLING.
-            }
-        });
+        // HERE YOU CAN CHANGE THE ACTIONS FOR THE DRAWER
         NavigationView nav_view = (NavigationView) findViewById(R.id.nav_view);
         nav_view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -274,57 +222,50 @@ public class MainScreen extends AppCompatActivity {
         });
     }
 
-    private void setupWeather(WeatherMap weatherMap, UserSettings userSettings) {
-
-        weatherMap.getCityWeather(userSettings.getCity(), new WeatherCallback() {
-            @Override
-            public void success(WeatherResponseModel response) {
-                Weather weather[] = response.getWeather();
-                String weatherMain = weather[0].getMain();
-                Double temperature = TempUnitConverter.convertToCelsius(response.getMain().getTemp());
-
-                //Initiate textViews
-                TextView tempTV = findViewById(R.id.currentTemp);
-                TextView humidityTV = findViewById(R.id.currentHumidity);
-                TextView conditionTV = findViewById(R.id.currentCondition);
-                TextView rainTV = findViewById(R.id.currentRainfall);
-                ImageView conditionIV = findViewById(R.id.conditionImage);
-
-
-                //@TODO Create a better resouse string in order to avoid warnings and bad practices
-                tempTV.setText(temperature.longValue() + "°");
-                humidityTV.setText(response.getMain().getHumidity() + "%");
-                conditionTV.setText(weatherMain);
-                rainTV.setText(response.getRain());
-                Glide.with(getApplicationContext())
-                        .load(weather[0].getIconLink())
-                        .into(conditionIV)
-                ;
-
-            }
-            @Override
-            public void failure(String message) {
-            }
-        });
-
-
-    }
-
-    private void userFunctions(FirebaseUser user) {
-        dbFn = new DatabaseFunctions();
-        dbFn.StartDB(user);
+    private void userFunctions(FirebaseUser fbuser) {
+        //TO PULL EVERYTHING FROM THE DB
+        DatabaseFunctions.getInstance();
+        DatabaseFunctions.getInstance().StartDB(fbuser);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View headerLayout = navigationView.getHeaderView(0);
         TextView headerEmail = headerLayout.findViewById(R.id.tv_drawer_email);
         TextView headerName = headerLayout.findViewById(R.id.tv_drawer_user);
-        headerEmail.setText(dbFn.getEmail());
-        headerName.setText(dbFn.getUsername());
+        headerEmail.setText(User.getInstance().getEmail());
+        headerName.setText(User.getInstance().getUsername());
     }
 
-    private void onSignedInInitialize(FirebaseUser users) {
-        attachDatabaseReadListener();
+    private void onSignedInInitialize(FirebaseUser user) {
+        userFunctions(user);
+        getWeather();
     }
+    private void getWeather() {
+        //test add to database use to add some zones for testing
+//        Zone zone = new Zone("1231", "zone2", true);
+        dm = new DataManager();
+//        dm.uploadNewData(dm.ZONE_REF, zone);
 
+        mUserRef = dm.getReference(dm.USER_SETTING_REF);
+
+        mUserRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.exists()) {
+                    UserSettings settings = new UserSettings();
+                    dm.uploadNewData(dm.USER_SETTING_REF,settings);
+                    User.getInstance().setUserSettings(settings);
+                }else {
+                    User.getInstance().setUserSettings(dataSnapshot.getValue(UserSettings.class));
+                }
+                // Weather setup
+                setupWeather();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
     private void onSignedOutCleanup() {
         mUsername = ANONYMOUS;
         detachDatabaseReadListener();
@@ -336,8 +277,7 @@ public class MainScreen extends AppCompatActivity {
             mChildEventListener = new ChildEventListener() {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                    //FriendlyMessage friendlyMessage = dataSnapshot.getValue(FriendlyMessage.class);
-                    //mMessageAdapter.add(friendlyMessage);
+
                 }
 
                 @Override
@@ -374,25 +314,54 @@ public class MainScreen extends AppCompatActivity {
         }
     }
 
-    private void collectZones(Map<String, Object> users) {
-
-        ArrayList<Zone> zones = new ArrayList<>();
-
-        //iterate through each user, ignoring their UID
-        for (Map.Entry<String, Object> entry : users.entrySet()) {
-
-            //Get user map
-            Map singleUser = (Map) entry.getValue();
-            //Get zone field and append to list
-            zones.add((Zone) singleUser.get("zones"));
-            Log.d("zonemssg", "collectZones: " + singleUser.toString());
-        }
-
-        System.out.println(zones.toString());
-    }
-
     public void modifyZones(View view) {
         startActivity(new Intent(MainScreen.this, ZoneSettings.class));
+    }
 
+    private void setupWeather() {
+        WeatherClient.ClientBuilder builder = new WeatherClient.ClientBuilder();
+        WeatherConfig config = new WeatherConfig();
+        config.ApiKey = OPEN_API_KEY;
+        if(User.getInstance().getUserSettings().getHeatUnit() == 0){
+            config.unitSystem = WeatherConfig.UNIT_SYSTEM.M;
+        } else {
+            config.unitSystem = WeatherConfig.UNIT_SYSTEM.I;
+        }
+        try {
+            WeatherClient client = builder.attach(MainScreen.this)
+                    .provider(new OpenweathermapProviderType())
+                    .httpClient(com.survivingwithandroid.weather.lib.client.okhttp.WeatherDefaultClient.class)
+                    .config(config)
+                    .build();
+            client.getCurrentCondition(new WeatherRequest(User.getInstance().getUserSettings().getCityId()), new WeatherClient.WeatherEventListener() {
+                @Override
+                public void onWeatherRetrieved(CurrentWeather weather) {
+                    Weather currWeather = weather.weather;
+                    Log.d("Weatherhahasdf", "onWeatherRetrieved: "+ currWeather.rain[1].getAmmount());
+                    TextView tempTV = findViewById(R.id.currentTemp);
+                    TextView humidityTV = findViewById(R.id.currentHumidity);
+                    TextView conditionTV = findViewById(R.id.currentCondition);
+                    TextView rainTV = findViewById(R.id.currentRainfall);
+                    ImageView conditionIV = findViewById(R.id.conditionImage);
+
+                    tempTV.setText(((int) currWeather.temperature.getTemp())+ "°");
+                    humidityTV.setText(currWeather.currentCondition.getHumidity() + "%");
+                    conditionTV.setText(currWeather.currentCondition.getCondition());
+                    rainTV.setText(currWeather.rain[0].getAmmount()+"");
+                    Glide.with(getApplicationContext())
+                            .load("http://openweathermap.org/img/w/"+currWeather.currentCondition.getIcon()+".png")
+                            .into(conditionIV)
+                    ;
+                }
+                @Override
+                public void onWeatherError(WeatherLibException wle) { }
+
+                @Override
+                public void onConnectionError(Throwable t) { }
+            });
+        } catch (WeatherProviderInstantiationException e) {e.printStackTrace(); }
+    }
+    public void modifySettings(View view) {
+        startActivity(new Intent(MainScreen.this, SettingsMenu.class));
     }
 }
