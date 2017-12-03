@@ -69,6 +69,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <RadioGroup
+                    android:id="@+id/tempRadioGroup"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
@@ -190,19 +191,19 @@
 
         </android.support.constraint.ConstraintLayout>
     </LinearLayout>
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/saveSettings"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:clickable="true"
-        android:onClick="saveSettings"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/fui_done_check_mark"
-        app:buttonTint="@color/icons"/>
-    />
+    <!--<android.support.design.widget.FloatingActionButton-->
+        <!--android:id="@+id/saveSettings"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginBottom="8dp"-->
+        <!--android:layout_marginEnd="8dp"-->
+        <!--android:clickable="true"-->
+        <!--android:onClick="saveSettings"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:srcCompat="@drawable/fui_done_check_mark"-->
+        <!--app:buttonTint="@color/icons"/>-->
+    <!--/>-->
 
     <TextView
         android:id="@+id/secretView"

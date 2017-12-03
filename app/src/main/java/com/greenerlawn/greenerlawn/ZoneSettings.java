@@ -37,9 +37,9 @@ public class ZoneSettings extends AppCompatActivity {
 
         // TO GET THE BACK ARROW ON THE ACTION BAR
         int transparent = ContextCompat.getColor(this, R.color.transparent);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(transparent));
-
+        getSupportActionBar().setTitle("Zone settings");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         final RecyclerView recyclerZones = (RecyclerView) findViewById(R.id.zone_recycler);
         final LinearLayoutManager zoneLayoutManager = new LinearLayoutManager(this);
@@ -59,7 +59,6 @@ public class ZoneSettings extends AppCompatActivity {
                 User.getInstance().zoneListSet(zones);
                 doRecyclerStuff(zones, recyclerZones);
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
 

@@ -75,7 +75,11 @@ public class MainScreen extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle abdt;
     private static final int RC_SIGN_IN = 123;
-    private static final String OPEN_API_KEY = "bea4b929ff482f02d7ab334b6e015467";
+    //AUSTINS
+//    private static final String OPEN_API_KEY = "bea4b929ff482f02d7ab334b6e015467";
+    //JORGES
+    private static final String OPEN_API_KEY = "38cda1c407a4476daa05ae3c8e1b86a4";
+
     List<AuthUI.IdpConfig> providers;
     private  DataManager dm;
 
@@ -192,6 +196,8 @@ public class MainScreen extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         getWindow().setStatusBarColor(transparent);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(transparent));
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
 
     @SuppressLint("ResourceAsColor")
@@ -239,17 +245,20 @@ public class MainScreen extends AppCompatActivity {
         mUserRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getValue()==null) {
+                if (dataSnapshot.child("deviceSerial").getValue()==null) {
                     UserSettings settings = new UserSettings();
                     settings.setDeviceSerial("pi1");
                     User.getInstance().setUserSettings(settings);
                     dm.uploadNewData(dm.USER_SETTING_REF,settings);
 
+
                 }else {
                     User.getInstance().setUserSettings(dataSnapshot.getValue(UserSettings.class));
+
                 }
                 // Weather setup
                 setupWeather();
+
             }
 
             @Override
@@ -326,6 +335,7 @@ public class MainScreen extends AppCompatActivity {
                     .httpClient(com.survivingwithandroid.weather.lib.client.okhttp.WeatherDefaultClient.class)
                     .config(config)
                     .build();
+            Log.e("CITYID", "setupWeather: " + User.getInstance().getUserSettings().getCityId() );
             client.getCurrentCondition(new WeatherRequest(User.getInstance().getUserSettings().getCityId()), new WeatherClient.WeatherEventListener() {
                 @Override
                 public void onWeatherRetrieved(CurrentWeather weather) {

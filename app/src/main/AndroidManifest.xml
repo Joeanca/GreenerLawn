@@ -15,6 +15,7 @@
         >
         <activity
             android:name=".MainScreen"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.main">
 
             <!--
@@ -30,14 +31,20 @@
         </activity>
         <activity
             android:name=".TimePopUp"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.TimerPopup"></activity>
         <activity
             android:name=".ZoneSettings"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.zones">
         </activity>
         <activity
             android:name=".SettingsMenu"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.settings">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.greenerlawn.greenerlawn.MainScreen" />
         </activity>
 
         <activity
@@ -51,6 +58,7 @@
                 android:value="com.greenerlawn.greenerlawn.MainScreen" />
         </activity>
         <activity android:name=".SearchCity"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.TimerPopup">
         </activity>
     </application>
