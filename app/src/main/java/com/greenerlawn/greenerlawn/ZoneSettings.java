@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.transition.Explode;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.Window;
 
 import com.firebase.ui.auth.AuthUI;
@@ -33,6 +34,7 @@ public class ZoneSettings extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         setContentView(R.layout.zone_settings_activity);
 
         // TO GET THE BACK ARROW ON THE ACTION BAR
@@ -87,5 +89,19 @@ public class ZoneSettings extends AppCompatActivity {
             Log.e("PICTURE TIME", "onActivityResult: " + data.toString() + data.getStringExtra("ZONEID") + requestCode);
         }
 
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();    //Call the back button's method
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition( R.anim.animation_enter, R.anim.animation_leave);
     }
 }

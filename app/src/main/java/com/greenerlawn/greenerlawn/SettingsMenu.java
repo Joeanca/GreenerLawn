@@ -53,6 +53,7 @@ public class SettingsMenu extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         setContentView(R.layout.settings_activity);
 
         // TO GET THE BACK ARROW ON THE ACTION BAR
@@ -176,5 +177,19 @@ public class SettingsMenu extends AppCompatActivity{
                 Toast.makeText(getApplicationContext(), "Location Changed", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();    //Call the back button's method
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition( R.anim.animation_enter, R.anim.animation_leave);
     }
 }

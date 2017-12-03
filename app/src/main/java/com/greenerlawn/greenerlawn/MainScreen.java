@@ -1,8 +1,10 @@
 package com.greenerlawn.greenerlawn;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.provider.ContactsContract;
@@ -10,6 +12,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.ViewDragHelper;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +20,7 @@ import android.os.Bundle;
 import android.text.Html;
 import android.text.Layout;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -53,6 +57,7 @@ import com.survivingwithandroid.weather.lib.request.WeatherRequest;
 
 import org.w3c.dom.Text;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -75,6 +80,7 @@ public class MainScreen extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle abdt;
     private static final int RC_SIGN_IN = 123;
+
     //AUSTINS
 //    private static final String OPEN_API_KEY = "bea4b929ff482f02d7ab334b6e015467";
     //JORGES
@@ -97,6 +103,7 @@ public class MainScreen extends AppCompatActivity {
 
         // DRAWER FUNCTIONS
         InitializeDrawer();
+
 
         User.getInstance();
 
@@ -203,6 +210,8 @@ public class MainScreen extends AppCompatActivity {
     @SuppressLint("ResourceAsColor")
     private void InitializeDrawer() {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.main_screen_layout);
+//        mDrawerLayout.openDrawer(Gravity.START);
+        setDrawerLeftEdgeSize(this, mDrawerLayout, 0.3f);
         abdt = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.Open, R.string.Close);
         abdt.setDrawerIndicatorEnabled(true);
         mDrawerLayout.addDrawerListener(abdt);
@@ -366,5 +375,30 @@ public class MainScreen extends AppCompatActivity {
     }
     public void modifySettings(View view) {
         startActivity(new Intent(MainScreen.this, SettingsMenu.class));
+    }
+    public static void setDrawerLeftEdgeSize(Activity activity, DrawerLayout drawerLayout, float displayWidthPercentage) {
+        if (activity == null || drawerLayout == null)
+            return;
+
+        try {
+            // find ViewDragHelper and set it accessible
+            Field leftDraggerField = drawerLayout.getClass().getDeclaredField("mLeftDragger");
+            leftDraggerField.setAccessible(true);
+            ViewDragHelper leftDragger = (ViewDragHelper) leftDraggerField.get(drawerLayout);
+            // find edgesize and set is accessible
+            Field edgeSizeField = leftDragger.getClass().getDeclaredField("mEdgeSize");
+            edgeSizeField.setAccessible(true);
+            int edgeSize = edgeSizeField.getInt(leftDragger);
+            // set new edgesize
+            Point displaySize = new Point();
+            activity. getWindowManager().getDefaultDisplay().getSize(displaySize);
+            edgeSizeField.setInt(leftDragger, Math.max(edgeSize, (int) (displaySize.x * displayWidthPercentage)));
+        } catch (NoSuchFieldException e) {
+            // ignore
+        } catch (IllegalArgumentException e) {
+            // ignore
+        } catch (IllegalAccessException e) {
+            // ignore
+        }
     }
 }
