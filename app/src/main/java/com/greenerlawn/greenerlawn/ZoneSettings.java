@@ -77,9 +77,6 @@ public class ZoneSettings extends AppCompatActivity {
     }
 
     private void doRecyclerStuff(List<Zone> zones, RecyclerView recyclerZones){
-        for (Zone z: zones){
-            Log.e("zonesettings line 79", "doRecyclerStuff: " + z.getZoneNumber() + z.getzOnOff());
-        }
         final ZoneSettingsRecyclerAdapter zoneSettingsRecyclerAdapter = new ZoneSettingsRecyclerAdapter(this,zones);
         recyclerZones.setAdapter(zoneSettingsRecyclerAdapter);
     }

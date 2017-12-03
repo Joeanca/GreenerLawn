@@ -46,9 +46,7 @@ public class UserSettings {
         this.city = city;
     }
 
-    public int getHeatUnit() {
-        return heatUnit;
-    }
+    public int getHeatUnit() { return heatUnit; }
 
     public void setHeatUnit(int heatUnit) {
         this.heatUnit = heatUnit;

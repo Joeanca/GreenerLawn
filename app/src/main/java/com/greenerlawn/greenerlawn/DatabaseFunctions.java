@@ -40,6 +40,11 @@ public class DatabaseFunctions {
     private ChildEventListener mZoneChildEventListener;
     private StorageReference storageRef;
     private static  DatabaseFunctions instance;
+    public final static String ZONE_REF = "zones";
+    public final static String USER_SETTING_REF = "userSettings";
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private DatabaseReference dataRef = null;
+    private DatabaseReference greenerHubRef;
 
 
     public static DatabaseFunctions getInstance(){
@@ -74,7 +79,15 @@ public class DatabaseFunctions {
         StartZones();
         getZonePics();
     }
+    public DatabaseReference getReference(String reference){
+        if (reference.equals(ZONE_REF)){
+            dataRef = greenerHubRef.child(reference);
+        } else {
+            dataRef = mUserRef.child("userSettings");
+        }
 
+        return dataRef;
+    }
     private void getZonePics() {
 //        storageRef = FirebaseStorage.getInstance().getReference().child("greennerHub/" + User.getInstance().getUserSettings().getDeviceSerial());
     }
@@ -139,10 +152,10 @@ public class DatabaseFunctions {
                             for (Zone z : User.getInstance().zoneListGet()){
                                 if (z.getZoneNumber() == zone.getZoneNumber()){
                                     z.setzOnOff(zone.getzOnOff());
-                                    Log.e("ZONE CHANGE", "DBFUNCTIONS LINE 143 onChildChanged: " + z.getZoneNumber()  );
+//                                    Log.e("ZONE CHANGE", "DBFUNCTIONS LINE 143 onChildChanged: " + z.getZoneNumber()  );
                                 }
                             }
-                            Log.e("CHANGE", "onChildChanged: "+ zone.getZoneNumber() );
+//                            Log.e("CHANGE", "onChildChanged: "+ zone.getZoneNumber() );
                         }
                         @Override
                         public void onChildRemoved(DataSnapshot dataSnapshot) {}

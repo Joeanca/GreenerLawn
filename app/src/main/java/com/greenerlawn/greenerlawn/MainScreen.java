@@ -82,8 +82,6 @@ public class MainScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // TODO SETUP THE ACTIVITY TO SETUP THE DEVICE ON USERS FIRST INTERACTION WITH DEVICE
         // TODO IF PI ZONES HAVE NEVER BEEN INITIALIZED THEN SETUP THROUGH USER APP
 
         // TRANSLUCENT STATUS AND ACTION BAR
@@ -100,7 +98,6 @@ public class MainScreen extends AppCompatActivity {
 
         // SETUP USER
         getFirebaseUser();
-
     }
 
     @Override
@@ -236,25 +233,18 @@ public class MainScreen extends AppCompatActivity {
 
     private void onSignedInInitialize(FirebaseUser user) {
         userFunctions(user);
-        getWeather();
-    }
-    private void getWeather() {
-        //test add to database use to add some zones for testing
-//        Zone zone = new Zone("1231", "zone2", true);
         dm = new DataManager();
-//        dm.uploadNewData(dm.ZONE_REF, zone);
-
         mUserRef = dm.getReference(dm.USER_SETTING_REF);
 
         mUserRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.e("LINE 252 main", "onDataChange: " + dataSnapshot );
-                if (dataSnapshot == null) {
+                if (dataSnapshot.getValue()==null) {
                     UserSettings settings = new UserSettings();
                     settings.setDeviceSerial("pi1");
-                    dm.uploadNewData(dm.USER_SETTING_REF,settings);
                     User.getInstance().setUserSettings(settings);
+                    dm.uploadNewData(dm.USER_SETTING_REF,settings);
+
                 }else {
                     User.getInstance().setUserSettings(dataSnapshot.getValue(UserSettings.class));
                 }
@@ -268,6 +258,7 @@ public class MainScreen extends AppCompatActivity {
             }
         });
     }
+
     private void onSignedOutCleanup() {
         mUsername = ANONYMOUS;
         detachDatabaseReadListener();
