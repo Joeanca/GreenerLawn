@@ -11,8 +11,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:screenOrientation="portrait"
-        android:supportsRtl="false"
-        >
+        android:supportsRtl="false">
         <activity
             android:name=".MainScreen"
             android:theme="@style/Theme.AppCompat.Light.main">
@@ -30,16 +29,13 @@
         </activity>
         <activity
             android:name=".TimePopUp"
-            android:theme="@style/Theme.AppCompat.Light.TimerPopup"></activity>
+            android:theme="@style/Theme.AppCompat.Light.TimerPopup" />
         <activity
             android:name=".ZoneSettings"
-            android:theme="@style/Theme.AppCompat.Light.zones">
-        </activity>
+            android:theme="@style/Theme.AppCompat.Light.zones"></activity>
         <activity
             android:name=".SettingsMenu"
-            android:theme="@style/Theme.AppCompat.Light.settings">
-        </activity>
-
+            android:theme="@style/Theme.AppCompat.Light.settings"></activity>
         <activity
             android:name=".Drawer"
             android:label="@string/title_activity_drawer"
@@ -50,9 +46,10 @@
                 android:theme="@style/Theme.AppCompat.Light.drawer"
                 android:value="com.greenerlawn.greenerlawn.MainScreen" />
         </activity>
-        <activity android:name=".SearchCity"
-            android:theme="@style/Theme.AppCompat.Light.TimerPopup">
-        </activity>
+        <activity
+            android:name=".SearchCity"
+            android:theme="@style/Theme.AppCompat.Light.TimerPopup"></activity>
+        <activity android:name=".CreateSchedule"></activity>
     </application>
 
 </manifest>

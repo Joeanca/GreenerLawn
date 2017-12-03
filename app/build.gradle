@@ -62,8 +62,6 @@ dependencies {
     compile 'com.github.alamkanak:android-week-view:1.2.6'
 
 
-
-
 }
 
 apply plugin: 'com.google.gms.google-services'
