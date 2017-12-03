@@ -92,8 +92,6 @@ public class MainScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // TODO IF PI ZONES HAVE NEVER BEEN INITIALIZED THEN SETUP THROUGH USER APP
-
         // TRANSLUCENT STATUS AND ACTION BAR
         transparentBars();
 

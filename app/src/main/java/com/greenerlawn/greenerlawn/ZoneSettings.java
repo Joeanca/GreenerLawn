@@ -31,6 +31,11 @@ public class ZoneSettings extends AppCompatActivity {
     private static final int GALLERY_INTENT = 2;
 
 
+    // TODO EXPANDABLE VIEWS: https://dzone.com/articles/android-tips
+    // https://www.bignerdranch.com/blog/expand-a-recyclerview-in-four-steps/
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
