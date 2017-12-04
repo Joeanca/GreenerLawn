@@ -4,12 +4,18 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ImageButton;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -19,7 +25,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,14 +46,17 @@ public class DatabaseFunctions {
     private FirebaseUser firebaseUser;
     private static final int RC_SIGN_IN = 123;
     private ChildEventListener mZoneChildEventListener;
-    private StorageReference storageRef;
     private static  DatabaseFunctions instance;
     public final static String ZONE_REF = "zones";
     public final static String USER_SETTING_REF = "userSettings";
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference dataRef = null;
     private DatabaseReference greenerHubRef;
+    private FirebaseStorage storage = FirebaseStorage.getInstance();
+    private StorageReference storageRef = storage.getReference();
 
+
+    // Create a storage reference from our app
 
     public static DatabaseFunctions getInstance(){
         if (instance == null){
@@ -220,12 +231,46 @@ public class DatabaseFunctions {
         ref.child("zOnOff").setValue(status);
     }
     public void getImage(int imageButtonId){
-        Log.e("IMAGE BUTTON ID", "getImage"+ imageButtonId);
+
+        //Log.e("IMAGE BUTTON ID", "getImage"+ imageButtonId);
     }
     public void updateSerialNumber(String newSerial){
         // TODO UPDATE FIREBASE
         mUserRef.child("userSettings").child("deviceSerial").setValue(newSerial);
         User.getInstance().getUserSettings().setDeviceSerial(newSerial);
 
+    }
+    public void uploadZoneBitmap(int zoneNum, Bitmap bitmapUp){
+        StorageReference imagesRef = storageRef.child(User.getInstance().getUserSettings().getDeviceSerial()).child("pictures");
+        StorageReference zoneRefTemp = imagesRef.child(User.getInstance().zoneListGet().get(zoneNum).getZoneNumber());
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmapUp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
+        UploadTask uploadTask = zoneRefTemp.putBytes(data);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle unsuccessful uploads
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                Uri downloadUrl = taskSnapshot.getDownloadUrl();
+            }
+        });
+    }
+    public Bitmap downloadZoneBitmap(int zoneNum){
+        final long ONE_MEGABYTE = 1024 * 1024;
+        Bitmap bitmap = null;
+        StorageReference imagesRef = storageRef.child(User.getInstance().getUserSettings().getDeviceSerial()).child("pictures");
+        StorageReference zoneRefTemp = imagesRef.child(User.getInstance().zoneListGet().get(zoneNum).getZoneNumber());
+        storageRef.child("" + zoneNum).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+            }
+        });
+        return bitmap;
     }
 }

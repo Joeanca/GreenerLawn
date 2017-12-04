@@ -342,7 +342,6 @@ public class MainScreen extends AppCompatActivity {
                     .httpClient(com.survivingwithandroid.weather.lib.client.okhttp.WeatherDefaultClient.class)
                     .config(config)
                     .build();
-            Log.e("CITYID", "setupWeather: " + User.getInstance().getUserSettings().getCityId() );
             client.getCurrentCondition(new WeatherRequest(User.getInstance().getUserSettings().getCityId()), new WeatherClient.WeatherEventListener() {
                 @Override
                 public void onWeatherRetrieved(CurrentWeather weather) {

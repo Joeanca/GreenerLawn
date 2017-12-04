@@ -1,5 +1,7 @@
 package com.greenerlawn.greenerlawn;
 
+import android.graphics.Bitmap;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Observable;
@@ -35,15 +37,15 @@ import java.util.Observable;
     private String zName;
     private String dbRef;
 
-    public File getzImage() {
+    public Bitmap getzImage() {
         return zImage;
     }
 
-    public void setzImage(File zImage) {
+    public void setzImage(Bitmap zImage) {
         this.zImage = zImage;
     }
 
-    private File zImage;
+    private Bitmap zImage;
 
     //default constructor for empty zone
     public Zone(){

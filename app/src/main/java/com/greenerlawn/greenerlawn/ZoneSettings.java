@@ -2,7 +2,13 @@ package com.greenerlawn.greenerlawn;
 
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,14 +27,18 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+import me.iwf.photopicker.PhotoPicker;
+
 public class ZoneSettings extends AppCompatActivity {
     DataManager dM = new DataManager();
-    private static final int GALLERY_INTENT = 2;
+    private static final int GALLERY_INTENT = 300;
 
 
     // TODO EXPANDABLE VIEWS: https://dzone.com/articles/android-tips
@@ -87,14 +97,39 @@ public class ZoneSettings extends AppCompatActivity {
         recyclerZones.setAdapter(zoneSettingsRecyclerAdapter);
     }
 
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == GALLERY_INTENT && resultCode == RESULT_OK){
-            Log.e("PICTURE TIME", "onActivityResult: " + data.toString() + data.getStringExtra("ZONEID") + requestCode);
-        }
+        if (resultCode == RESULT_OK && requestCode <= 316 && requestCode >= 300) {
+            if (data != null) {
+                ArrayList<String> photos =
+                        data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
+                try{
+                    Bitmap bitmap =getBitmap(photos.get(0));
+                    User.getInstance().zoneListGet().get((requestCode - 300)).setzImage(bitmap);
+                    DatabaseFunctions.getInstance().uploadZoneBitmap((requestCode - 300), bitmap);
 
+                }catch(Exception e){
+                    Log.e("LINE 112 ZONESETTINGS", "onActivityResult: OOps something went wrong " + e  );
+
+                }
+            }
+        }
     }
+    public Bitmap getBitmap(String path) {
+        try {
+            Bitmap bitmap=null;
+            File f= new File(path);
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+
+            bitmap = BitmapFactory.decodeStream(new FileInputStream(f), null, options);
+            return bitmap;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }}
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {

@@ -1,35 +1,19 @@
 package com.greenerlawn.greenerlawn;
 
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.Instrumentation;
-import android.arch.lifecycle.HolderFragment;
-import android.content.Context;
-import android.content.Intent;
-import android.media.Image;
-import android.net.Uri;
-import android.preference.PreferenceManager;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
+import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.util.ArrayList;
 import java.util.List;
+import me.iwf.photopicker.PhotoPicker;
 
-
-import static android.support.v4.app.ActivityCompat.startActivityForResult;
-import static java.security.AccessController.getContext;
 
 
 /**
@@ -41,7 +25,7 @@ public class ZoneSettingsRecyclerAdapter extends RecyclerView.Adapter<ZoneSettin
     private final List<Zone> zoneList;
     private DatabaseFunctions db = new DatabaseFunctions();
     private Activity context;
-    private static final int GALLERY_INTENT = 2;
+    private static final int GALLERY_INTENT = 300;
 
     public ZoneSettingsRecyclerAdapter(Activity context, List<Zone> zList) {
         this.context = context;
@@ -57,9 +41,26 @@ public class ZoneSettingsRecyclerAdapter extends RecyclerView.Adapter<ZoneSettin
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         final Zone zoneInstance = zoneList.get(position);
         ImageButton imgBtn = holder.zoneItem_ImageBtn;
+        if (User.getInstance().zoneListGet().get(position).getzImage()!= null){
+            BitmapDrawable bitmapDrawable = new BitmapDrawable(context.getResources(), User.getInstance().zoneListGet().get(position).getzImage());
+            holder.zoneItem_ImageBtn.setBackground(bitmapDrawable);
+        }
+        imgBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PhotoPicker.builder()
+                        .setPhotoCount(1)
+                        .setShowCamera(true)
+                        .setShowGif(false)
+                        .setPreviewEnabled(false)
+                        .start(context, (GALLERY_INTENT+ position));
+                BitmapDrawable bitmapDrawable = new BitmapDrawable(context.getResources(), User.getInstance().zoneListGet().get(position).getzImage());
+                holder.zoneItem_ImageBtn.setBackground(bitmapDrawable);
+            }
+    });
         holder.zoneTitle_tv.setText(zoneInstance.getZoneNumber());
         holder.zoneStatus_sw.setChecked(zoneInstance.getzOnOff());
         holder.zoneStatus_sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -84,38 +85,11 @@ public class ZoneSettingsRecyclerAdapter extends RecyclerView.Adapter<ZoneSettin
         public final Switch zoneStatus_sw;
         public final ImageButton zoneItem_ImageBtn;
 
-        public ViewHolder(View itemView) {
+        public ViewHolder(final View itemView) {
             super(itemView);
             zoneTitle_tv = (TextView) itemView.findViewById(R.id.zoneItemTitle_TextView);
             zoneStatus_sw = (Switch) itemView.findViewById(R.id.zoneItem_Switch);
             zoneItem_ImageBtn = (ImageButton) itemView.findViewById(R.id.zoneItem_ImageBtn);
-            zoneItem_ImageBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    //Log.e("THE IMAGE CLICK", "onClick: " + view.getId() + getLayoutPosition());
-                    db.getImage(getLayoutPosition());
-                    Intent galleryIntent = new Intent();
-                    galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
-                    galleryIntent.putExtra("zoneNumber",""+ getLayoutPosition() );
-                    galleryIntent.setType("image/*");
-
-                    Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                    cameraIntent.putExtra("zoneNumber",""+ getLayoutPosition() );
-                    Intent chooser = new Intent(Intent.ACTION_CHOOSER);
-                    chooser.putExtra(Intent.EXTRA_INTENT, galleryIntent);
-                    chooser.putExtra(Intent.EXTRA_TITLE, "Select from:");
-                    chooser.putExtra("zoneNumber",""+ getLayoutPosition() );
-
-                    Intent zoneIntent = new Intent();
-                    zoneIntent.putExtra("ZONEID", getLayoutPosition());
-
-                    Intent[] intentArray = { cameraIntent};
-                    chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, intentArray);
-                    chooser.putExtra("EXTRA_ID", getLayoutPosition());
-                    context.startActivityForResult(chooser, GALLERY_INTENT);
-                    context.setResult(GALLERY_INTENT , zoneIntent );
-                }
-            });
             itemView.setOnClickListener(this);
         }
         @Override
@@ -123,12 +97,11 @@ public class ZoneSettingsRecyclerAdapter extends RecyclerView.Adapter<ZoneSettin
             int position = getAdapterPosition();
             // TODO IMPLEMENT THE CHANGE TEXT POP UP BOX FOR THE NAME CHANGE
             // THIS IS THE MAIN LISTENER FOR THE EMPTY SPACE BETWEEN THE IMAGE AND THE SWITCH SO YOU CAN CALL THE SCHEDULE FOR THE ZONE
-            Log.e("IMAGE ON CLICK", "onClick: " + position );
+//            Log.e("IMAGE ON CLICK", "onClick: " + position );
             Toast.makeText(context, "Clicked Position"+position, Toast.LENGTH_SHORT).show();
         }
     }
-
- }
+}
 
 
 
