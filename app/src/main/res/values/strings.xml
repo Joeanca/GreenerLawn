@@ -50,7 +50,13 @@
     <string name="start_time">Start Time</string>
     <string name="set_duration">Duration</string>
     <string name="choose_days">Days</string>
-    <string name="Monday">M</string>
+    <string name="Monday">Mon</string>
+    <string name="Tuesday">Tue</string>
+    <string name="Wednesday">Wed</string>
+    <string name="Thursday">Thur</string>
+    <string name="Friday">Fri</string>
+    <string name="Saturday">Sat</string>
+    <string name="Sunday">Sun</string>
     <string name="choose_zones">Zones</string>
 
 </resources>
