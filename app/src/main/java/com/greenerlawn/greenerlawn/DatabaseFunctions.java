@@ -261,6 +261,7 @@ public class DatabaseFunctions {
         // TODO UPDATE FIREBASE
         mUserRef.child("userSettings").child("deviceSerial").setValue(newSerial);
         User.getInstance().getUserSettings().setDeviceSerial(newSerial);
+        StartZones();
     }
     public void uploadZoneBitmap(final int zoneNum, Bitmap bitmapUp){
         StorageReference imagesRef = storageRef.child(User.getInstance().getUserSettings().getDeviceSerial()).child("pictures");
@@ -285,19 +286,19 @@ public class DatabaseFunctions {
             }
         });
     }
-    public Bitmap downloadZoneBitmap(int zoneNum){
-        final long ONE_MEGABYTE = 1024 * 1024;
-        Bitmap bitmap = null;
-        StorageReference imagesRef = storageRef.child(User.getInstance().getUserSettings().getDeviceSerial()).child("pictures");
-        StorageReference zoneRefTemp = imagesRef.child(User.getInstance().zoneListGet().get(zoneNum).getZoneNumber());
-        storageRef.child("" + zoneNum).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-            @Override
-            public void onSuccess(byte[] bytes) {
-                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-            }
-        });
-        return bitmap;
-    }
+//    public Bitmap downloadZoneBitmap(int zoneNum){
+//        final long ONE_MEGABYTE = 1024 * 1024;
+//        Bitmap bitmap = null;
+//        StorageReference imagesRef = storageRef.child(User.getInstance().getUserSettings().getDeviceSerial()).child("pictures");
+//        StorageReference zoneRefTemp = imagesRef.child(User.getInstance().zoneListGet().get(zoneNum).getZoneNumber());
+//        storageRef.child("" + zoneNum).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+//            @Override
+//            public void onSuccess(byte[] bytes) {
+//                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+//            }
+//        });
+//        return bitmap;
+//    }
     public void updateZoneName(String newName, int zoneNumber){
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("greennerHubs/" + User.getInstance().getUserSettings().getDeviceSerial() + "/zones/" + User.getInstance().zoneListGet().get(zoneNumber).dbRefGet());
