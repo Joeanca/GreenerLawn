@@ -43,6 +43,9 @@ public class DataManager {
     private List<Schedules> schedulesList = new ArrayList<Schedules>();
 
     public DataManager() {
+        if (User.getInstance().getUserSettings().getDeviceSerial()==null){
+            User.getInstance().getUserSettings().setDeviceSerial("pi2");
+        }
         greenerHubRef = database.getReference().child("greennerHubs").child(User.getInstance().getUserSettings().getDeviceSerial());
     }
 

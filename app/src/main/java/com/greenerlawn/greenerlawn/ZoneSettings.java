@@ -1,14 +1,9 @@
 package com.greenerlawn.greenerlawn;
 
-
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
-import android.provider.MediaStore;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,35 +12,22 @@ import android.support.v7.widget.RecyclerView;
 import android.transition.Explode;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.Window;
-
-import com.firebase.ui.auth.AuthUI;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
-
 import me.iwf.photopicker.PhotoPicker;
 
 public class ZoneSettings extends AppCompatActivity {
-    DataManager dM = new DataManager();
     private static final int GALLERY_INTENT = 300;
-
-
-    // TODO EXPANDABLE VIEWS: https://dzone.com/articles/android-tips
-    // https://www.bignerdranch.com/blog/expand-a-recyclerview-in-four-steps/
-
-
-
+    private DatabaseReference dataRef;
+    private ChildEventListener dataRefListener;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,7 +43,9 @@ public class ZoneSettings extends AppCompatActivity {
         final RecyclerView recyclerZones = (RecyclerView) findViewById(R.id.zone_recycler);
         final LinearLayoutManager zoneLayoutManager = new LinearLayoutManager(this);
         recyclerZones.setLayoutManager(zoneLayoutManager);
-        DatabaseReference dataRef = dM.getReference(dM.ZONE_REF);
+        doRecyclerStuff(User.getInstance().zoneListGet(), recyclerZones);
+
+        dataRef = DatabaseFunctions.getInstance().getReference(DatabaseFunctions.ZONE_REF);
         dataRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -71,6 +55,8 @@ public class ZoneSettings extends AppCompatActivity {
                     Zone zone = child.getValue(Zone.class);
                     zone.setzGUID(child.getKey());
                     zone.dbRefSet(child.getKey());
+                    if (zone.getPicRef()!=null)
+                        zone.setzImage(DatabaseFunctions.getInstance().getZonePic(Integer.parseInt(zone.getZoneNumber())));
                     zones.add(zone);
                 }
                 User.getInstance().zoneListSet(zones);
@@ -82,7 +68,30 @@ public class ZoneSettings extends AppCompatActivity {
             }
         });
 
-    // set an exit transition
+//        dataRefListener = new ChildEventListener() {
+//            @Override
+//            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+//            }
+//            @Override
+//            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+//                Zone zone = dataSnapshot.getValue(Zone.class);
+//                zone.setzImage(DatabaseFunctions.getInstance().getZonePic(Integer.parseInt(zone.getZoneNumber())));
+//                Log.e("zonesettings 55", "onChildChanged: " + zone.getzImage() );
+//                User.getInstance().zoneListGet(). set((Integer.parseInt(zone.getZoneNumber())-1),zone);
+//                List<Zone> zonesTemp = User.getInstance().zoneListGet();
+//                zonesTemp.set((Integer.parseInt(zone.getZoneNumber())-1),zone);
+//                User.getInstance().zoneListSet(zonesTemp);
+//                doRecyclerStuff(User.getInstance().zoneListGet(), recyclerZones);
+//            }
+//            @Override
+//            public void onChildRemoved(DataSnapshot dataSnapshot) { }
+//            @Override
+//            public void onChildMoved(DataSnapshot dataSnapshot, String s) { }
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) { }
+//        };
+//        dataRef.addChildEventListener(dataRefListener);
+        // set the exit transition
         getWindow().setExitTransition(new Explode());
     }
     @Override
@@ -91,13 +100,10 @@ public class ZoneSettings extends AppCompatActivity {
         finish();
         return true;
     }
-
     private void doRecyclerStuff(List<Zone> zones, RecyclerView recyclerZones){
         final ZoneSettingsRecyclerAdapter zoneSettingsRecyclerAdapter = new ZoneSettingsRecyclerAdapter(this,zones);
         recyclerZones.setAdapter(zoneSettingsRecyclerAdapter);
     }
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -112,7 +118,6 @@ public class ZoneSettings extends AppCompatActivity {
 
                 }catch(Exception e){
                     Log.e("LINE 112 ZONESETTINGS", "onActivityResult: OOps something went wrong " + e  );
-
                 }
             }
         }

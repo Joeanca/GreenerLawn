@@ -110,21 +110,27 @@ public class SettingsMenu extends AppCompatActivity{
                 // get prompts.xml view
                 LayoutInflater li = LayoutInflater.from(context);
                 View promptsView = li.inflate(R.layout.text_input, null);
+                TextView messageOut = (TextView) promptsView.findViewById(R.id.tv_text_message);
+                messageOut.setText("Please enter a new device serial number");
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
                 // set prompts.xml to alert dialog builder
                 alertDialogBuilder.setView(promptsView);
-                final EditText userInput = (EditText) promptsView.findViewById(R.id.editTextDialogUserInput);
+
                 // set dialog message
+                final EditText userInput = (EditText) promptsView.findViewById(R.id.editTextDialogUserInput);
+
                 alertDialogBuilder
-                        .setCancelable(false)
+                        .setCancelable(true)
                         .setPositiveButton("OK",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog,int id) {
                                         // get user input and set it to result
                                         // edit text
                                         Editable tempText = userInput.getText();
-                                        tv_deviceIDtext.setText(tempText);
-                                        DatabaseFunctions.getInstance().updateSerialNumber(tempText.toString());
+                                        if (tempText.toString()!="") {
+                                            tv_deviceIDtext.setText(tempText);
+                                            DatabaseFunctions.getInstance().updateSerialNumber(tempText.toString());
+                                        }
                                     }
                                 })
                         .setNegativeButton("Cancel",

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
@@ -13,6 +14,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -23,11 +25,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -54,8 +59,7 @@ public class DatabaseFunctions {
     private DatabaseReference greenerHubRef;
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     private StorageReference storageRef = storage.getReference();
-
-
+    private DatabaseReference userRef;
     // Create a storage reference from our app
 
     public static DatabaseFunctions getInstance(){
@@ -63,6 +67,9 @@ public class DatabaseFunctions {
             instance = new DatabaseFunctions();
         }
         return instance;
+    }
+    public DatabaseFunctions(){
+
     }
 
 
@@ -80,27 +87,29 @@ public class DatabaseFunctions {
 
     public void StartDB(FirebaseUser firebaseUser){
         this.firebaseUser = firebaseUser;
+        userRef = database.getReference().child("users").child(firebaseUser.getUid());
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mUserDatabaseReference = mFirebaseDatabase.getReference().child("users");
         User.getInstance().uIDSet(firebaseUser.getUid());
         User.getInstance().setEmail(firebaseUser.getEmail());
         User.getInstance().setUsername(firebaseUser.getDisplayName());
+        // SETS THE SETTINGS AND
         retrieveUserFromDatabase(mUserDatabaseReference);
-        // TODO CREATE METHOD TO CHOOSE THE DEVICE IF UNKNOWN
-        StartZones();
-        getZonePics();
     }
     public DatabaseReference getReference(String reference){
         if (reference.equals(ZONE_REF)){
             dataRef = greenerHubRef.child(reference);
         } else {
-            dataRef = mUserRef.child("userSettings");
+            dataRef = userRef.child(reference);
         }
 
         return dataRef;
     }
-    private void getZonePics() {
-//        storageRef = FirebaseStorage.getInstance().getReference().child("greennerHub/" + User.getInstance().getUserSettings().getDeviceSerial());
+
+    public <T> void uploadNewData(String reference,  T upData) {
+        dataRef = userRef.child(reference);
+        String key = dataRef.push().getKey();
+        dataRef.child(key).setValue(upData);
     }
 
     private void retrieveUserFromDatabase(final DatabaseReference mUserDatabaseReference) {
@@ -112,12 +121,15 @@ public class DatabaseFunctions {
                     // TODO SETUP USER FIELDS.
                     mUserRef = mUserDatabaseReference.child(User.getInstance().uIDGet());
                     User.getInstance().setUserSettings(dataSnapshot.child(User.getInstance().uIDGet()).getValue(UserSettings.class));
+                    User.getInstance().getUserSettings().setDeviceSerial(dataSnapshot.child(User.getInstance().uIDGet()).child("userSettings").child("deviceSerial").getValue().toString());
 
                 }
                 else{
                     // REMOVE ME ONCE THE SETUP OF THE DEVICE ON INITIAL IS SETUP
                     mUserDatabaseReference.child(User.getInstance().uIDGet()).setValue(User.getInstance());
                 }
+                greenerHubRef = database.getReference().child("greennerHubs").child(User.getInstance().getUserSettings().getDeviceSerial());
+
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -125,6 +137,7 @@ public class DatabaseFunctions {
             }
         };
          mUserDatabaseReference.addValueEventListener(listener);
+        StartZones();
     }
 
 
@@ -151,6 +164,7 @@ public class DatabaseFunctions {
                         Zone tempZone = zone.getValue(Zone.class);
                         tempZone.dbRefSet(zone.getKey());
                         tempZone.setzGUID(zone.getKey());
+                        tempZone.setzImage(getZoneBitmapInitialize(tempZone));
                         actualZones.add(tempZone);
                     }
                     User.getInstance().zoneListSet(actualZones);
@@ -163,10 +177,8 @@ public class DatabaseFunctions {
                             for (Zone z : User.getInstance().zoneListGet()){
                                 if (z.getZoneNumber() == zone.getZoneNumber()){
                                     z.setzOnOff(zone.getzOnOff());
-//                                    Log.e("ZONE CHANGE", "DBFUNCTIONS LINE 143 onChildChanged: " + z.getZoneNumber()  );
                                 }
                             }
-//                            Log.e("CHANGE", "onChildChanged: "+ zone.getZoneNumber() );
                         }
                         @Override
                         public void onChildRemoved(DataSnapshot dataSnapshot) {}
@@ -189,6 +201,29 @@ public class DatabaseFunctions {
 
             }
         });
+    }
+    private Bitmap getZoneBitmapInitialize(Zone temp){
+        final Bitmap[] zonePic = new Bitmap[1];
+        if (temp.getPicRef()== null)return null;
+        else{
+            StorageReference imagesRef = storage.getReferenceFromUrl(temp.getPicRef());
+            try {
+                final File localFile = File.createTempFile("Image", "bmp");
+                imagesRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                        zonePic[0] = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                    }
+                });
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return zonePic[0];
     }
 
     private void StartSchedule(){
@@ -240,11 +275,11 @@ public class DatabaseFunctions {
         User.getInstance().getUserSettings().setDeviceSerial(newSerial);
 
     }
-    public void uploadZoneBitmap(int zoneNum, Bitmap bitmapUp){
+    public void uploadZoneBitmap(final int zoneNum, Bitmap bitmapUp){
         StorageReference imagesRef = storageRef.child(User.getInstance().getUserSettings().getDeviceSerial()).child("pictures");
-        StorageReference zoneRefTemp = imagesRef.child(User.getInstance().zoneListGet().get(zoneNum).getZoneNumber());
+        final StorageReference zoneRefTemp = imagesRef.child(User.getInstance().zoneListGet().get(zoneNum).getZoneNumber());
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmapUp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        bitmapUp.compress(Bitmap.CompressFormat.JPEG, 10, baos);
         byte[] data = baos.toByteArray();
         UploadTask uploadTask = zoneRefTemp.putBytes(data);
         uploadTask.addOnFailureListener(new OnFailureListener() {
@@ -257,6 +292,10 @@ public class DatabaseFunctions {
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
                 Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                User.getInstance().zoneListGet().get(zoneNum).setPicRef(downloadUrl.toString());
+                final FirebaseDatabase database = FirebaseDatabase.getInstance();
+                database.getReference("greennerHubs/" + User.getInstance().getUserSettings().getDeviceSerial() + "/zones/" + User.getInstance().zoneListGet().get(zoneNum).dbRefGet() + "/picRef").setValue(downloadUrl.toString());
+
             }
         });
     }
@@ -272,5 +311,39 @@ public class DatabaseFunctions {
             }
         });
         return bitmap;
+    }
+    public void updateZoneName(String newName, int zoneNumber){
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference("greennerHubs/" + User.getInstance().getUserSettings().getDeviceSerial() + "/zones/" + User.getInstance().zoneListGet().get(zoneNumber).dbRefGet());
+        ref.child("zName").setValue(newName);
+    }
+
+    public Bitmap getZonePic(final int zonePortNumber){
+        final Bitmap[] zonePic = new Bitmap[1];
+        if (User.getInstance().zoneListGet().get(zonePortNumber-1).getzImage()==null){
+            if (User.getInstance().zoneListGet().get(zonePortNumber-1).getPicRef()!=null) {
+                //
+                StorageReference imagesRef = storage.getReferenceFromUrl(User.getInstance().zoneListGet().get((zonePortNumber - 1)).getPicRef());
+                try {
+                    final File localFile = File.createTempFile("Image", "bmp");
+                    imagesRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                            zonePic[0] = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+                            User.getInstance().zoneListGet().get((zonePortNumber-1)).setzImage(zonePic[0]);
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                        }
+                    });
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        } else zonePic[0] = User.getInstance().zoneListGet().get(zonePortNumber-1).getzImage();
+        if (zonePic[0]!=null)
+        Log.e("324 dbfn", "getZonePic: " + zonePic[0].toString());
+        return zonePic[0];
     }
 }

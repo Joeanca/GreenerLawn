@@ -37,6 +37,12 @@ import java.util.Observable;
     private String zName;
     private String dbRef;
 
+    public String getPicRef() {return picRef; }
+
+    public void setPicRef(String picRef) {this.picRef = picRef;}
+
+    private String picRef;
+
     public Bitmap getzImage() {
         return zImage;
     }

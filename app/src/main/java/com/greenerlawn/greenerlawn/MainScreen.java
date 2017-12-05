@@ -87,7 +87,6 @@ public class MainScreen extends AppCompatActivity {
     private static final String OPEN_API_KEY = "38cda1c407a4476daa05ae3c8e1b86a4";
 
     List<AuthUI.IdpConfig> providers;
-    private  DataManager dm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,14 +121,6 @@ public class MainScreen extends AppCompatActivity {
             }
         }
     }
-
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        MenuInflater inflater = getMenuInflater();
-//        inflater.inflate(R.menu.main_menu, menu);
-//        return true;
-//    }
-
 
     // USE THIS FOR THE DRAWER OPTIONS TO GIVE THEM CONTEXT OR MAKE THE ACTIONABLE.
     @Override
@@ -246,8 +237,8 @@ public class MainScreen extends AppCompatActivity {
 
     private void onSignedInInitialize(FirebaseUser user) {
         userFunctions(user);
-        dm = new DataManager();
-        mUserRef = dm.getReference(dm.USER_SETTING_REF);
+        DatabaseFunctions.getInstance().StartDB(user);
+        mUserRef = DatabaseFunctions.getInstance().getReference(DatabaseFunctions.USER_SETTING_REF);
 
         mUserRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -256,7 +247,7 @@ public class MainScreen extends AppCompatActivity {
                     UserSettings settings = new UserSettings();
                     settings.setDeviceSerial("pi1");
                     User.getInstance().setUserSettings(settings);
-                    dm.uploadNewData(dm.USER_SETTING_REF,settings);
+                    DatabaseFunctions.getInstance().uploadNewData(DatabaseFunctions.USER_SETTING_REF,settings);
 
 
                 }else {
@@ -313,7 +304,6 @@ public class MainScreen extends AppCompatActivity {
 
     public void openTimer(View view) {
         startActivity(new Intent(MainScreen.this, TimePopUp.class));
-
     }
 
     private void detachDatabaseReadListener() {
