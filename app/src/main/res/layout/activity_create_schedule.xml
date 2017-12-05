@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.greenerlawn.greenerlawn.CreateSchedule">
+
+<!-- todo margins, recycler for zones, start time, duration hint, proper letters in strings, circle buttons -->
+
+    <EditText
+        android:id="@+id/AschName_ET"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/BschStartTime_Btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/start_time"
+
+        app:layout_constraintTop_toBottomOf="@id/AschName_ET" />
+
+    <EditText
+        android:id="@+id/CschDur_ETN"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:inputType="number"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/BschStartTime_Btn" />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/daysOuter_CL"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/CschDur_ETN">
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/daysInnerTV_CL"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <TextView
+                android:id="@+id/dschDays_TV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/choose_days"
+                android:textAppearance="@android:style/TextAppearance.Material.Large"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/dayBtnUpper_CL"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/daysInnerTV_CL">
+
+            <!-- Sunday -->
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/suDayBTN_CL"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/mDayBTN_CL"
+                app:layout_constraintTop_toTopOf="parent"
+
+                >
+
+                <Button
+                    android:id="@+id/schSun_BTN"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+
+                    android:background="@drawable/rounder_butt4days"
+                    android:text="@string/Sunday"
+
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </android.support.constraint.ConstraintLayout>
+
+
+            <!-- Monday -->
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/mDayBTN_CL"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+
+                app:layout_constraintStart_toEndOf="@id/suDayBTN_CL"
+                app:layout_constraintEnd_toStartOf="@id/tDayBTN_CL"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <!-- Monday Button -->
+                <Button
+                    android:id="@+id/schMon_BTN"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+
+                    android:background="@drawable/rounder_butt4days"
+                    android:text="@string/Monday"
+
+                    android:textAlignment="center"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </android.support.constraint.ConstraintLayout>
+
+            <!-- Tuesday -->
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/tDayBTN_CL"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                app:layout_constraintStart_toEndOf="@id/mDayBTN_CL"
+                app:layout_constraintEnd_toStartOf="@id/wDayBTN_CL"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <Button
+                    android:id="@+id/schTue_BTN"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+
+                    android:background="@drawable/rounder_butt4days"
+                    android:text="@string/Tuesday"
+
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </android.support.constraint.ConstraintLayout>
+
+            <!-- Wednesday -->
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/wDayBTN_CL"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+
+                app:layout_constraintStart_toEndOf="@id/tDayBTN_CL"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <Button
+                    android:id="@+id/schWed_BTN"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+
+                    android:background="@drawable/rounder_butt4days"
+                    android:text="@string/Wednesday"
+
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </android.support.constraint.ConstraintLayout>
+
+        </android.support.constraint.ConstraintLayout>
+
+        <!-- lower Buttons -->
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/daysBtnLower_CL"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dayBtnUpper_CL">
+
+            <!-- Thursday -->
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/rDayBTN_CL"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <Button
+                    android:id="@+id/schThur_BTN"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+
+                    android:background="@drawable/rounder_butt4days"
+                    android:text="@string/Thursday"
+
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </android.support.constraint.ConstraintLayout>
+
+            <!-- Friday -->
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/fDayBTN_CL"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                app:layout_constraintStart_toEndOf="@id/rDayBTN_CL"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <Button
+                    android:id="@+id/schFriday_BTN"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+
+                    android:background="@drawable/rounder_butt4days"
+                    android:text="@string/Friday"
+
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </android.support.constraint.ConstraintLayout>
+
+            <!-- saturday -->
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/saDayBTN_CL"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                app:layout_constraintStart_toEndOf="@id/fDayBTN_CL"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <Button
+                    android:id="@+id/schSat_BTN"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+
+                    android:background="@drawable/rounder_butt4days"
+                    android:text="@string/Saturday"
+
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </android.support.constraint.ConstraintLayout>
+
+        </android.support.constraint.ConstraintLayout>
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/zoneSelect_CL"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/daysOuter_CL"
+        app:layout_constraintBottom_toBottomOf="parent"
+
+        >
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/zoneSelect_Recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/sch_zone_select_item" />
+    </android.support.constraint.ConstraintLayout>
+
+
+</android.support.constraint.ConstraintLayout>
+
+
+

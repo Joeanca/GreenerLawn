@@ -16,18 +16,513 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
 
             <android.support.constraint.ConstraintLayout
-                android:id="@+id/linearLayout"
+                android:id="@+id/weatherLayout"
                 android:layout_width="match_parent"
-                android:layout_height="162dp"
+                android:layout_height="235dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/round_edge_border"
+                android:backgroundTint="@color/common_google_signin_btn_text_light_focused"
+                android:gravity="center_vertical|center"
+                android:padding="15dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/floatingActionButton"
+                    android:layout_width="63dp"
+                    android:layout_height="41dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.974"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="1.0" android:focusable="true"/>
+
+                <TextView
+                    android:id="@+id/currentTemp"
+                    android:layout_width="133dp"
+                    android:layout_height="118dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_weight="1"
+                    android:autoSizeTextType="uniform"
+                    android:background="@color/fui_transparent"
+                    android:padding="5dp"
+                    android:shadowColor="@color/text_shadow"
+                    android:textAlignment="center"
+                    android:textColor="@color/icons"
+                    android:textSize="36sp"
+                    android:translationZ="20dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.036"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="144dp"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/conditionImage"
+                            android:layout_width="102dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            tools:layout_editor_absoluteX="301dp"
+                            tools:layout_editor_absoluteY="16dp" />
+
+                        <LinearLayout
+                            android:layout_width="22dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:padding="10dp">
+
+                            <TextView
+                                android:id="@+id/currentRainText"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="bottom"
+                                android:shadowColor="@color/text_shadow"
+                                android:text="Rainfall "
+                                android:textColor="@color/icons"
+                                tools:layout_editor_absoluteX="216dp"
+                                tools:layout_editor_absoluteY="172dp" />
+
+                            <TextView
+                                android:id="@+id/currentRainfall"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:foregroundGravity="right"
+                                android:gravity="top|left|center"
+                                android:shadowColor="@color/text_shadow"
+                                android:textColor="@color/icons"
+                                tools:layout_editor_absoluteX="171dp"
+                                tools:layout_editor_absoluteY="16dp" />
+
+                            <TextView
+                                android:id="@+id/lastRainText"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="bottom"
+                                android:shadowColor="@color/text_shadow"
+                                android:text="@string/last_rain"
+                                android:textColor="@color/icons"
+                                tools:layout_editor_absoluteX="32dp"
+                                tools:layout_editor_absoluteY="199dp" />
+
+                            <TextView
+                                android:id="@+id/lastRain"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:foregroundGravity="left"
+                                android:gravity="left|center_vertical"
+                                android:shadowColor="@color/text_shadow"
+                                android:text="4 Days ago"
+                                android:textColor="@color/icons"
+                                tools:layout_editor_absoluteX="126dp"
+                                tools:layout_editor_absoluteY="204dp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="33dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/humidityText"
+                            android:layout_width="2dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:shadowColor="@color/text_shadow"
+                            android:text="@string/current_humidity"
+                            android:textColor="@color/icons"
+                            tools:layout_editor_absoluteX="32dp"
+                            tools:layout_editor_absoluteY="172dp" />
+
+                        <TextView
+                            android:id="@+id/currentHumidity"
+                            android:layout_width="58dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="left"
+                            android:shadowColor="@color/text_shadow"
+                            android:textColor="@color/icons"
+                            tools:layout_editor_absoluteX="292dp"
+                            tools:layout_editor_absoluteY="172dp" />
+
+                        <TextView
+                            android:id="@+id/textView6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="31dp"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/weatherTitle"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+
+                            android:layout_weight="1"
+                            android:shadowColor="@color/text_shadow"
+                            android:text="@string/weather"
+                            android:textColor="@color/icons"
+                            tools:layout_editor_absoluteX="126dp"
+                            tools:layout_editor_absoluteY="172dp" />
+
+                        <TextView
+                            android:id="@+id/currentCondition"
+                            android:layout_width="54dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="left"
+                            android:shadowColor="@color/text_shadow"
+                            android:textColor="@color/icons"
+                            tools:layout_editor_absoluteX="216dp"
+                            tools:layout_editor_absoluteY="196dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/linearLayout3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:foregroundGravity="center"
+                android:gravity="center"
+                android:minHeight="100dp"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toTopOf="@+id/buttons_main_container"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/weatherLayout">
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/last_run"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/round_edge_border"
+                    android:backgroundTint="@color/common_google_signin_btn_text_light_focused"
+                    android:foregroundGravity="center"
+                    android:minHeight="100dp"
+                    android:padding="5dp"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="5dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/textView10"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <android.support.v7.widget.FitWindowsLinearLayout
+                                android:layout_width="70dp"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_weight="1"
+                                android:adjustViewBounds="true"
+                                android:background="@drawable/ic_feedbin_icon_calendar"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/tv_last_run_day"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_weight="1"
+                                    android:gravity="center"
+                                    android:text="Tuesday"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/text_shadow_white"
+                                    android:textSize="12sp"
+                                    tools:layout_editor_absoluteX="8dp"
+                                    tools:layout_editor_absoluteY="0dp" />
+
+                                <TextView
+                                    android:id="@+id/tv_last_run_date"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:gravity="center"
+                                    android:text=" Nov \n24"
+                                    android:textAlignment="center"
+                                    android:textColor="@android:color/white" />
+
+                            </android.support.v7.widget.FitWindowsLinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/tv_last_run_constant"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:gravity="center"
+                                    android:padding="5dp"
+                                    android:text="Last run: "
+                                    android:textColor="@color/text_shadow_white"
+                                    android:textSize="16sp" />
+
+                                <TextView
+                                    android:id="@+id/tv_last_run_start_time"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:autoSizeTextType="uniform"
+                                    android:autoText="false"
+                                    android:gravity="center"
+                                    android:paddingEnd="5dp"
+                                    android:paddingStart="5dp"
+                                    android:text="3:00 pm"
+                                    android:textColor="@color/text_shadow_white"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:id="@+id/tv_last_run_minutes"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:autoSizeTextType="uniform"
+                                    android:autoText="false"
+                                    android:gravity="center"
+                                    android:paddingBottom="5dp"
+                                    android:paddingEnd="5dp"
+                                    android:paddingStart="5dp"
+                                    android:text="20 min"
+                                    android:textColor="@color/text_shadow_white"
+                                    android:textSize="14sp" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </android.support.constraint.ConstraintLayout>
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/next_run"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/round_edge_border"
+                    android:backgroundTint="@color/common_google_signin_btn_text_light_focused"
+                    android:minHeight="100dp"
+                    android:padding="5dp"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="5dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textView10"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <android.support.v7.widget.FitWindowsLinearLayout
+                                android:layout_width="70dp"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_weight="1"
+                                android:adjustViewBounds="true"
+                                android:background="@drawable/ic_feedbin_icon_calendar"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/tv_next_run_day"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_weight="1"
+                                    android:gravity="center"
+                                    android:text="Monday"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/text_shadow_white"
+                                    android:textSize="12sp"
+                                    tools:layout_editor_absoluteX="8dp"
+                                    tools:layout_editor_absoluteY="0dp" />
+
+                                <TextView
+                                    android:id="@+id/tv_next_run_date"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_weight="1"
+                                    android:gravity="center"
+                                    android:text=" Dec \n11"
+                                    android:textAlignment="center"
+                                    android:textColor="@android:color/white" />
+
+                            </android.support.v7.widget.FitWindowsLinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/tv_next_run_constant"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:gravity="center"
+                                    android:padding="5dp"
+                                    android:text="Next run: "
+                                    android:textColor="@color/text_shadow_white"
+                                    android:textSize="16sp" />
+
+                                <TextView
+                                    android:id="@+id/tv_next_run_start_time2"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:autoSizeTextType="uniform"
+                                    android:autoText="false"
+                                    android:gravity="center"
+                                    android:paddingEnd="5dp"
+                                    android:paddingStart="5dp"
+                                    android:text="3:00 pm"
+                                    android:textColor="@color/text_shadow_white"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:id="@+id/tv_next_run_minutes"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:autoSizeTextType="uniform"
+                                    android:autoText="false"
+                                    android:gravity="center"
+                                    android:paddingBottom="5dp"
+                                    android:paddingEnd="5dp"
+                                    android:paddingStart="5dp"
+                                    android:text="25 min"
+                                    android:textColor="@color/text_shadow_white"
+                                    android:textSize="14sp" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+                    </LinearLayout>
+                </android.support.constraint.ConstraintLayout>
+
+                <TextView
+                    android:id="@+id/textView10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/buttons_main_container"
+                android:layout_width="match_parent"
+                android:layout_height="137dp"
                 android:background="@drawable/custom_border"
                 android:backgroundTint="@color/primary_light_translucent"
                 android:gravity="center_vertical|center"
@@ -43,8 +538,9 @@
                     android:layout_marginBottom="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="25dp"
+                    android:layout_marginTop="8dp"
                     android:clickable="true"
+                    android:onClick="modifySettings"
                     android:translationZ="20dp"
                     app:backgroundTint="@color/accent"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -62,7 +558,7 @@
                     android:layout_marginBottom="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="25dp"
+                    android:layout_marginTop="8dp"
                     android:clickable="true"
                     android:onClick="modifyZones"
                     android:translationZ="20dp"
@@ -81,7 +577,7 @@
                     android:layout_marginBottom="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="6dp"
-                    android:layout_marginTop="25dp"
+                    android:layout_marginTop="8dp"
                     android:clickable="true"
                     android:onClick="openTimer"
                     android:translationZ="20dp"
@@ -147,179 +643,7 @@
 
             </android.support.constraint.ConstraintLayout>
 
-            <android.support.constraint.ConstraintLayout
-                android:id="@+id/weatherLayout"
-                android:layout_width="match_parent"
-                android:layout_height="235dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="32dp"
-                android:gravity="center_vertical|center"
-                app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0">
 
-                <TextView
-                    android:id="@+id/currentTemp"
-                    android:layout_width="109dp"
-                    android:layout_height="116dp"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@color/fui_transparent"
-                    android:shadowColor="@color/text_shadow"
-                    android:textAlignment="center"
-                    android:textColor="@color/icons"
-                    android:textSize="30sp"
-                    android:translationZ="20dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.05"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.077" />
-
-                <TextView
-                    android:id="@+id/weatherTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="18dp"
-                    android:layout_marginBottom="28dp"
-
-                    android:shadowColor="@color/text_shadow"
-                    android:text="@string/weather"
-                    android:textColor="@color/icons"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/humidityText" />
-
-                <ImageView
-                    android:id="@+id/conditionImage"
-                    android:layout_width="139dp"
-                    android:layout_height="123dp"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.96"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.083"
-                    app:srcCompat="@drawable/common_google_signin_btn_icon_dark" />
-
-                <TextView
-                    android:id="@+id/currentHumidity"
-                    android:layout_width="58dp"
-                    android:layout_height="19dp"
-                    android:layout_marginBottom="16dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:shadowColor="@color/text_shadow"
-                    android:textColor="@color/icons"
-                    app:layout_constraintBottom_toTopOf="@+id/lastRain"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.044"
-                    app:layout_constraintStart_toEndOf="@+id/humidityText"
-                    app:layout_constraintTop_toBottomOf="@+id/currentTemp"
-                    app:layout_constraintVertical_bias="1.0" />
-
-                <TextView
-                    android:id="@+id/currentCondition"
-                    android:layout_width="54dp"
-                    android:layout_height="23dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="8dp"
-                    android:shadowColor="@color/text_shadow"
-                    android:textColor="@color/icons"
-                    app:layout_constraintEnd_toEndOf="@+id/conditionImage"
-                    app:layout_constraintHorizontal_bias="0.478"
-                    app:layout_constraintStart_toStartOf="@+id/conditionImage"
-                    app:layout_constraintTop_toBottomOf="@+id/conditionImage" />
-
-                <TextView
-                    android:id="@+id/humidityText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="18dp"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginTop="8dp"
-                    android:shadowColor="@color/text_shadow"
-                    android:text="@string/current_humidity"
-                    android:textColor="@color/icons"
-                    app:layout_constraintBottom_toTopOf="@+id/weatherTitle"
-                    app:layout_constraintStart_toStartOf="@+id/currentTemp"
-                    app:layout_constraintTop_toBottomOf="@+id/currentTemp"
-                    app:layout_constraintVertical_bias="0.565" />
-
-                <TextView
-                    android:id="@+id/currentRainText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="152dp"
-                    android:layout_marginTop="64dp"
-                    android:shadowColor="@color/text_shadow"
-                    android:text="@string/current_rain"
-                    android:textColor="@color/icons"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/weatherTitle" />
-
-                <TextView
-                    android:id="@+id/lastRainText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginTop="72dp"
-                    android:shadowColor="@color/text_shadow"
-                    android:text="@string/last_rain"
-                    android:textColor="@color/icons"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/currentRainText" />
-
-                <TextView
-                    android:id="@+id/lastRain"
-                    android:layout_width="65dp"
-                    android:layout_height="15dp"
-                    android:layout_marginBottom="32dp"
-                    android:layout_marginEnd="232dp"
-                    android:layout_marginStart="8dp"
-                    android:shadowColor="@color/text_shadow"
-                    android:text="need  data"
-                    android:textColor="@color/icons"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="@+id/currentHumidity" />
-
-                <TextView
-                    android:id="@+id/currentRainfall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="44dp"
-                    android:shadowColor="@color/text_shadow"
-                    android:textColor="@color/icons"
-                    app:layout_constraintStart_toEndOf="@+id/currentRainText"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <android.support.design.widget.FloatingActionButton
-                    android:id="@+id/floatingActionButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="32dp"
-                    android:clickable="true"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.919"
-                    app:layout_constraintStart_toEndOf="@+id/lastRain"
-                    app:layout_constraintTop_toBottomOf="@+id/conditionImage"
-                    app:layout_constraintVertical_bias="1.0"
-                    app:srcCompat="?android:attr/alertDialogIcon" />
-            </android.support.constraint.ConstraintLayout>
         </android.support.constraint.ConstraintLayout>
 
     </RelativeLayout>
@@ -336,7 +660,9 @@
         app:headerLayout="@layout/nav_header_drawer"
         app:itemIconTint="@color/drawer_background"
         app:itemTextColor="@color/drawer_background"
-        app:menu="@menu/activity_drawer_drawer" />
+        app:menu="@menu/activity_drawer_drawer" >
+
+    </android.support.design.widget.NavigationView>
 
 
 </android.support.v4.widget.DrawerLayout>
