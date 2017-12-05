@@ -30,13 +30,12 @@ import me.iwf.photopicker.PhotoPicker;
 public class ZoneSettingsRecyclerAdapter extends RecyclerView.Adapter<ZoneSettingsRecyclerAdapter.ViewHolder> {
     private final LayoutInflater zoneInflater;
     private final List<Zone> zoneList;
-    private DatabaseFunctions db = new DatabaseFunctions();
     private Activity context;
     private static final int GALLERY_INTENT = 300;
 
     public ZoneSettingsRecyclerAdapter(Activity context, List<Zone> zList) {
         this.context = context;
-        zoneList = zList;
+        zoneList = User.getInstance().zoneListGet();
         zoneInflater = LayoutInflater.from(context);
     }
 
@@ -51,11 +50,6 @@ public class ZoneSettingsRecyclerAdapter extends RecyclerView.Adapter<ZoneSettin
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         final Zone zoneInstance = zoneList.get(position);
         ImageButton imgBtn = holder.zoneItem_ImageBtn;
-        Bitmap tempBack = DatabaseFunctions.getInstance().getZonePic((position+1));
-        if (tempBack != null) {
-            BitmapDrawable bitmapDrawable = new BitmapDrawable(context.getResources(), tempBack);
-            imgBtn.setBackground(bitmapDrawable);
-        }
         imgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -65,11 +59,6 @@ public class ZoneSettingsRecyclerAdapter extends RecyclerView.Adapter<ZoneSettin
                         .setShowGif(false)
                         .setPreviewEnabled(false)
                         .start(context, (GALLERY_INTENT+ position));
-                Bitmap tempBack = DatabaseFunctions.getInstance().getZonePic((position+1));
-                if (tempBack != null) {
-                    BitmapDrawable bitmapDrawable = new BitmapDrawable(context.getResources(), tempBack);
-                    holder.zoneItem_ImageBtn.setBackground(bitmapDrawable);
-                }
             }
     });
         if (zoneInstance.getzName()!=null){
@@ -123,12 +112,18 @@ public class ZoneSettingsRecyclerAdapter extends RecyclerView.Adapter<ZoneSettin
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 User.getInstance().zoneListGet().get(Integer.parseInt(zoneInstance.getZoneNumber())-1).setzOnOff(b);
-               db.SwitchToggleZone(Integer.parseInt(zoneInstance.getZoneNumber())-1, b);
+                DatabaseFunctions.getInstance().SwitchToggleZone((Integer.parseInt(zoneInstance.getZoneNumber())-1), b);
                 //Log.e("HOLDER", "onCheckedChanged: "+ (Integer.parseInt(zoneInstance.getZoneNumber())));
             }
         });
-    }
 
+        // TO SET BACKGROUND
+        if (User.getInstance().zoneListGet().get(position).getzImage()!=null){
+            BitmapDrawable tempPic = new BitmapDrawable(context.getResources(), User.getInstance().zoneListGet().get(position).getzImage());
+//            Log.e("recycler line 124", "onBindViewHolder: " + User.getInstance().zoneListGet().get(position).getzImage() );
+            imgBtn.setBackground(tempPic);
+        }
+    }
     @Override
     public int getItemCount() {
         return zoneList.size();
@@ -136,16 +131,17 @@ public class ZoneSettingsRecyclerAdapter extends RecyclerView.Adapter<ZoneSettin
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         //pulls the titles from the zones to use as a reference
-        //TODO add fields to pull picture and status for zone
         public final TextView zoneTitle_tv;
         public final Switch zoneStatus_sw;
         public final ImageButton zoneItem_ImageBtn;
 
         public ViewHolder(final View itemView) {
             super(itemView);
+            int position =getAdapterPosition()+1;
             zoneTitle_tv = (TextView) itemView.findViewById(R.id.zoneItemTitle_TextView);
             zoneStatus_sw = (Switch) itemView.findViewById(R.id.zoneItem_Switch);
             zoneItem_ImageBtn = (ImageButton) itemView.findViewById(R.id.zoneItem_ImageBtn);
+
 //            itemView.setOnClickListener(this);
         }
 //        @Override

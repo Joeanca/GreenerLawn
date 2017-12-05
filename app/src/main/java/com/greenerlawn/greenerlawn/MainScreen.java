@@ -80,6 +80,7 @@ public class MainScreen extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle abdt;
     private static final int RC_SIGN_IN = 123;
+    public static FirebaseUser USER;
 
     //AUSTINS
 //    private static final String OPEN_API_KEY = "bea4b929ff482f02d7ab334b6e015467";
@@ -225,8 +226,8 @@ public class MainScreen extends AppCompatActivity {
 
     private void userFunctions(FirebaseUser fbuser) {
         //TO PULL EVERYTHING FROM THE DB
+        USER = fbuser;
         DatabaseFunctions.getInstance();
-        DatabaseFunctions.getInstance().StartDB(fbuser);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View headerLayout = navigationView.getHeaderView(0);
         TextView headerEmail = headerLayout.findViewById(R.id.tv_drawer_email);
@@ -237,7 +238,7 @@ public class MainScreen extends AppCompatActivity {
 
     private void onSignedInInitialize(FirebaseUser user) {
         userFunctions(user);
-        DatabaseFunctions.getInstance().StartDB(user);
+        DatabaseFunctions.getInstance();
         mUserRef = DatabaseFunctions.getInstance().getReference(DatabaseFunctions.USER_SETTING_REF);
 
         mUserRef.addValueEventListener(new ValueEventListener() {

@@ -47,19 +47,22 @@ import static android.support.v4.app.ActivityCompat.startActivityForResult;
 public class DatabaseFunctions {
     public static final String ANONYMOUS = "anonymous";
     private String uID;
-    private DatabaseReference deviceDBRef,mZonesDatabaseReference, mUserRef, mZoneUpdater;
-    private FirebaseUser firebaseUser;
+    private static DatabaseReference deviceDBRef;
+    private static DatabaseReference mZonesDatabaseReference;
+    private static DatabaseReference mUserRef;
+    private static DatabaseReference mZoneUpdater;
+    private static FirebaseUser firebaseUser;
     private static final int RC_SIGN_IN = 123;
     private ChildEventListener mZoneChildEventListener;
     private static  DatabaseFunctions instance;
     public final static String ZONE_REF = "zones";
     public final static String USER_SETTING_REF = "userSettings";
-    private FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private static FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference dataRef = null;
-    private DatabaseReference greenerHubRef;
-    private FirebaseStorage storage = FirebaseStorage.getInstance();
+    private static DatabaseReference greenerHubRef;
+    private static FirebaseStorage storage = FirebaseStorage.getInstance();
     private StorageReference storageRef = storage.getReference();
-    private DatabaseReference userRef;
+    private static DatabaseReference userRef;
     // Create a storage reference from our app
 
     public static DatabaseFunctions getInstance(){
@@ -69,15 +72,15 @@ public class DatabaseFunctions {
         return instance;
     }
     public DatabaseFunctions(){
-
+        StartDB();
     }
 
 
     // ENTRY POINT FOR THE APP TO ACCESS THE DATABASE
-    private FirebaseDatabase mFirebaseDatabase;
+    private static FirebaseDatabase mFirebaseDatabase;
 
     // SPECIFIC PART REFERENCE TO THE DATABASE IT ONLY GOES TO THE USER
-    private DatabaseReference mUserDatabaseReference;
+    private static DatabaseReference mUserDatabaseReference;
 
     // A CHILD LISTENER FOR THE
     ChildEventListener mChildEventListener;
@@ -85,8 +88,8 @@ public class DatabaseFunctions {
     // LOCAL USER
 
 
-    public void StartDB(FirebaseUser firebaseUser){
-        this.firebaseUser = firebaseUser;
+    public static void StartDB(){
+        firebaseUser = MainScreen.USER;
         userRef = database.getReference().child("users").child(firebaseUser.getUid());
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mUserDatabaseReference = mFirebaseDatabase.getReference().child("users");
@@ -95,6 +98,7 @@ public class DatabaseFunctions {
         User.getInstance().setUsername(firebaseUser.getDisplayName());
         // SETS THE SETTINGS AND
         retrieveUserFromDatabase(mUserDatabaseReference);
+
     }
     public DatabaseReference getReference(String reference){
         if (reference.equals(ZONE_REF)){
@@ -112,7 +116,7 @@ public class DatabaseFunctions {
         dataRef.child(key).setValue(upData);
     }
 
-    private void retrieveUserFromDatabase(final DatabaseReference mUserDatabaseReference) {
+    private static void retrieveUserFromDatabase(final DatabaseReference mUserDatabaseReference) {
         Log.d("mUserReference", "retrieveUserFromDatabase: " +mUserDatabaseReference);
         ValueEventListener listener  = new ValueEventListener() {
             @Override
@@ -122,7 +126,6 @@ public class DatabaseFunctions {
                     mUserRef = mUserDatabaseReference.child(User.getInstance().uIDGet());
                     User.getInstance().setUserSettings(dataSnapshot.child(User.getInstance().uIDGet()).getValue(UserSettings.class));
                     User.getInstance().getUserSettings().setDeviceSerial(dataSnapshot.child(User.getInstance().uIDGet()).child("userSettings").child("deviceSerial").getValue().toString());
-
                 }
                 else{
                     // REMOVE ME ONCE THE SETUP OF THE DEVICE ON INITIAL IS SETUP
@@ -136,7 +139,8 @@ public class DatabaseFunctions {
                 //TODO "something went wrong" please retry the last thing you were trying to do. If the problem persist call 1-800-OHH-WELL
             }
         };
-         mUserDatabaseReference.addValueEventListener(listener);
+         mUserDatabaseReference.addListenerForSingleValueEvent(listener);
+         //
         StartZones();
     }
 
@@ -149,9 +153,9 @@ public class DatabaseFunctions {
         mUserDatabaseReference.addValueEventListener(listener);
     }
 
-    private void StartZones(){
+    private static void StartZones(){
         deviceDBRef = FirebaseDatabase.getInstance().getReference("greennerHubs");
-        deviceDBRef.addValueEventListener(new ValueEventListener() {
+        deviceDBRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //iterate
@@ -161,35 +165,40 @@ public class DatabaseFunctions {
                     Iterable<DataSnapshot> zones = dataSnapshot.child(User.getInstance().getUserSettings().getDeviceSerial()).child("zones").getChildren();
                     List<Zone> actualZones = new ArrayList<>();
                     for (DataSnapshot zone: zones){
-                        Zone tempZone = zone.getValue(Zone.class);
+                        final Zone tempZone = zone.getValue(Zone.class);
                         tempZone.dbRefSet(zone.getKey());
                         tempZone.setzGUID(zone.getKey());
-                        tempZone.setzImage(getZoneBitmapInitialize(tempZone));
                         actualZones.add(tempZone);
                     }
                     User.getInstance().zoneListSet(actualZones);
-                    mZoneChildEventListener = new ChildEventListener() {
-                        @Override
-                        public void onChildAdded(DataSnapshot dataSnapshot, String s) {}
-                        @Override
-                        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                            Zone zone = dataSnapshot.getValue(Zone.class);
-                            for (Zone z : User.getInstance().zoneListGet()){
-                                if (z.getZoneNumber() == zone.getZoneNumber()){
-                                    z.setzOnOff(zone.getzOnOff());
-                                }
-                            }
-                        }
-                        @Override
-                        public void onChildRemoved(DataSnapshot dataSnapshot) {}
+                    getZoneBitmapInitialize();
 
-                        @Override
-                        public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {}
-                    };
-                    mZonesDatabaseReference.addChildEventListener(mZoneChildEventListener);
+//                    mZoneChildEventListener = new ChildEventListener() {
+//                        @Override
+//                        public void onChildAdded(DataSnapshot dataSnapshot, String s) {}
+//                        @Override
+//                        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+//                            Zone zone = dataSnapshot.getValue(Zone.class);
+//                            Log.e("dbfn 178", "onChildChanged: startzones "+ zone.getPicRef() );
+//                            if (zone.getPicRef()!=null){
+//                                zone.setzImage(DatabaseFunctions.getInstance().getZonePic(Integer.parseInt(zone.getZoneNumber())));
+//                            }
+//                            for (Zone z : User.getInstance().zoneListGet()){
+//                                if (z.getZoneNumber() == zone.getZoneNumber()){
+//                                    z.setzOnOff(zone.getzOnOff());
+//                                }
+//                            }
+//                        }
+//                        @Override
+//                        public void onChildRemoved(DataSnapshot dataSnapshot) {}
+//
+//                        @Override
+//                        public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+//
+//                        @Override
+//                        public void onCancelled(DatabaseError databaseError) {}
+//                    };
+//                    mZonesDatabaseReference.addChildEventListener(mZoneChildEventListener);
                 }else{
                     // SETUP THE DEVICE FOR THE FIRST TIME
                     Log.e("SOMETHING", "onDataChange: DEVICE DOESN'T EXIST");
@@ -202,29 +211,32 @@ public class DatabaseFunctions {
             }
         });
     }
-    private Bitmap getZoneBitmapInitialize(Zone temp){
-        final Bitmap[] zonePic = new Bitmap[1];
-        if (temp.getPicRef()== null)return null;
-        else{
-            StorageReference imagesRef = storage.getReferenceFromUrl(temp.getPicRef());
-            try {
-                final File localFile = File.createTempFile("Image", "bmp");
-                imagesRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                        zonePic[0] = BitmapFactory.decodeFile(localFile.getAbsolutePath());
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                    }
-                });
-            } catch (IOException e) {
-                e.printStackTrace();
+    private static void getZoneBitmapInitialize(){
+        for (final Zone zone: User.getInstance().zoneListGet()) {
+            if (zone.getPicRef() != null) {
+                StorageReference imagesRef = storage.getReferenceFromUrl(zone.getPicRef());
+                try {
+                    final File localFile = File.createTempFile("Image", "bmp");
+                    imagesRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                            User.getInstance().zoneListGet().get(Integer.parseInt(zone.getZoneNumber()) - 1).setzImage(BitmapFactory.decodeFile(localFile.getAbsolutePath()));
+                            Log.e("line 222 dbfn ", " PICTURE AT START" + User.getInstance().zoneListGet().get(Integer.parseInt(zone.getZoneNumber()) - 1).getzImage());
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.e("line 234 dbfn ", "onFailure: COULDN'T RETRIEVE" + e);
+                        }
+                    });
+                } catch (IOException e) {
+                    Log.e("line 238 dbfn ", "onFailure: COULDN'T RETRIEVE" + e);
+                }
             }
+            final Bitmap[] zonePic = new Bitmap[1];
         }
-        return zonePic[0];
     }
+
 
     private void StartSchedule(){
         DatabaseReference mScheduleDBReference = mUserDatabaseReference.child("zones");
@@ -261,9 +273,7 @@ public class DatabaseFunctions {
     }
     public void SwitchToggleZone(int zoneNumber, Boolean status){
         // TODO SET THE OTHER ZONES OFF;
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference("greennerHubs/" + User.getInstance().getUserSettings().getDeviceSerial() + "/zones/" + User.getInstance().zoneListGet().get(zoneNumber).dbRefGet());
-        ref.child("zOnOff").setValue(status);
+         database.getReference("greennerHubs/" + User.getInstance().getUserSettings().getDeviceSerial() + "/zones/" + User.getInstance().zoneListGet().get(zoneNumber).dbRefGet()).child("zOnOff").setValue(status);
     }
     public void getImage(int imageButtonId){
 

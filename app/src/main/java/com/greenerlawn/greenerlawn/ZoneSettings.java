@@ -27,7 +27,6 @@ import me.iwf.photopicker.PhotoPicker;
 public class ZoneSettings extends AppCompatActivity {
     private static final int GALLERY_INTENT = 300;
     private DatabaseReference dataRef;
-    private ChildEventListener dataRefListener;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,56 +40,36 @@ public class ZoneSettings extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         final RecyclerView recyclerZones = (RecyclerView) findViewById(R.id.zone_recycler);
-        final LinearLayoutManager zoneLayoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager zoneLayoutManager = new LinearLayoutManager(this);
         recyclerZones.setLayoutManager(zoneLayoutManager);
         doRecyclerStuff(User.getInstance().zoneListGet(), recyclerZones);
 
         dataRef = DatabaseFunctions.getInstance().getReference(DatabaseFunctions.ZONE_REF);
-        dataRef.addValueEventListener(new ValueEventListener() {
+        dataRef.addChildEventListener (new ChildEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                ArrayList<Zone> zones = new ArrayList<>();
-                Iterable<DataSnapshot> children = dataSnapshot.getChildren();
-                for (DataSnapshot child : children) {
-                    Zone zone = child.getValue(Zone.class);
-                    zone.setzGUID(child.getKey());
-                    zone.dbRefSet(child.getKey());
-                    if (zone.getPicRef()!=null)
-                        zone.setzImage(DatabaseFunctions.getInstance().getZonePic(Integer.parseInt(zone.getZoneNumber())));
-                    zones.add(zone);
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+            }
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                Zone zone = dataSnapshot.getValue(Zone.class);
+                if (zone.getPicRef()!=null) {
+                    Bitmap tempBit = DatabaseFunctions.getInstance().getZonePic(Integer.parseInt(zone.getZoneNumber()));
+                    User.getInstance().zoneListGet().get(Integer.parseInt(zone.getZoneNumber())-1).setzImage(tempBit);
+                    zone.setzImage(User.getInstance().zoneListGet().get(Integer.parseInt(zone.getZoneNumber())-1).getzImage());
+//                    Log.e("zonesettings 55", "onChildChanged: " + User.getInstance().zoneListGet().get(Integer.parseInt(zone.getZoneNumber())-1).getzImage() + " user: " + zone.getzImage());
                 }
-                User.getInstance().zoneListSet(zones);
-                doRecyclerStuff(zones, recyclerZones);
+                User.getInstance().zoneListGet().get(Integer.parseInt(zone.getZoneNumber())-1).setzOnOff(zone.getzOnOff());
+                User.getInstance().zoneListGet().get(Integer.parseInt(zone.getZoneNumber())-1).setPicRef(zone.getPicRef());
+                User.getInstance().zoneListGet().get(Integer.parseInt(zone.getZoneNumber())-1).setzName(zone.getzName());
+                doRecyclerStuff(User.getInstance().zoneListGet(), recyclerZones);
             }
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
+            public void onChildRemoved(DataSnapshot dataSnapshot) { }
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) { }
+            @Override
+            public void onCancelled(DatabaseError databaseError) { }
         });
-
-//        dataRefListener = new ChildEventListener() {
-//            @Override
-//            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-//            }
-//            @Override
-//            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-//                Zone zone = dataSnapshot.getValue(Zone.class);
-//                zone.setzImage(DatabaseFunctions.getInstance().getZonePic(Integer.parseInt(zone.getZoneNumber())));
-//                Log.e("zonesettings 55", "onChildChanged: " + zone.getzImage() );
-//                User.getInstance().zoneListGet(). set((Integer.parseInt(zone.getZoneNumber())-1),zone);
-//                List<Zone> zonesTemp = User.getInstance().zoneListGet();
-//                zonesTemp.set((Integer.parseInt(zone.getZoneNumber())-1),zone);
-//                User.getInstance().zoneListSet(zonesTemp);
-//                doRecyclerStuff(User.getInstance().zoneListGet(), recyclerZones);
-//            }
-//            @Override
-//            public void onChildRemoved(DataSnapshot dataSnapshot) { }
-//            @Override
-//            public void onChildMoved(DataSnapshot dataSnapshot, String s) { }
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) { }
-//        };
-//        dataRef.addChildEventListener(dataRefListener);
         // set the exit transition
         getWindow().setExitTransition(new Explode());
     }
