@@ -6,6 +6,8 @@ import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.util.Log;
@@ -119,9 +121,12 @@ public class ZoneSettingsRecyclerAdapter extends RecyclerView.Adapter<ZoneSettin
 
         // TO SET BACKGROUND
         if (User.getInstance().zoneListGet().get(position).getzImage()!=null){
-            BitmapDrawable tempPic = new BitmapDrawable(context.getResources(), User.getInstance().zoneListGet().get(position).getzImage());
+            Bitmap tempPic =  User.getInstance().zoneListGet().get(position).getzImage();
 //            Log.e("recycler line 124", "onBindViewHolder: " + User.getInstance().zoneListGet().get(position).getzImage() );
-            imgBtn.setBackground(tempPic);
+            RoundedBitmapDrawable dr =
+                    RoundedBitmapDrawableFactory.create(context.getResources(), tempPic);
+            dr.setCornerRadius(Math.max(tempPic.getWidth(), tempPic.getHeight()) / 2.0f);
+            imgBtn.setBackground(dr);
         }
     }
     @Override
