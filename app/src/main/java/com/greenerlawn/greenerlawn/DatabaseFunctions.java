@@ -45,15 +45,11 @@ import static android.support.v4.app.ActivityCompat.startActivityForResult;
  */
 
 public class DatabaseFunctions {
-    public static final String ANONYMOUS = "anonymous";
-    private String uID;
     private static DatabaseReference deviceDBRef;
     private static DatabaseReference mZonesDatabaseReference;
     private static DatabaseReference mUserRef;
     private static DatabaseReference mZoneUpdater;
     private static FirebaseUser firebaseUser;
-    private static final int RC_SIGN_IN = 123;
-    private ChildEventListener mZoneChildEventListener;
     private static  DatabaseFunctions instance;
     public final static String ZONE_REF = "zones";
     public final static String USER_SETTING_REF = "userSettings";
@@ -63,8 +59,8 @@ public class DatabaseFunctions {
     private static FirebaseStorage storage = FirebaseStorage.getInstance();
     private StorageReference storageRef = storage.getReference();
     private static DatabaseReference userRef;
-    // Create a storage reference from our app
 
+    // Create a storage reference from our app
     public static DatabaseFunctions getInstance(){
         if (instance == null){
             instance = new DatabaseFunctions();
@@ -115,7 +111,6 @@ public class DatabaseFunctions {
         String key = dataRef.push().getKey();
         dataRef.child(key).setValue(upData);
     }
-
     private static void retrieveUserFromDatabase(final DatabaseReference mUserDatabaseReference) {
         Log.d("mUserReference", "retrieveUserFromDatabase: " +mUserDatabaseReference);
         ValueEventListener listener  = new ValueEventListener() {
@@ -132,7 +127,6 @@ public class DatabaseFunctions {
                     mUserDatabaseReference.child(User.getInstance().uIDGet()).setValue(User.getInstance());
                 }
                 greenerHubRef = database.getReference().child("greennerHubs").child(User.getInstance().getUserSettings().getDeviceSerial());
-
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -143,16 +137,12 @@ public class DatabaseFunctions {
          //
         StartZones();
     }
-
-
-
     public void removeListener(){
         mUserDatabaseReference.removeEventListener(listener);
     }
     public void attachListener(){
         mUserDatabaseReference.addValueEventListener(listener);
     }
-
     private static void StartZones(){
         deviceDBRef = FirebaseDatabase.getInstance().getReference("greennerHubs");
         deviceDBRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -172,7 +162,6 @@ public class DatabaseFunctions {
                     }
                     User.getInstance().zoneListSet(actualZones);
                     getZoneBitmapInitialize();
-
 //                    mZoneChildEventListener = new ChildEventListener() {
 //                        @Override
 //                        public void onChildAdded(DataSnapshot dataSnapshot, String s) {}
@@ -199,10 +188,6 @@ public class DatabaseFunctions {
 //                        public void onCancelled(DatabaseError databaseError) {}
 //                    };
 //                    mZonesDatabaseReference.addChildEventListener(mZoneChildEventListener);
-                }else{
-                    // SETUP THE DEVICE FOR THE FIRST TIME
-                    Log.e("SOMETHING", "onDataChange: DEVICE DOESN'T EXIST");
-
                 }
             }
             @Override
@@ -221,23 +206,20 @@ public class DatabaseFunctions {
                         @Override
                         public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                             User.getInstance().zoneListGet().get(Integer.parseInt(zone.getZoneNumber()) - 1).setzImage(BitmapFactory.decodeFile(localFile.getAbsolutePath()));
-                            Log.e("line 222 dbfn ", " PICTURE AT START" + User.getInstance().zoneListGet().get(Integer.parseInt(zone.getZoneNumber()) - 1).getzImage());
+//                            Log.e("line 222 dbfn ", " PICTURE AT START" + User.getInstance().zoneListGet().get(Integer.parseInt(zone.getZoneNumber()) - 1).getzImage());
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Log.e("line 234 dbfn ", "onFailure: COULDN'T RETRIEVE" + e);
+//                            Log.e("line 234 dbfn ", "onFailure: COULDN'T RETRIEVE" + e);
                         }
                     });
                 } catch (IOException e) {
-                    Log.e("line 238 dbfn ", "onFailure: COULDN'T RETRIEVE" + e);
+//                    Log.e("line 238 dbfn ", "onFailure: COULDN'T RETRIEVE" + e);
                 }
             }
-            final Bitmap[] zonePic = new Bitmap[1];
         }
     }
-
-
     private void StartSchedule(){
         DatabaseReference mScheduleDBReference = mUserDatabaseReference.child("zones");
 
@@ -275,15 +257,10 @@ public class DatabaseFunctions {
         // TODO SET THE OTHER ZONES OFF;
          database.getReference("greennerHubs/" + User.getInstance().getUserSettings().getDeviceSerial() + "/zones/" + User.getInstance().zoneListGet().get(zoneNumber).dbRefGet()).child("zOnOff").setValue(status);
     }
-    public void getImage(int imageButtonId){
-
-        //Log.e("IMAGE BUTTON ID", "getImage"+ imageButtonId);
-    }
     public void updateSerialNumber(String newSerial){
         // TODO UPDATE FIREBASE
         mUserRef.child("userSettings").child("deviceSerial").setValue(newSerial);
         User.getInstance().getUserSettings().setDeviceSerial(newSerial);
-
     }
     public void uploadZoneBitmap(final int zoneNum, Bitmap bitmapUp){
         StorageReference imagesRef = storageRef.child(User.getInstance().getUserSettings().getDeviceSerial()).child("pictures");
@@ -305,7 +282,6 @@ public class DatabaseFunctions {
                 User.getInstance().zoneListGet().get(zoneNum).setPicRef(downloadUrl.toString());
                 final FirebaseDatabase database = FirebaseDatabase.getInstance();
                 database.getReference("greennerHubs/" + User.getInstance().getUserSettings().getDeviceSerial() + "/zones/" + User.getInstance().zoneListGet().get(zoneNum).dbRefGet() + "/picRef").setValue(downloadUrl.toString());
-
             }
         });
     }
@@ -327,7 +303,6 @@ public class DatabaseFunctions {
         DatabaseReference ref = database.getReference("greennerHubs/" + User.getInstance().getUserSettings().getDeviceSerial() + "/zones/" + User.getInstance().zoneListGet().get(zoneNumber).dbRefGet());
         ref.child("zName").setValue(newName);
     }
-
     public Bitmap getZonePic(final int zonePortNumber){
         final Bitmap[] zonePic = new Bitmap[1];
         if (User.getInstance().zoneListGet().get(zonePortNumber-1).getzImage()==null){

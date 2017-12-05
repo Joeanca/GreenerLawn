@@ -1,5 +1,4 @@
 package com.greenerlawn.greenerlawn;
-
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,8 +15,6 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
@@ -43,7 +40,6 @@ public class ZoneSettings extends AppCompatActivity {
         LinearLayoutManager zoneLayoutManager = new LinearLayoutManager(this);
         recyclerZones.setLayoutManager(zoneLayoutManager);
         doRecyclerStuff(User.getInstance().zoneListGet(), recyclerZones);
-
         dataRef = DatabaseFunctions.getInstance().getReference(DatabaseFunctions.ZONE_REF);
         dataRef.addChildEventListener (new ChildEventListener() {
             @Override
@@ -56,7 +52,6 @@ public class ZoneSettings extends AppCompatActivity {
                     Bitmap tempBit = DatabaseFunctions.getInstance().getZonePic(Integer.parseInt(zone.getZoneNumber()));
                     User.getInstance().zoneListGet().get(Integer.parseInt(zone.getZoneNumber())-1).setzImage(tempBit);
                     zone.setzImage(User.getInstance().zoneListGet().get(Integer.parseInt(zone.getZoneNumber())-1).getzImage());
-//                    Log.e("zonesettings 55", "onChildChanged: " + User.getInstance().zoneListGet().get(Integer.parseInt(zone.getZoneNumber())-1).getzImage() + " user: " + zone.getzImage());
                 }
                 User.getInstance().zoneListGet().get(Integer.parseInt(zone.getZoneNumber())-1).setzOnOff(zone.getzOnOff());
                 User.getInstance().zoneListGet().get(Integer.parseInt(zone.getZoneNumber())-1).setPicRef(zone.getPicRef());
@@ -75,7 +70,6 @@ public class ZoneSettings extends AppCompatActivity {
     }
     @Override
     public boolean onSupportNavigateUp(){
-
         finish();
         return true;
     }
@@ -113,14 +107,14 @@ public class ZoneSettings extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
             return null;
-        }}
+        }
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             onBackPressed();    //Call the back button's method
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
     @Override
