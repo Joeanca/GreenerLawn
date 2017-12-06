@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.greenerlawn.greenerlawn.StartTimePopUp">
+
+    <TimePicker
+        android:id="@+id/schStartTime_PCKR"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/primary"
+        android:theme="@style/AppTheme"
+        android:timePickerMode="clock"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    <Button
+        android:id="@+id/startTimeOk_BTN"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:onClick="submitResult"
+
+        android:text="@string/OK"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/startTimeCancel_Button"
+        app:layout_constraintStart_toStartOf="parent"
+
+        app:layout_constraintTop_toBottomOf="@id/schStartTime_PCKR" />
+
+    <Button
+        android:id="@+id/startTimeCancel_Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="cancelPick"
+
+        android:text="@string/Cancel"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/startTimeOk_BTN"
+        app:layout_constraintTop_toBottomOf="@id/schStartTime_PCKR" />
+</android.support.constraint.ConstraintLayout>

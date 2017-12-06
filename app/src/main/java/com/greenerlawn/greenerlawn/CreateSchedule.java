@@ -1,5 +1,6 @@
 package com.greenerlawn.greenerlawn;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,9 +18,13 @@ public class CreateSchedule extends AppCompatActivity {
     private final boolean NOT_SELECTED = false;
     private boolean[] dayArray = new boolean[8];
     private String[] dayTextArr = new String[]{"All", "Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"};
+    static final int START_TIME_PICK = 1;
+    private int startHour = -1, startMinute = -1;
+    private int durHour = -1;
+    private int durMinute = -1;
+
 
     //todo pull images properly from DB functions
-    //todo pop up for timepicker
     //todo submit FAB
     //todo
     @Override
@@ -32,8 +37,8 @@ public class CreateSchedule extends AppCompatActivity {
         final LinearLayoutManager zoneSelLayMan = new LinearLayoutManager(this);
         selectRecycler.setLayoutManager(zoneSelLayMan);
 
-        CreateSchZoneRecyclerAdapter c = new CreateSchZoneRecyclerAdapter(zoneSelectList,this);
-        selectRecycler.setAdapter(c);
+        final CreateSchZoneRecyclerAdapter createSchZoneRecyclerAdapter = new CreateSchZoneRecyclerAdapter(zoneSelectList,this);
+        selectRecycler.setAdapter(createSchZoneRecyclerAdapter);
     }
 
     public void selectDay(View v) {
@@ -51,6 +56,21 @@ public class CreateSchedule extends AppCompatActivity {
             dayBTN.setPressed(false);
         }
         dayArray[dayValue] = dayBTN.isPressed();
+    }
+
+
+    public void startTimePick(View v){
+        Intent startTimeInent = new Intent(this,StartTimePopUp.class);
+        startActivityForResult(startTimeInent,START_TIME_PICK);
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == START_TIME_PICK && resultCode == RESULT_OK) {
+            startHour = data.getIntExtra("hour", -1);
+            startMinute = data.getIntExtra("minute", -1);
+        }
     }
 
     private void fillZoneSelectList() {

@@ -32,10 +32,10 @@
             android:theme="@style/Theme.AppCompat.Light.TimerPopup" />
         <activity
             android:name=".ZoneSettings"
-            android:theme="@style/Theme.AppCompat.Light.zones"></activity>
+            android:theme="@style/Theme.AppCompat.Light.zones" />
         <activity
             android:name=".SettingsMenu"
-            android:theme="@style/Theme.AppCompat.Light.settings"></activity>
+            android:theme="@style/Theme.AppCompat.Light.settings" />
         <activity
             android:name=".Drawer"
             android:label="@string/title_activity_drawer"
@@ -48,8 +48,9 @@
         </activity>
         <activity
             android:name=".SearchCity"
-            android:theme="@style/Theme.AppCompat.Light.TimerPopup"></activity>
-        <activity android:name=".CreateSchedule"></activity>
+            android:theme="@style/Theme.AppCompat.Light.TimerPopup" />
+        <activity android:name=".CreateSchedule" />
+        <activity android:name=".StartTimePopUp"></activity>
     </application>
 
 </manifest>

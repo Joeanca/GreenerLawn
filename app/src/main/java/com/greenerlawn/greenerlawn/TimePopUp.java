@@ -51,7 +51,6 @@ public class TimePopUp extends Activity{
         TextView tv = findViewById(R.id.textView);
         tv.setText("The time is: " + minutes);
         //setResult(RESULT_OK);
-        //finish();
     }
 
 }
