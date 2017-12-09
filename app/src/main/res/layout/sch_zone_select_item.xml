@@ -16,13 +16,15 @@
 
             <ImageView
                 android:id="@+id/schZoneItem_IMG"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@android:drawable/ic_menu_report_image"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+
+                android:background="@drawable/irrigation"
 
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/schZoneItem_TV"
                 app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 />
 
 
@@ -43,7 +45,7 @@
                 android:id="@+id/schZoneItem_RB"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/schZoneItem_TV"
                 app:layout_constraintTop_toTopOf="parent" />

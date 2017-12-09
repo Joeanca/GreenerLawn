@@ -4,16 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:theme="@style/AppTheme"
     tools:context="com.greenerlawn.greenerlawn.ScheduleZoneSelect">
 
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/zone_select_CL"
         android:layout_width="match_parent"
         android:layout_height="0dp"
 
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/sch_zone_select_submit_BTN"
 
-        android:id="@+id/zone_select_CL"
         >
 
 
@@ -35,15 +38,18 @@
     </android.support.constraint.ConstraintLayout>
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/sch_zone_select_submit_BTN"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/submit"
+        android:textColor="@color/icons"
+        android:backgroundTint="@color/primary"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/zone_select_CL"
+        android:layout_marginBottom="32dp"
         app:layout_constraintVertical_bias="1.0" />
 
 </android.support.constraint.ConstraintLayout>

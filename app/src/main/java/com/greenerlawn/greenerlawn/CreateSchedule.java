@@ -3,24 +3,22 @@ package com.greenerlawn.greenerlawn;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 
 public class CreateSchedule extends AppCompatActivity {
 
-    private ArrayList<ScheduleZoneSelect.SchedZoneSelect> zoneSelectList = new ArrayList<ScheduleZoneSelect.SchedZoneSelect>();
+    private ArrayList<ScheduleZoneSelect.SchedZoneItem> zoneSelectList = new ArrayList<ScheduleZoneSelect.SchedZoneItem>();
     private boolean[] dayArray = new boolean[8];
     private String[] dayTextArr = new String[]{"All", "Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"};
     static final int START_TIME_PICK = 1;
     static final int  DURATION_TIME_PICK = 2;
     static final int ZONE_SELECT = 3;
     private int startHour = -1, startMinute = -1, durHour = -1, durMinute = -1;
+    private boolean durFlag = false, startTimeFlag = false, zonesFlag = false, nameFlag = false;
 
 
     //todo pull images properly from DB functions
@@ -30,15 +28,9 @@ public class CreateSchedule extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_schedule);
-        final RecyclerView selectRecycler = (RecyclerView) findViewById(R.id.zoneSelect_Recycler);
-        final LinearLayoutManager zoneSelLayMan = new LinearLayoutManager(this);
-        selectRecycler.setLayoutManager(zoneSelLayMan);
 
-        final CreateSchZoneRecyclerAdapter createSchZoneRecyclerAdapter = new CreateSchZoneRecyclerAdapter(zoneSelectList,this);
-        selectRecycler.setAdapter(createSchZoneRecyclerAdapter);
     }
 
-    // i think this is insanity.
     public void selectDay(View v) {
         Button dayBTN = (Button) v;
         dayBTN.getText();
@@ -83,8 +75,18 @@ public class CreateSchedule extends AppCompatActivity {
             durHour = data.getIntExtra("durHour", -1);
             durMinute = data.getIntExtra("durMinute", -1);
         }
+        if (requestCode == ZONE_SELECT && resultCode == RESULT_OK){
+            String key = ScheduleZoneSelect.ZONE_CHOICE;
+            zoneSelectList = (ArrayList<ScheduleZoneSelect.SchedZoneItem>) data.getSerializableExtra(key);
+        }
     }
 
+    public void createSchedule(View view) {
+        EditText nameV =
+        if (durFlag && startTimeFlag && zonesFlag && nameFlag){
+
+        }
+    }
 }
 
 

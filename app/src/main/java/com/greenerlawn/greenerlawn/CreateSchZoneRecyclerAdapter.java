@@ -10,7 +10,6 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by jason on 12/4/2017.
@@ -18,10 +17,10 @@ import java.util.List;
 
 public class CreateSchZoneRecyclerAdapter extends RecyclerView.Adapter<CreateSchZoneRecyclerAdapter.ViewHolder> {
     private final LayoutInflater zoneSelectInflater;
-    private final List<CreateSchedule.SchedZoneSelect> zoneSelects;
+    private final ArrayList<ScheduleZoneSelect.SchedZoneItem> zoneSelects;
     private Activity context;
 
-    public CreateSchZoneRecyclerAdapter( ArrayList<CreateSchedule.SchedZoneSelect> zoneSelects, Activity context) {
+    public CreateSchZoneRecyclerAdapter(ArrayList<ScheduleZoneSelect.SchedZoneItem> zoneSelects, Activity context) {
         this.zoneSelectInflater = LayoutInflater.from(context);
         this.zoneSelects = zoneSelects;
         this.context = context;
@@ -35,7 +34,7 @@ public class CreateSchZoneRecyclerAdapter extends RecyclerView.Adapter<CreateSch
 
     @Override
     public void onBindViewHolder(CreateSchZoneRecyclerAdapter.ViewHolder holder, int position) {
-        CreateSchedule.SchedZoneSelect selectInstance = zoneSelects.get(position);
+        ScheduleZoneSelect.SchedZoneItem selectInstance = zoneSelects.get(position);
         RadioButton radBTN = holder.select;
         holder.title.setText(selectInstance.getName());
         holder.select.setChecked(selectInstance.isSelected());
