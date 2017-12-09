@@ -59,6 +59,7 @@
     <string name="Saturday">Sat</string>
     <string name="Sunday">Sun</string>
     <string name="choose_zones">Zones</string>
+    <string name="repeat_switch">Repeat</string>
 
     <!-- Time picker buttons -->
     <string name="OK">Ok</string>

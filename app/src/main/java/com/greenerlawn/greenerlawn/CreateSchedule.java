@@ -19,14 +19,13 @@ public class CreateSchedule extends AppCompatActivity {
     private boolean[] dayArray = new boolean[8];
     private String[] dayTextArr = new String[]{"All", "Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"};
     static final int START_TIME_PICK = 1;
-    private int startHour = -1, startMinute = -1;
-    private int durHour = -1;
-    private int durMinute = -1;
+    static final int  DURATION_TIME_PICK = 2;
+    private int startHour = -1, startMinute = -1, durHour = -1, durMinute = -1;
 
 
     //todo pull images properly from DB functions
     //todo submit FAB
-    //todo
+    //no need to create a boolean flag for repeat button, can just test if is checked
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         zoneList = User.getInstance().zoneListGet();
@@ -41,6 +40,7 @@ public class CreateSchedule extends AppCompatActivity {
         selectRecycler.setAdapter(createSchZoneRecyclerAdapter);
     }
 
+    // i think this is insanity.
     public void selectDay(View v) {
         Button dayBTN = (Button) v;
         dayBTN.getText();
@@ -58,6 +58,11 @@ public class CreateSchedule extends AppCompatActivity {
         dayArray[dayValue] = dayBTN.isPressed();
     }
 
+    public void durationSet(View durBTN){
+        Intent durationIntent = new Intent(this, DurationPopUp.class);
+        startActivityForResult(durationIntent, DURATION_TIME_PICK);
+    }
+
 
     public void startTimePick(View v){
         Intent startTimeInent = new Intent(this,StartTimePopUp.class);
@@ -70,6 +75,10 @@ public class CreateSchedule extends AppCompatActivity {
         if (requestCode == START_TIME_PICK && resultCode == RESULT_OK) {
             startHour = data.getIntExtra("hour", -1);
             startMinute = data.getIntExtra("minute", -1);
+        }
+        if(requestCode == DURATION_TIME_PICK && resultCode == RESULT_OK){
+            durHour = data.getIntExtra("durHour", -1);
+            durMinute = data.getIntExtra("durMinute", -1);
         }
     }
 
