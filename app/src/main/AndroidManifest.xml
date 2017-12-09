@@ -51,6 +51,7 @@
             android:theme="@style/Theme.AppCompat.Light.TimerPopup" />
         <activity android:name=".CreateSchedule" />
         <activity android:name=".StartTimePopUp" />
+        <activity android:name=".DurationPopUp"/>
 
     </application>
 
