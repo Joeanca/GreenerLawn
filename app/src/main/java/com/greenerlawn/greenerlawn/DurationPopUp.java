@@ -57,13 +57,12 @@ public class DurationPopUp extends Activity{
     @Override
     public void finish() {
         Intent data = new Intent();
-        if (Intent data = new Intent();
         if( durHour != -1 && durMin != -1){
             data.putExtra("durHour", durHour);
             data.putExtra("durMinute", durMin);
             setResult(RESULT_OK, data);
         }else{setResult(RESULT_CANCELED, data);}
         super.finish();
-        super.finish();
+
     }
 }
