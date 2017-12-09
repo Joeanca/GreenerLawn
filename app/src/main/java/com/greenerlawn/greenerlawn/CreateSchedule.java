@@ -13,13 +13,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CreateSchedule extends AppCompatActivity {
-    private List<Zone> zoneList;
-    private ArrayList<SchedZoneSelect> zoneSelectList = new ArrayList<SchedZoneSelect>();
-    private final boolean NOT_SELECTED = false;
+
+    private ArrayList<ScheduleZoneSelect.SchedZoneSelect> zoneSelectList = new ArrayList<ScheduleZoneSelect.SchedZoneSelect>();
     private boolean[] dayArray = new boolean[8];
     private String[] dayTextArr = new String[]{"All", "Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"};
     static final int START_TIME_PICK = 1;
     static final int  DURATION_TIME_PICK = 2;
+    static final int ZONE_SELECT = 3;
     private int startHour = -1, startMinute = -1, durHour = -1, durMinute = -1;
 
 
@@ -28,10 +28,8 @@ public class CreateSchedule extends AppCompatActivity {
     //no need to create a boolean flag for repeat button, can just test if is checked
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        zoneList = User.getInstance().zoneListGet();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_schedule);
-        fillZoneSelectList();
         final RecyclerView selectRecycler = (RecyclerView) findViewById(R.id.zoneSelect_Recycler);
         final LinearLayoutManager zoneSelLayMan = new LinearLayoutManager(this);
         selectRecycler.setLayoutManager(zoneSelLayMan);
@@ -70,6 +68,11 @@ public class CreateSchedule extends AppCompatActivity {
 
     }
 
+    public void chooseZones(View v){
+        Intent i = new Intent(this, ScheduleZoneSelect.class);
+        startActivityForResult(i, ZONE_SELECT);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == START_TIME_PICK && resultCode == RESULT_OK) {
@@ -79,49 +82,6 @@ public class CreateSchedule extends AppCompatActivity {
         if(requestCode == DURATION_TIME_PICK && resultCode == RESULT_OK){
             durHour = data.getIntExtra("durHour", -1);
             durMinute = data.getIntExtra("durMinute", -1);
-        }
-    }
-
-    private void fillZoneSelectList() {
-        for (Zone z : zoneList) {
-            SchedZoneSelect newSZS = new SchedZoneSelect(z.getzImage(), z.getzName(), NOT_SELECTED);
-            zoneSelectList.add(newSZS);
-        }
-    }
-
-    public class SchedZoneSelect {
-        private File zImage;
-        private String name;
-        private boolean selected;
-
-        public SchedZoneSelect(File zImage, String name, boolean selected) {
-            this.zImage = zImage;
-            this.name = name;
-            this.selected = selected;
-        }
-
-        public File getzImage() {
-            return zImage;
-        }
-
-        public void setzImage(File zImage) {
-            this.zImage = zImage;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public boolean isSelected() {
-            return selected;
-        }
-
-        public void setSelected(boolean selected) {
-            this.selected = selected;
         }
     }
 

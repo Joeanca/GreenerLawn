@@ -58,7 +58,7 @@
     <string name="Friday">Fri</string>
     <string name="Saturday">Sat</string>
     <string name="Sunday">Sun</string>
-    <string name="choose_zones">Zones</string>
+    <string name="choose_zones">Choose Zones</string>
     <string name="repeat_switch">Repeat</string>
 
     <!-- Time picker buttons -->
