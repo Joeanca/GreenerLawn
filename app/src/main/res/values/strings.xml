@@ -2,6 +2,7 @@
     <string name="app_name">Greener Lawn</string>
     <string name="submit">Submit</string>
     <string name="hour">Hour</string>
+    <string name="hourHint"><font size="6"></font>Hour</string>
     <string name="minute">Minute</string>
     <string name="second">Second</string>
     <string name="Open">NavBar</string>
@@ -45,6 +46,23 @@
     <!-- Firebase UI Strings -->
     <string name="fui_progress_dialog_signing_up">Creating your Green Lawn new account...</string>
 
+    <!-- Create Schedule Strings-->
+    <string name="schedule_name">Schedule Name</string>
+    <string name="start_time">Start Time</string>
+    <string name="set_duration">Duration</string>
+    <string name="choose_days">Days</string>
+    <string name="Monday">Mon</string>
+    <string name="Tuesday">Tue</string>
+    <string name="Wednesday">Wed</string>
+    <string name="Thursday">Thur</string>
+    <string name="Friday">Fri</string>
+    <string name="Saturday">Sat</string>
+    <string name="Sunday">Sun</string>
+    <string name="choose_zones">Choose Zones</string>
+    <string name="repeat_switch">Repeat</string>
 
+    <!-- Time picker buttons -->
+    <string name="OK">Ok</string>
+    <string name="Cancel">Cancel</string>
 
 </resources>

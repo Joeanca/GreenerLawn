@@ -243,7 +243,8 @@ public class MainScreen extends AppCompatActivity {
         }
     }
     public void modifyZones(View view) {
-        startActivity(new Intent(MainScreen.this, ZoneSettings.class));
+        startActivity(new Intent(MainScreen.this, CreateSchedule.class));
+        // startActivity(new Intent(MainScreen.this, ZoneSettings.class));
     }
     private void setupWeather() {
         WeatherClient.ClientBuilder builder = new WeatherClient.ClientBuilder();

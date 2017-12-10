@@ -1,8 +1,5 @@
 package com.greenerlawn.greenerlawn;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by JC on 2017-11-04.\
  * turned into a horcrux of jason hutson on 12/8/2017
@@ -17,7 +14,9 @@ public class Schedules {
 
     //0 - 7, 0 = Sunday, 1 = Monday... 7 = saturday
     private int day;
-    private Long startTime, duration, endTime;
+    private long startTime;
+    private long duration;
+    private long endTime;
     private String zGUID;
 
     //todo remove is from names
@@ -31,18 +30,13 @@ public class Schedules {
     //repeat is the repeat flag
 
 
-    // needs to be extracted to a manager class
 
-
-
-    //todo firebase updates
-    //todo add cascade enforcement
 
 
     public Schedules() {
     }
 
-    public Schedules(String schGUID, int day, Long startTime, Long duration, Long endTime, String zGUID, boolean isRepeat, boolean suspended, boolean valid, boolean pausedByIDC) {
+    public Schedules(String schGUID, int day, Long startTime, long duration, long endTime, String zGUID, boolean isRepeat, boolean suspended, boolean valid, boolean pausedByIDC) {
         this.schGUID = schGUID;
         this.day = day;
         this.startTime = startTime;
@@ -55,6 +49,7 @@ public class Schedules {
         this.pausedByIDC = pausedByIDC;
     }
 
+    /*
     private List<Schedules> schedulesList = new ArrayList<Schedules>();
 
     public void addSchedule(int day, Long startTime, Long duration, String zGUID, boolean repeat) {
@@ -113,7 +108,7 @@ public class Schedules {
 
     public void setSchedulesList(List<Schedules> schedulesList) {
         this.schedulesList = schedulesList;
-    }
+    }*/
 
     public String getSchGUID() {
         return schGUID;
@@ -131,23 +126,23 @@ public class Schedules {
         this.day = day;
     }
 
-    public Long getStartTime() {
+    public long getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Long startTime) {
+    public void setStartTime(long startTime) {
         this.startTime = startTime;
     }
 
-    public Long getDuration() {
+    public long getDuration() {
         return duration;
     }
 
-    public void setDuration(Long duration) {
+    public void setDuration(long duration) {
         this.duration = duration;
     }
 
-    public Long getEndTime() {
+    public long getEndTime() {
         return endTime;
     }
 
@@ -157,7 +152,7 @@ public class Schedules {
         return cEndTime;
     }
 
-    public void setEndTime(Long endTime) {
+    public void setEndTime(long endTime) {
         this.endTime = endTime;
     }
 

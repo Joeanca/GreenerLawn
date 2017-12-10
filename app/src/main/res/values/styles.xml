@@ -105,6 +105,10 @@
     <style name="Theme.AppCompat.Light.settings" parent="Theme.AppCompat.Light.main" >
 
     </style>
+
+    <style name="Theme.AppCompat.Light.schedule_theme" parent="Theme.AppCompat.Light.main" >
+
+    </style>
     <style name="Theme.AppCompat.Light.zones" parent="Theme.AppCompat.Light.main" >
 
     </style>

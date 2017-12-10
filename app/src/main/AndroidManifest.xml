@@ -14,8 +14,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:screenOrientation="portrait"
-        android:supportsRtl="true"
-        >
+        android:supportsRtl="false">
         <activity
             android:name=".MainScreen"
             android:screenOrientation="portrait"
@@ -71,6 +70,13 @@
 
         <activity android:name="me.iwf.photopicker.PhotoPagerActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
+        <activity
+            android:name=".SearchCity"
+            android:theme="@style/Theme.AppCompat.Light.TimerPopup" />
+        <activity android:name=".CreateSchedule" />
+        <activity android:name=".StartTimePopUp" />
+        <activity android:name=".DurationPopUp" />
+        <activity android:name=".ScheduleZoneSelect"></activity>
     </application>
 
 </manifest>
