@@ -14,6 +14,7 @@ import java.util.List;
 public class ScheduleZoneSelect extends AppCompatActivity {
     public static final String ZONE_CHOICE = "Zone Choice";
     private List<Zone> zoneList;
+    private ArrayList<String> zoneNameList = new ArrayList<>();
     private ArrayList<SchedZoneItem> zoneSelectList = new ArrayList<SchedZoneItem>();
     private final boolean NOT_SELECTED = false;
     private final RecyclerView selectRecycler = (RecyclerView) findViewById(R.id.zoneSelect_Recycler);
@@ -45,7 +46,12 @@ public class ScheduleZoneSelect extends AppCompatActivity {
             for (int i = 0; i < selectRecycler.getChildCount(); i++) {
                 zoneSelectList.get(i).setSelected(selectRecycler.getChildAt(i).isSelected());
             }
-            data.putExtra(ZONE_CHOICE,zoneSelectList);
+            for (int i =0; i < zoneSelectList.size(); i++){
+                if(zoneSelectList.get(i).isSelected()){
+                    zoneNameList.add(zoneSelectList.get(i).getName());
+                }
+            }
+            data.putExtra(ZONE_CHOICE,zoneNameList);
             setResult(RESULT_OK, data);
         }else{setResult(RESULT_CANCELED, data);}
 

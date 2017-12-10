@@ -15,7 +15,7 @@
         android:layout_marginTop="24dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Name"
+        android:text="@string/schedule_name"
         android:textAppearance="@android:style/TextAppearance.Large"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -204,19 +204,18 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <Switch
-                    android:id="@+id/shRepeat_SW"
+                    android:id="@+id/schRepeat_SW"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="24dp"
 
                     android:checked="false"
-
                     android:switchPadding="@dimen/activity_horizontal_margin"
                     android:text="@string/repeat_switch"
                     android:textAppearance="@android:style/TextAppearance.Large"
+
+
                     app:layout_constraintBottom_toBottomOf="parent"
-
-
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"

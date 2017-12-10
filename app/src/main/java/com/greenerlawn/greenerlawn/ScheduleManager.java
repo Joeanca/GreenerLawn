@@ -1,76 +1,34 @@
 package com.greenerlawn.greenerlawn;
 
-
-import android.util.Log;
-
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 /**
- * Created by jason on 11/5/2017.
+ * Created by jason on 12/9/2017.
  */
 
-public class DataManager {
-
-    private FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private DatabaseReference dataRef = null;
-
-    private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-    private DatabaseReference userRef = database.getReference().child("users").child(user.getUid());
-
-    //@TODO make this better it is janky (Get the pi id from the user instead of just everyone using the same pi)
-    private DatabaseReference greenerHubRef;
-    public final static String ZONE_REF = "zones";
-    public final static String USER_SETTING_REF = "userSettings";
-
-    private ArrayList<Zone> zoneArrayList = new ArrayList<>();
-
-
-    public DataManager() {
-        greenerHubRef = database.getReference().child("greennerHubs").child(User.getInstance().getUserSettings().getDeviceSerial());
-    }
-
-    public <T> void uploadNewData(String reference,  T upData) {
-        dataRef = userRef.child(reference);
-        String key = dataRef.push().getKey();
-        dataRef.child(key).setValue(upData);
-    }
-
-    public DatabaseReference getReference(String reference){
-        if (reference.equals(ZONE_REF)){
-            dataRef = greenerHubRef.child(reference);
-        } else {
-            dataRef = userRef.child(reference);
-        }
-
-        return dataRef;
-    }
-
-
-/*
+public class ScheduleManager {
 
     //SCHEDULE FIELDS
     private final boolean VALID_AT_CREATE = true;
     private final boolean SUSPEND_AT_CREATE = false;
     private final boolean IDC_FLAG = false;
+    long minute = 1000* 60;
 
     //should update FB as there is a listener
-    private List<Schedules> schedulesList = new ArrayList<Schedules>();
+    private List<Schedules> schedulesList;
+    private ArrayList<Zone> zoneArrayList;
 
+    public ScheduleManager() {
+        zoneArrayList= (ArrayList<Zone>) User.getInstance().zoneListGet();
+        schedulesList = User.getInstance().getScheduleList();
+    }
 
+//Schedule Manager
 
-    //Schedule Manager
-
-    // TODO  don't check against suspended schedules
+//todo push updates toDatabaseFunctions.getInstance().UpdateSchedule();
 
     private void verifyValid(Schedules newSched) {
         //iterate over list
@@ -82,7 +40,7 @@ public class DataManager {
             // pause sched A
             //create sched B which conflicts with sched A
             //resume sched A and problems
-            if (newSched.getDay() == tempCheck.getDay()) {
+            if (newSched.getDay() == tempCheck.getDay() && !tempCheck.isSuspended()) {
                 enforceTime(newSched, tempCheck);
             }
         }
@@ -115,12 +73,12 @@ public class DataManager {
 
 
     // todo condense expand calls
-    public void  configureSchedule(ArrayList<String> zoneIDList, Long startTime, Long duration, int timeFlag, int[]dayArr, boolean repeat){
+    public void configureSchedule(ArrayList<String> zoneIDList, Long startTime, long duration, int timeFlag, ArrayList<Integer> dayAL, boolean repeat){
         // holds cascading start times
-        Long endTime = Long.valueOf(0);
+        int endTime = 0;
         Long[] startTimeArr = new Long[zoneIDList.size()];
         // holds redundant day entries for each sched item
-        int[] expandedDays = new int[zoneIDList.size()*dayArr.length];
+        int[] expandedDays = new int[zoneIDList.size()*dayAL.size()];
         // timeFlag is a 0 or 1
         // where 0 sets the duration param as the duration for each zone
         // 1 sets the duration as total for duration for all zones in the schedule item
@@ -136,13 +94,14 @@ public class DataManager {
         // ex 8, 8:20
         for(int i = 0,ii =1; i <startTimeArr.length; i++, ii++ ){
             startTimeArr[i] = startTime;
-            startTimeArr[i] +=duration*ii;
+            startTimeArr[i] +=(duration*ii) + minute;
         }
 
         ArrayList<Long> expandStartTimeArr = new ArrayList<>();
         //must use ArrayList as Array's require you to know the position to insert
+        // creates 8 8 8 820 820 820 840 840 840
         for(int i=0; i < startTimeArr.length; i++){
-            for(int ii= 0; i < dayArr.length; ii++){
+            for(int ii= 0; i < dayAL.size(); ii++){
                 expandStartTimeArr.add(startTimeArr[i]);
             }
         }
@@ -150,7 +109,7 @@ public class DataManager {
         //fills array with repeating day entries
         // ex MWF turns into Mwfmwf
         for(int i =0; i < expandedDays.length; i++){
-            expandedDays[i] = dayArr[i%dayArr.length];
+            expandedDays[i] = dayAL.get(i %dayAL.size());
         }
 
         //fills arraylist of redundant zone entries corresponding to each day in the sched
@@ -158,23 +117,23 @@ public class DataManager {
         ArrayList<String> expandedZoneList = new ArrayList();
         for (int i = 0; i < zoneIDList.size(); i++ ){
             // addreasses each zone
-            for(int ii = 0; ii < dayArr.length; ii++){
+            for(int ii = 0; ii < dayAL.size(); ii++){
                 // addreasses each day
                 expandedZoneList.add(zoneIDList.get(i));
                 // adds each zone to new list according to the # of days it will run
             }
         }
 
-        createScheduleItems(duration, dayArr, repeat, endTime, startTimeArr, expandedDays, expandedZoneList);
+        createScheduleItems(duration, dayAL, repeat, endTime, expandStartTimeArr, expandedDays, expandedZoneList);
     }
 
-    public void createScheduleItems(Long duration, int[] dayArr, boolean repeat, Long endTime, Long[] startTimeArr, int[] expandedDays, ArrayList<String> expandedZoneList) {
+    public void createScheduleItems(long duration, ArrayList<Integer> dayArr, boolean repeat, long endTime, ArrayList<Long> expandStartTimeArr, int[] expandedDays, ArrayList<String> expandedZoneList) {
         //creates and validates, sends to add method for error handling
 
         ArrayList<Schedules> tempSchedList = new ArrayList<>();
         for (int i = 0; i< expandedDays.length; i++){
-           int sDay = dayArr[i];
-           Long sStart = startTimeArr[i];
+           int sDay = expandedDays[i];
+           Long sStart = expandStartTimeArr.get(i);
            String zGuid = expandedZoneList.get(i);
            tempSchedList.add(new Schedules(null, sDay,sStart, duration, endTime, zGuid, repeat,SUSPEND_AT_CREATE, VALID_AT_CREATE, IDC_FLAG));
         }
@@ -185,24 +144,25 @@ public class DataManager {
         }
     }
 
-    //todo RunAllNow sched functions
     public void addSchedule(Schedules newSched) {
         if(newSched.isValid()){
             schedulesList.add(newSched);
+            //todo database functions
         }else{
             //todo error handling
         }
     }
 
     //RUN ALL METHOD
-    public void runAllNow(Long rANduration){
+    public void runAllNow(int rANduration){
         pauseAll();
         Calendar today = Calendar.getInstance();
-        int day = today.DAY_OF_WEEK;
-        int[] oneDay = new int[]{day};
-        Long rANStart = System.currentTimeMillis();
-        //start all in 5 minutes
-        rANStart += 300000;
+        Integer day = today.DAY_OF_WEEK;
+        ArrayList<Integer> oneDay = new ArrayList<>(1);
+        oneDay.add(day);
+        long rANStart = System.currentTimeMillis();
+        //start all in 3 minutes
+        rANStart += (minute *3);
         ArrayList zoneID = new ArrayList();
         for (Zone zone: zoneArrayList) {
             zoneID.add(zone.getzGUID());
@@ -220,8 +180,5 @@ public class DataManager {
             }
         }
 
-    }*/
-
-
-
+    }
 }
