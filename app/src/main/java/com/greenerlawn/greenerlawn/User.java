@@ -72,6 +72,14 @@ public class User {
 
     public void zoneListSet(List<Zone> zoneList) {this.zoneList = zoneList;}
 
+    public List<Schedules> getScheduleList() {
+        return scheduleList;
+    }
+
+    public void setScheduleList(List<Schedules> scheduleList) {
+        this.scheduleList = scheduleList;
+    }
+
     public String uIDGet(){ return uID; }
 
     public void uIDSet(String uID){ this.uID = uID; }
