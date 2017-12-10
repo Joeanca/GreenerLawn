@@ -1,8 +1,11 @@
 package com.greenerlawn.greenerlawn;
 
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -38,8 +41,14 @@ public class CreateSchedule extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         setContentView(R.layout.activity_create_schedule);
 
+        // TO GET THE BACK ARROW ON THE ACTION BAR
+        int transparent = ContextCompat.getColor(this, R.color.transparent);
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(transparent));
+        getSupportActionBar().setTitle("Create Schedule");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     public void selectDay(View v) {
@@ -121,6 +130,20 @@ public class CreateSchedule extends AppCompatActivity {
             sm.configureSchedule(zoneNameList,longST,longDur,timeFlag,submitDayAL,repeat);
         }
     }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();    //Call the back button's method
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition( R.anim.animation_enter, R.anim.animation_leave);
+    }
+
 }
 
 
