@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/round_edge_border"
         android:backgroundTint="@color/common_google_signin_btn_text_light_focused"
-        app:cardCornerRadius="5dp">
+        app:cardCornerRadius="10dp">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"

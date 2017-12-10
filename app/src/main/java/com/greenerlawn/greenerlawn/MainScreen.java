@@ -156,7 +156,7 @@ public class MainScreen extends AppCompatActivity {
                                             Arrays.asList(new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
                                                     new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build()))
                                     .setTheme(R.style.LoginTheme)
-                                    .setLogo(R.drawable.irrigation)      // Set logo drawable
+                                    .setLogo(R.drawable.irrigation_login)      // Set logo drawable
                                     .build(),
                             RC_SIGN_IN);
                 }
