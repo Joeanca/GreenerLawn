@@ -1,6 +1,9 @@
 package com.greenerlawn.greenerlawn;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +39,11 @@ public class CreateSchZoneRecyclerAdapter extends RecyclerView.Adapter<CreateSch
     public void onBindViewHolder(CreateSchZoneRecyclerAdapter.ViewHolder holder, int position) {
         ScheduleZoneSelect.SchedZoneItem selectInstance = zoneSelects.get(position);
         RadioButton radBTN = holder.select;
+        Bitmap tempPic =  User.getInstance().zoneListGet().get(position).getzImage();
+            RoundedBitmapDrawable dr =
+                    RoundedBitmapDrawableFactory.create(context.getResources(), tempPic);
+            dr.setCornerRadius(Math.max(tempPic.getWidth(), tempPic.getHeight()) / 2.0f);
+        holder.picture.setBackground(dr);
         holder.title.setText(selectInstance.getName());
         holder.select.setChecked(selectInstance.isSelected());
     }

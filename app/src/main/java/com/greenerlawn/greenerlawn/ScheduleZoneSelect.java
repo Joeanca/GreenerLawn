@@ -1,6 +1,9 @@
 package com.greenerlawn.greenerlawn;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -61,28 +64,22 @@ public class ScheduleZoneSelect extends AppCompatActivity {
     //todo get image properly
     private void fillZoneSelectList() {
         for (Zone z : zoneList) {
-            SchedZoneItem newSZS = new SchedZoneItem(z.getzImage(), z.getzName(), NOT_SELECTED);
+            //SchedZoneItem newSZS = new SchedZoneItem(z.getzImage(), z.getzName(), NOT_SELECTED);
+
+            SchedZoneItem newSZS = new SchedZoneItem( z.getzName(), NOT_SELECTED);
             zoneSelectList.add(newSZS);
         }
     }
 
     public class SchedZoneItem {
-        private File zImage;
+
         private String name;
         private boolean selected;
 
-        public SchedZoneItem(File zImage, String name, boolean selected) {
-            this.zImage = zImage;
+        public SchedZoneItem(String name, boolean selected) {
+
             this.name = name;
             this.selected = selected;
-        }
-
-        public File getzImage() {
-            return zImage;
-        }
-
-        public void setzImage(File zImage) {
-            this.zImage = zImage;
         }
 
         public String getName() {
