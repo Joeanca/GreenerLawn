@@ -79,5 +79,8 @@ public class User {
     public UserSettings getUserSettings() {return userSettings;}
 
     public void setUserSettings(UserSettings userSettings) {this.userSettings = userSettings; }
+    public List<Schedules> scheduleListGet() {return scheduleList;}
+    public void scheduleListSet(List<Schedules> newScheduleList) {this.scheduleList = newScheduleList;}
+
 }
 

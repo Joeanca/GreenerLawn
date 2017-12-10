@@ -46,9 +46,9 @@ import static android.support.v4.app.ActivityCompat.startActivityForResult;
 
 public class DatabaseFunctions {
     private static DatabaseReference deviceDBRef;
-    private static DatabaseReference mZonesDatabaseReference;
+    private static DatabaseReference mZonesDatabaseReference, mScheduleDatabaseReference;
     private static DatabaseReference mUserRef;
-    private static DatabaseReference mZoneUpdater;
+    private static DatabaseReference mZoneUpdater, mScheduleUpdater;
     private static FirebaseUser firebaseUser;
     private static  DatabaseFunctions instance;
     public final static String ZONE_REF = "zones";
@@ -196,6 +196,33 @@ public class DatabaseFunctions {
             }
         });
     }
+
+    public static void StartSchedules(){
+        deviceDBRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.child(User.getInstance().getUserSettings().getDeviceSerial()).exists()){
+                    mScheduleDatabaseReference = deviceDBRef.child(User.getInstance().getUserSettings().getDeviceSerial()).child("schedules");
+                    mScheduleUpdater = mZonesDatabaseReference;
+                    Iterable<DataSnapshot> schedules = dataSnapshot.child(User.getInstance().getUserSettings().getDeviceSerial()).child("schedules").getChildren();
+                    List<Schedules> actualSchedules = new ArrayList<>();
+                    for (DataSnapshot schedule: schedules){
+                        final Schedules tempSchedule = schedule.getValue(Schedules.class);
+                        tempSchedule.setSchGUID(schedule.getKey());
+                        actualSchedules.add(tempSchedule);
+                        Log.e("DATABASE 213", "onDataChange: " + tempSchedule.toString());
+                    }
+                    User.getInstance().scheduleListSet(actualSchedules);
+                    getZoneBitmapInitialize();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
     private static void getZoneBitmapInitialize(){
         for (final Zone zone: User.getInstance().zoneListGet()) {
             if (zone.getPicRef() != null) {
@@ -286,19 +313,7 @@ public class DatabaseFunctions {
             }
         });
     }
-//    public Bitmap downloadZoneBitmap(int zoneNum){
-//        final long ONE_MEGABYTE = 1024 * 1024;
-//        Bitmap bitmap = null;
-//        StorageReference imagesRef = storageRef.child(User.getInstance().getUserSettings().getDeviceSerial()).child("pictures");
-//        StorageReference zoneRefTemp = imagesRef.child(User.getInstance().zoneListGet().get(zoneNum).getZoneNumber());
-//        storageRef.child("" + zoneNum).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-//            @Override
-//            public void onSuccess(byte[] bytes) {
-//                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-//            }
-//        });
-//        return bitmap;
-//    }
+
     public void updateZoneName(String newName, int zoneNumber){
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("greennerHubs/" + User.getInstance().getUserSettings().getDeviceSerial() + "/zones/" + User.getInstance().zoneListGet().get(zoneNumber).dbRefGet());
@@ -331,5 +346,10 @@ public class DatabaseFunctions {
         if (zonePic[0]!=null)
         Log.e("324 dbfn", "getZonePic: " + zonePic[0].toString());
         return zonePic[0];
+    }
+
+    public void updateSchedule (List<Schedules> newScheduleList){
+        User.getInstance().scheduleListSet(newScheduleList);
+        mScheduleUpdater.setValue(newScheduleList);
     }
 }
