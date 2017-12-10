@@ -185,9 +185,11 @@ public class MainScreen extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
-                if (id == R.id.nav_gallery) {
-                    Toast.makeText(MainScreen.this, "smtg", Toast.LENGTH_SHORT).show();
-                } else if (id == R.id.sign_out_menu) {
+                if (id == R.id.nav_manage) {
+                    startActivity(new Intent(MainScreen.this, SettingsMenu.class));
+
+                } else
+                    if (id == R.id.sign_out_menu) {
                     AuthUI.getInstance().signOut(MainScreen.this);
                 }
                 return true;
@@ -243,8 +245,7 @@ public class MainScreen extends AppCompatActivity {
         }
     }
     public void modifyZones(View view) {
-        startActivity(new Intent(MainScreen.this, CreateSchedule.class));
-        // startActivity(new Intent(MainScreen.this, ZoneSettings.class));
+         startActivity(new Intent(MainScreen.this, ZoneSettings.class));
     }
     private void setupWeather() {
         WeatherClient.ClientBuilder builder = new WeatherClient.ClientBuilder();
@@ -289,8 +290,8 @@ public class MainScreen extends AppCompatActivity {
             });
         } catch (WeatherProviderInstantiationException e) {e.printStackTrace(); }
     }
-    public void modifySettings(View view) {
-        startActivity(new Intent(MainScreen.this, SettingsMenu.class));
+    public void modifySchedules(View view) {
+        startActivity(new Intent(MainScreen.this, CreateSchedule.class));
     }
     public static void setDrawerLeftEdgeSize(Activity activity, DrawerLayout drawerLayout, float displayWidthPercentage) {
         if (activity == null || drawerLayout == null)
@@ -316,4 +317,5 @@ public class MainScreen extends AppCompatActivity {
             // ignore
         }
     }
+
 }

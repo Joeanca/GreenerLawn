@@ -540,7 +540,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:clickable="true"
-                    android:onClick="modifySettings"
+                    android:onClick="modifySchedules"
                     android:translationZ="20dp"
                     app:backgroundTint="@color/accent"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -549,7 +549,7 @@
                     app:layout_constraintStart_toEndOf="@+id/fab_seeZonesButton"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.0"
-                    app:srcCompat="@drawable/ic_more_vert_black_24dp" />
+                    app:srcCompat="@drawable/ic_update_black_24dp" />
 
                 <android.support.design.widget.FloatingActionButton
                     android:id="@+id/fab_seeZonesButton"
