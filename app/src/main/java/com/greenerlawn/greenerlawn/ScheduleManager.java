@@ -28,7 +28,7 @@ public class ScheduleManager {
 
 //Schedule Manager
 
-//todo push updates toDatabaseFunctions.getInstance().UpdateSchedule();
+//todo push updates to
 
     private void verifyValid(Schedules newSched) {
         //iterate over list
@@ -125,6 +125,11 @@ public class ScheduleManager {
         }
 
         createScheduleItems(duration, dayAL, repeat, endTime, expandStartTimeArr, expandedDays, expandedZoneList);
+        pushToFuegoBase();
+    }
+
+    private void pushToFuegoBase() {
+        DatabaseFunctions.getInstance().updateSchedule((List)schedulesList);
     }
 
     public void createScheduleItems(long duration, ArrayList<Integer> dayArr, boolean repeat, long endTime, ArrayList<Long> expandStartTimeArr, int[] expandedDays, ArrayList<String> expandedZoneList) {
