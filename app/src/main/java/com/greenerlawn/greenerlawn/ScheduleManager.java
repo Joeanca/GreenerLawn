@@ -147,7 +147,6 @@ public class ScheduleManager {
     public void addSchedule(Schedules newSched) {
         if(newSched.isValid()){
             schedulesList.add(newSched);
-            //todo database functions
         }else{
             //todo error handling
         }
