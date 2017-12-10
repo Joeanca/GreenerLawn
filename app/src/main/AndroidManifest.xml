@@ -75,9 +75,9 @@
         <activity android:name=".StartTimePopUp"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
         <activity android:name=".DurationPopUp"
-            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+            android:theme="@style/Theme.AppCompat.Light.DurationPopup"/>
         <activity android:name=".ScheduleZoneSelect"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:theme="@style/Theme.AppCompat.Light.choose_zones"
             ></activity>
     </application>
 
