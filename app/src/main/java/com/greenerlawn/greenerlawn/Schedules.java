@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by JC on 2017-11-04.
+ * Created by JC on 2017-11-04.\
+ * turned into a horcrux of jason hutson on 12/8/2017
  */
 
 // todo allow for IDFC setting
