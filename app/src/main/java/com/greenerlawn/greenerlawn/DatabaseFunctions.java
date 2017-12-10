@@ -136,6 +136,7 @@ public class DatabaseFunctions {
          mUserDatabaseReference.addListenerForSingleValueEvent(listener);
          //
         StartZones();
+        StartSchedules();
     }
     public void removeListener(){
         mUserDatabaseReference.removeEventListener(listener);
@@ -213,7 +214,6 @@ public class DatabaseFunctions {
                         Log.e("DATABASE 213", "onDataChange: " + tempSchedule.toString());
                     }
                     User.getInstance().scheduleListSet(actualSchedules);
-                    getZoneBitmapInitialize();
                 }
             }
 
@@ -246,39 +246,6 @@ public class DatabaseFunctions {
                 }
             }
         }
-    }
-    private void StartSchedule(){
-        DatabaseReference mScheduleDBReference = mUserDatabaseReference.child("zones");
-
-        // TO ADD A USER. OR PUSH INFORMATION TO THE DATABASE SETTING UP LISTENERS
-        mChildEventListener = new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                // THIS IS WHEN SOMETHING IS INSERTED INTO THE CHILDREN OR AT START TO INSERT ALL THE ZONES/ SCHEDULES
-
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                // THIS GETS CALLED WHEN THE CONTENTS OF THE CHILD GETS CHANGED
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-                // THIS GETS CALLED WHEN THE CHILD IS DELETED
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-                // IF ONE OF THE MESSAGES CHANGES POSITION
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // SOME ERROR OCCURRED WHEN TRYING TO MAKE CHANGES
-            }
-        };
-        mScheduleDBReference.addChildEventListener(mChildEventListener);
     }
     public void SwitchToggleZone(int zoneNumber, Boolean status){
         // TODO SET THE OTHER ZONES OFF;
