@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ public class CreateSchZoneRecyclerAdapter extends RecyclerView.Adapter<CreateSch
     private final LayoutInflater zoneSelectInflater;
     private final ArrayList<ScheduleZoneSelect.SchedZoneItem> zoneSelects;
     private Activity context;
+
 
     public CreateSchZoneRecyclerAdapter(ArrayList<ScheduleZoneSelect.SchedZoneItem> zoneSelects, Activity context) {
         this.zoneSelectInflater = LayoutInflater.from(context);
@@ -36,16 +38,30 @@ public class CreateSchZoneRecyclerAdapter extends RecyclerView.Adapter<CreateSch
     }
 
     @Override
-    public void onBindViewHolder(CreateSchZoneRecyclerAdapter.ViewHolder holder, int position) {
-        ScheduleZoneSelect.SchedZoneItem selectInstance = zoneSelects.get(position);
+    public void onBindViewHolder(final CreateSchZoneRecyclerAdapter.ViewHolder holder, int position) {
+        final ScheduleZoneSelect.SchedZoneItem selectInstance = zoneSelects.get(position);
         RadioButton radBTN = holder.select;
-        Bitmap tempPic =  User.getInstance().zoneListGet().get(position).getzImage();
+        /*Bitmap tempPic =  User.getInstance().zoneListGet().get(position).getzImage();
             RoundedBitmapDrawable dr =
                     RoundedBitmapDrawableFactory.create(context.getResources(), tempPic);
-            dr.setCornerRadius(Math.max(tempPic.getWidth(), tempPic.getHeight()) / 2.0f);
-        holder.picture.setBackground(dr);
+            dr.setCornerRadius(Math.max(tempPic.getWidth(), tempPic.getHeight()) / 2.0f);*/
+        //holder.picture.setBackground(R.drawable.irrigation);
         holder.title.setText(selectInstance.getName());
         holder.select.setChecked(selectInstance.isSelected());
+        View.OnClickListener zoneSelectListener = new View.OnClickListener() {
+            public void onClick(View v) {
+                if (holder.select.isChecked()){
+                    for (int i = 0; i <ScheduleZoneSelect.zoneNameList.size();i++ ){
+                        if (ScheduleZoneSelect.zoneNameList.get(i).equals(holder.title.getText().toString())){
+                            ScheduleZoneSelect.zoneNameList.remove(i);
+                        }
+                    }
+                }
+                else{ScheduleZoneSelect.zoneNameList.add(holder.title.getText().toString());}
+
+            }
+        };
+        holder.select.setOnClickListener(zoneSelectListener);
     }
 
     @Override

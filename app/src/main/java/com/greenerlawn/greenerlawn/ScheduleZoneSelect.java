@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 
 import java.io.File;
@@ -16,19 +17,23 @@ import java.util.List;
 
 public class ScheduleZoneSelect extends AppCompatActivity {
     public static final String ZONE_CHOICE = "Zone Choice";
+    // list of zones from user
     private List<Zone> zoneList;
-    private ArrayList<String> zoneNameList = new ArrayList<>();
+    static ArrayList<String> zoneNameList = new ArrayList<>();
+    //list of objects this activity uses to fill recycler
     private ArrayList<SchedZoneItem> zoneSelectList = new ArrayList<SchedZoneItem>();
     private final boolean NOT_SELECTED = false;
-    private final RecyclerView selectRecycler = (RecyclerView) findViewById(R.id.zoneSelect_Recycler);
+
     private boolean submit = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         zoneList = User.getInstance().zoneListGet();
+        Log.e("33", "onCreate: "+User.getInstance().zoneListGet().get(1).getzName() );
         super.onCreate(savedInstanceState);
         setContentView(R.layout.schedule_zone_select_activity);
-
+        final RecyclerView selectRecycler = (RecyclerView) findViewById(R.id.zoneSelect_Recycler);
         final LinearLayoutManager zoneSelLayMan = new LinearLayoutManager(this);
         selectRecycler.setLayoutManager(zoneSelLayMan);
         fillZoneSelectList();
@@ -46,9 +51,9 @@ public class ScheduleZoneSelect extends AppCompatActivity {
     public void finish() {
         Intent data = new Intent();
         if (submit == true) {
-            for (int i = 0; i < selectRecycler.getChildCount(); i++) {
-                zoneSelectList.get(i).setSelected(selectRecycler.getChildAt(i).isSelected());
-            }
+//            for (int i = 0; i < selectRecycler.getChildCount(); i++) {
+//                zoneSelectList.get(i).setSelected(selectRecycler.getChildAt(i).isSelected());
+//            }
             for (int i =0; i < zoneSelectList.size(); i++){
                 if(zoneSelectList.get(i).isSelected()){
                     zoneNameList.add(zoneSelectList.get(i).getName());
@@ -61,14 +66,23 @@ public class ScheduleZoneSelect extends AppCompatActivity {
         super.finish();
     }
 
-    //todo get image properly
+
     private void fillZoneSelectList() {
         for (Zone z : zoneList) {
             //SchedZoneItem newSZS = new SchedZoneItem(z.getzImage(), z.getzName(), NOT_SELECTED);
-
             SchedZoneItem newSZS = new SchedZoneItem( z.getzName(), NOT_SELECTED);
             zoneSelectList.add(newSZS);
+            Log.e("74", "fillZoneSelectList: "+ z.getzName() );
         }
+
+    }
+
+    public ArrayList<String> getZoneNameList() {
+        return zoneNameList;
+    }
+
+    public void setZoneNameList(ArrayList<String> zoneNameList) {
+        this.zoneNameList = zoneNameList;
     }
 
     public class SchedZoneItem {

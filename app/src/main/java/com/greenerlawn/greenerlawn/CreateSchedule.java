@@ -30,6 +30,10 @@ public class CreateSchedule extends AppCompatActivity {
 
     //todo pull images properly from DB functions
     //todo submit FAB
+    //todo submit buttons close activity
+    //todo start time pop up
+    //todo day button stay pressed
+    // todo test create schedule
     //no need to create a boolean flag for repeat button, can just test if is checked
     @Override
     protected void onCreate(Bundle savedInstanceState) {

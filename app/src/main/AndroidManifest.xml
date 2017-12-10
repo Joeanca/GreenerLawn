@@ -70,10 +70,15 @@
 
         <activity android:name="me.iwf.photopicker.PhotoPagerActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
-        <activity android:name=".CreateSchedule" />
-        <activity android:name=".StartTimePopUp" />
-        <activity android:name=".DurationPopUp" />
-        <activity android:name=".ScheduleZoneSelect"></activity>
+        <activity android:name=".CreateSchedule"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+        <activity android:name=".StartTimePopUp"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+        <activity android:name=".DurationPopUp"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+        <activity android:name=".ScheduleZoneSelect"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            ></activity>
     </application>
 
 </manifest>
