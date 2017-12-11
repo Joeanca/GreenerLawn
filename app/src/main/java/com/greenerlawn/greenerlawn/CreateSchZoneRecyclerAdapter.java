@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,19 +42,26 @@ public class CreateSchZoneRecyclerAdapter extends RecyclerView.Adapter<CreateSch
     public void onBindViewHolder(final CreateSchZoneRecyclerAdapter.ViewHolder holder, int position) {
         final ScheduleZoneSelect.SchedZoneItem selectInstance = zoneSelects.get(position);
         RadioButton radBTN = holder.select;
-        /*Bitmap tempPic =  User.getInstance().zoneListGet().get(position).getzImage();
+        radBTN.setChecked(zoneSelects.get(position).isSelected());
+        Bitmap tempPic =  User.getInstance().zoneListGet().get(position).getzImage();
+        if (tempPic!=null) {
             RoundedBitmapDrawable dr =
                     RoundedBitmapDrawableFactory.create(context.getResources(), tempPic);
-            dr.setCornerRadius(Math.max(tempPic.getWidth(), tempPic.getHeight()) / 2.0f);*/
-        //holder.picture.setBackground(R.drawable.irrigation);
+            dr.setCornerRadius(Math.max(tempPic.getWidth(), tempPic.getHeight()) / 2.0f);
+            holder.picture.setBackground(dr);
+
+        }
         holder.title.setText(selectInstance.getName());
         holder.select.setChecked(selectInstance.isSelected());
         View.OnClickListener zoneSelectListener = new View.OnClickListener() {
             public void onClick(View v) {
                 if (holder.select.isChecked()){
+                    Log.e("SCHZONERECYCLER line 59", "onClick: " + holder.select.isChecked() );
+
                     for (int i = 0; i <ScheduleZoneSelect.zoneNameList.size();i++ ){
                         if (ScheduleZoneSelect.zoneNameList.get(i).equals(holder.title.getText().toString())){
                             ScheduleZoneSelect.zoneNameList.remove(i);
+                            Log.e("SCHZONERECYCLER line 62", "onClick: " + holder.select.isChecked() );
                         }
                     }
                 }
