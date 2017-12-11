@@ -2,6 +2,7 @@ package com.greenerlawn.greenerlawn;
 
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -53,6 +54,7 @@ public class CreateSchedule extends AppCompatActivity {
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(transparent));
         getSupportActionBar().setTitle("Create Schedule");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
     }
 
     public void setRepeat(View v){
