@@ -64,12 +64,12 @@ public class ScheduleZoneSelect extends AppCompatActivity {
 //            for (int i = 0; i < selectRecycler.getChildCount(); i++) {
 //                zoneSelectList.get(i).setSelected(selectRecycler.getChildAt(i).isSelected());
 //            }
-            for (int i =0; i < zoneSelectList.size(); i++){
+            /*for (int i =0; i < zoneSelectList.size(); i++){
                 if(zoneSelectList.get(i).isSelected()){
                     zoneNameList.add(zoneSelectList.get(i).getName());
                 }
-            }
-            data.putExtra(ZONE_CHOICE,zoneNameList);
+            }*/
+            data.putExtra("Zone Choice",zoneNameList);
             setResult(RESULT_OK, data);
         }else{setResult(RESULT_CANCELED, data);}
 
@@ -82,8 +82,8 @@ public class ScheduleZoneSelect extends AppCompatActivity {
         for (Zone z : zoneList) {
             SchedZoneItem newSZS;
             if (z.getzName() == null){
-                newSZS = new SchedZoneItem(z.getZoneNumber(),NOT_SELECTED);
-            }else newSZS = new SchedZoneItem( z.getzName(), NOT_SELECTED);
+                newSZS = new SchedZoneItem(z.getzGUID(),z.getZoneNumber(),NOT_SELECTED);
+            }else newSZS = new SchedZoneItem(z.getzGUID(), z.getzName(), NOT_SELECTED);
             zoneSelectList.add(newSZS);
             Log.e("ScheduleZoneSelect 89", "fillZoneSelectList: "+ z.getzName() +" " + z.getZoneNumber() );
         }
@@ -99,14 +99,28 @@ public class ScheduleZoneSelect extends AppCompatActivity {
     }
 
     public class SchedZoneItem {
-
+        private String zGUID;
         private String name;
         private boolean selected;
+
+        public SchedZoneItem(String zGUID, String name, boolean selected) {
+            this.zGUID = zGUID;
+            this.name = name;
+            this.selected = selected;
+        }
 
         public SchedZoneItem(String name, boolean selected) {
 
             this.name = name;
             this.selected = selected;
+        }
+
+        public String getzGUID() {
+            return zGUID;
+        }
+
+        public void setzGUID(String zGUID) {
+            this.zGUID = zGUID;
         }
 
         public String getName() {

@@ -146,17 +146,19 @@ public class ScheduleManager {
 
     public void createScheduleItems(String name, long duration, ArrayList<Integer> dayArr, boolean repeat, long endTime, ArrayList<Long> expandStartTimeArr, int[] expandedDays, ArrayList<String> expandedZoneList) {
         //creates and validates, sends to add method for error handling
+        int []cSIExpandedDays = expandedDays;
+        ArrayList<String> cSIZoneList = expandedZoneList;
         Log.e("134 sched man", "in create" );
         ArrayList<Schedules> tempSchedList = new ArrayList<>();
-        for (int i = 0; i< expandedDays.length; i++){
-           int sDay = expandedDays[i];
+        for (int i = 0; i< cSIExpandedDays.length; i++){
+           int sDay = cSIExpandedDays[i];
            Long sStart = expandStartTimeArr.get(i);
-           String zGuid = expandedZoneList.get(i);
+           String zGuid = cSIZoneList.get(i);
            tempSchedList.add(new Schedules(name,null, sDay,sStart, duration, endTime, zGuid, repeat,SUSPEND_AT_CREATE, VALID_AT_CREATE, IDC_FLAG));
         }
-
+        Log.e("157 sched man", "calling verifiy and add loop" );
         for (Schedules temp: tempSchedList) {
-            Log.e("134 sched man", "calling verifiy and add" );
+            Log.e("159 sched man", "calling verifiy and add inside loop" );
             verifyValid(temp);
             addSchedule(temp);
         }

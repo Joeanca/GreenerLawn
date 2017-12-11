@@ -182,7 +182,7 @@
 
                         android:background="@drawable/rounder_butt4days"
                         android:text="@string/Tuesday"
-
+                        android:onClick="selectDay"
                         android:textOff="@string/Tuesday"
                         android:textOn="@string/Tuesday"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -209,7 +209,7 @@
 
                         android:background="@drawable/rounder_butt4days"
                         android:text="@string/Wednesday"
-
+                        android:onClick="selectDay"
                         android:textOff="@string/Wednesday"
                         android:textOn="@string/Wednesday"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -280,7 +280,7 @@
 
                         android:background="@drawable/rounder_butt4days"
                         android:text="@string/Thursday"
-
+                        android:onClick="selectDay"
                         android:textOff="@string/Thursday"
                         android:textOn="@string/Thursday"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -306,7 +306,7 @@
 
                         android:background="@drawable/rounder_butt4days"
                         android:text="@string/Friday"
-
+                        android:onClick="selectDay"
                         android:textOff="@string/Friday"
                         android:textOn="@string/Friday"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -334,7 +334,7 @@
 
                         android:background="@drawable/rounder_butt4days"
                         android:checked="false"
-
+                        android:onClick="selectDay"
                         android:text="@string/Saturday"
                         android:textOff="@string/Saturday"
                         android:textOn="@string/Saturday"

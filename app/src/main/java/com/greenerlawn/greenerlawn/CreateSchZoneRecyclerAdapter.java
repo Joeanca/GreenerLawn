@@ -46,18 +46,23 @@ public class CreateSchZoneRecyclerAdapter extends RecyclerView.Adapter<CreateSch
                     RoundedBitmapDrawableFactory.create(context.getResources(), tempPic);
             dr.setCornerRadius(Math.max(tempPic.getWidth(), tempPic.getHeight()) / 2.0f);*/
         //holder.picture.setBackground(R.drawable.irrigation);
+        final String guid = selectInstance.getzGUID();
         holder.title.setText(selectInstance.getName());
         holder.select.setChecked(selectInstance.isSelected());
         View.OnClickListener zoneSelectListener = new View.OnClickListener() {
             public void onClick(View v) {
                 if (holder.select.isChecked()){
-                    for (int i = 0; i <ScheduleZoneSelect.zoneNameList.size();i++ ){
-                        if (ScheduleZoneSelect.zoneNameList.get(i).equals(holder.title.getText().toString())){
+                    // if checked, add name to list, is not checked, remove
+                    //ScheduleZoneSelect.zoneNameList.add(holder.title.getText().toString());
+            ScheduleZoneSelect.zoneNameList.add(guid);
+
+                } else {
+                    for(int i = 0; i <ScheduleZoneSelect.zoneNameList.size();i++ ){
+                        if (ScheduleZoneSelect.zoneNameList.get(i).equals(holder.title.getText())){
                             ScheduleZoneSelect.zoneNameList.remove(i);
                         }
                     }
                 }
-                else{ScheduleZoneSelect.zoneNameList.add(holder.title.getText().toString());}
 
             }
         };

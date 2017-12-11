@@ -116,7 +116,7 @@ public class CreateSchedule extends AppCompatActivity {
         }
         if (requestCode == ZONE_SELECT && resultCode == RESULT_OK){
             String key = ScheduleZoneSelect.ZONE_CHOICE;
-            zoneNameList = (ArrayList<String>) data.getSerializableExtra(key);
+            zoneNameList = (ArrayList<String>) data.getSerializableExtra("Zone Choice");
             zonesFlag = true;
         }
     }
