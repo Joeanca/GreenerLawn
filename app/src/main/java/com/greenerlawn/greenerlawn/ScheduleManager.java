@@ -8,6 +8,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.TimeZone;
 
 /**
  * Created by jason on 12/9/2017.
@@ -99,8 +100,14 @@ public class ScheduleManager {
         //creates array with single cascading start times based on durations
         // ex 8, 8:20
         for(int i = 0,ii =1; i <startTimeArr.length; i++, ii++ ){
-            startTimeArr[i] = startTime;
-            startTimeArr[i] +=(duration*ii) + minute;
+            //first run do not adjust time
+            if (i == 0){
+                startTimeArr[i] = startTime;
+            }else {
+                startTimeArr[i] =startTime + (duration*ii) + minute;
+            }
+
+
         }
 
         ArrayList<Long> expandStartTimeArr = new ArrayList<>();
@@ -176,22 +183,31 @@ public class ScheduleManager {
     //RUN ALL METHOD
     public void runAllNow(long rANduration){
         pauseAll();
+        TimeZone tZ = TimeZone.getTimeZone("Canada/Mountain");
         Calendar today = Calendar.getInstance();
-        Integer day = today.DAY_OF_WEEK;
+        today.setTimeZone(tZ);
+        Integer day = today.get(Calendar.DAY_OF_WEEK);
+        day = 2;
         Log.e("176", "runAllNow: day" + day );
         ArrayList<Integer> oneDay = new ArrayList<>(1);
         oneDay.add(day);
         long rANStart;
-        Date date = new Date();
-        Calendar calendar = GregorianCalendar.getInstance();
-        calendar.setTime(date);
-        long currHour = calendar.get(Calendar.HOUR_OF_DAY);
-        long currMinute = calendar.get(Calendar.MINUTE);
+        //Date date = new Date();
+
+        //today.setTime(date);
+        long currHour = today.get(Calendar.HOUR_OF_DAY);
+        Log.e("193", "runAllNow: " + currHour );
+        long currMinute = today.get(Calendar.MINUTE);
+        Log.e("minute", "runAllNow: " + currMinute );
 
         //start all in 3 minutes
         currHour = currHour * 60* minute;
+        Log.e("calc", "runAllNow:hour " + currHour );
         currMinute = currMinute * minute;
-        rANStart = currHour + currMinute + (minute *3);
+        Log.e("calc", "runAllNow:minutt " + currMinute );
+        rANStart = currHour + currMinute;
+        Log.e("203", "runAllNow: total"+ rANStart );
+
         ArrayList zoneID = new ArrayList();
         for (Zone zone: zoneArrayList) {
             zoneID.add(zone.getzGUID());
