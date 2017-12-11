@@ -42,6 +42,7 @@ public class CreateSchedule extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+        //something in API 23 doesn't like this....
         setContentView(R.layout.activity_create_schedule);
 
         // TO GET THE BACK ARROW ON THE ACTION BAR

@@ -361,7 +361,7 @@
             android:backgroundTint="@color/accent"
             android:clickable="true"
             android:onClick="submitSchedule"
-            android:textColor="@android:color/white"
+            app:backgroundTint="@color/accent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/ic_check_black_24dp" />
