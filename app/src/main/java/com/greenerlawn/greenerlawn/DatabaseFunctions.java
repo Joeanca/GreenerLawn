@@ -204,7 +204,7 @@ public class DatabaseFunctions {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.child(User.getInstance().getUserSettings().getDeviceSerial()).exists()){
                     mScheduleDatabaseReference = deviceDBRef.child(User.getInstance().getUserSettings().getDeviceSerial()).child("schedules");
-                    mScheduleUpdater = mZonesDatabaseReference;
+                    mScheduleUpdater = mScheduleDatabaseReference;
                     Iterable<DataSnapshot> schedules = dataSnapshot.child(User.getInstance().getUserSettings().getDeviceSerial()).child("schedules").getChildren();
                     List<Schedules> actualSchedules = new ArrayList<>();
                     for (DataSnapshot schedule: schedules){

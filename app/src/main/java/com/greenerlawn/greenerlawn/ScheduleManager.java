@@ -137,9 +137,10 @@ public class ScheduleManager {
     }
 
     private void pushToFuegoBase() {
+        Log.e("140", "pushToFuegoBase: ");
         DatabaseFunctions.getInstance().updateSchedule((List)schedulesList);
         for (Schedules s : schedulesList){
-            Log.e("140", "pushToFuegoBase: "+s.getName() );
+
         }
     }
 
@@ -175,6 +176,7 @@ public class ScheduleManager {
         pauseAll();
         Calendar today = Calendar.getInstance();
         Integer day = today.DAY_OF_WEEK;
+        Log.e("176", "runAllNow: day" + day );
         ArrayList<Integer> oneDay = new ArrayList<>(1);
         oneDay.add(day);
         long rANStart;
@@ -183,6 +185,7 @@ public class ScheduleManager {
         calendar.setTime(date);
         long currHour = calendar.get(Calendar.HOUR_OF_DAY);
         long currMinute = calendar.get(Calendar.MINUTE);
+
         //start all in 3 minutes
         currHour = currHour * 60* minute;
         currMinute = currMinute * minute;
