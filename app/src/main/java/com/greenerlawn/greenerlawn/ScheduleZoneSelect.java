@@ -2,6 +2,8 @@ package com.greenerlawn.greenerlawn;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.ColorDrawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +11,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 
 import java.io.File;
@@ -30,9 +33,16 @@ public class ScheduleZoneSelect extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         zoneList = User.getInstance().zoneListGet();
-        Log.e("33", "onCreate: "+User.getInstance().zoneListGet().get(1).getzName() );
         super.onCreate(savedInstanceState);
+//        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         setContentView(R.layout.schedule_zone_select_activity);
+
+        // TO GET THE BACK ARROW ON THE ACTION BAR
+        int transparent = ContextCompat.getColor(this, R.color.transparent);
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(transparent));
+        getSupportActionBar().setTitle("Choose zones to schedule");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         final RecyclerView selectRecycler = (RecyclerView) findViewById(R.id.zoneSelect_Recycler);
         final LinearLayoutManager zoneSelLayMan = new LinearLayoutManager(this);
         selectRecycler.setLayoutManager(zoneSelLayMan);
@@ -64,15 +74,18 @@ public class ScheduleZoneSelect extends AppCompatActivity {
         }else{setResult(RESULT_CANCELED, data);}
 
         super.finish();
+
     }
 
 
     private void fillZoneSelectList() {
         for (Zone z : zoneList) {
-            //SchedZoneItem newSZS = new SchedZoneItem(z.getzImage(), z.getzName(), NOT_SELECTED);
-            SchedZoneItem newSZS = new SchedZoneItem( z.getzName(), NOT_SELECTED);
+            SchedZoneItem newSZS;
+            if (z.getzName() == null){
+                newSZS = new SchedZoneItem(z.getZoneNumber(),NOT_SELECTED);
+            }else newSZS = new SchedZoneItem( z.getzName(), NOT_SELECTED);
             zoneSelectList.add(newSZS);
-            Log.e("74", "fillZoneSelectList: "+ z.getzName() );
+            Log.e("ScheduleZoneSelect 89", "fillZoneSelectList: "+ z.getzName() +" " + z.getZoneNumber() );
         }
 
     }
@@ -111,5 +124,19 @@ public class ScheduleZoneSelect extends AppCompatActivity {
         public void setSelected(boolean selected) {
             this.selected = selected;
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();    //Call the back button's method
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+//        overridePendingTransition( R.anim.animation_enter, R.anim.animation_leave);
     }
 }

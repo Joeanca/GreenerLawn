@@ -27,7 +27,7 @@ public class StartTimePopUp extends Activity {
 
         int width = dm.widthPixels;
         int height = dm.heightPixels;
-        double heightPercentage = .5;
+        double heightPercentage = .65;
         double widthPercentage = .8;
 
         getWindow().setLayout((int)(width*widthPercentage), (int)(height*heightPercentage));

@@ -1,8 +1,10 @@
 package com.greenerlawn.greenerlawn;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.widget.NumberPicker;
 import android.widget.TextView;
@@ -12,6 +14,10 @@ import android.widget.TextView;
  */
 
 public class TimePopUp extends Activity{
+
+    boolean submit = false;
+    int minutes;
+    public static final String IDC_TIME_KEY = "IDC_Time_Key";
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -45,12 +51,28 @@ public class TimePopUp extends Activity{
     public void submitResult(View view) {
         NumberPicker nph = findViewById(R.id.numberPickerHour);
         NumberPicker npm =  findViewById(R.id.numberPickerMinute);
-        int minutes;
+
         minutes = 60 * nph.getValue();
         minutes = minutes + npm.getValue();
+        Log.e("57", "submitResult: "+ minutes );
         TextView tv = findViewById(R.id.textView);
         tv.setText("The time is: " + minutes);
         //setResult(RESULT_OK);
+        submit = true;
+        finish();
     }
 
+    @Override
+    public void finish() {
+        Intent data = new Intent();
+        if (submit){
+            data.putExtra("IDC_Time_Key", minutes);
+            Log.e("70", "finish: "+ minutes );
+            setResult(RESULT_OK, data);
+        }else {
+            setResult(RESULT_CANCELED, data);
+        }
+
+        super.finish();
+    }
 }

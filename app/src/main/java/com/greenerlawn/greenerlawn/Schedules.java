@@ -18,6 +18,7 @@ public class Schedules {
     private long duration;
     private long endTime;
     private String zGUID;
+    private String name;
 
     //todo remove is from names
     private boolean valid, repeat, suspended, pausedByIDC;
@@ -46,6 +47,21 @@ public class Schedules {
         this.repeat = isRepeat;
         this.suspended = suspended;
         this.valid = valid;
+        this.pausedByIDC = pausedByIDC;
+    }
+
+    public Schedules(String name, String schGUID, int day, long startTime, long duration, long endTime, String zGUID, boolean repeat,  boolean suspended, boolean valid, boolean pausedByIDC) {
+        this.schGUID = schGUID;
+        this.tempGuid = tempGuid;
+        this.day = day;
+        this.startTime = startTime;
+        this.duration = duration;
+        this.endTime = endTime;
+        this.zGUID = zGUID;
+        this.name = name;
+        this.valid = valid;
+        this.repeat = repeat;
+        this.suspended = suspended;
         this.pausedByIDC = pausedByIDC;
     }
 
@@ -194,5 +210,13 @@ public class Schedules {
 
     public void setPausedByIDC(boolean pausedByIDC) {
         this.pausedByIDC = pausedByIDC;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

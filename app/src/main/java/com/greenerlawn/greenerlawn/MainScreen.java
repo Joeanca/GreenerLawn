@@ -39,6 +39,7 @@ import com.survivingwithandroid.weather.lib.model.Weather;
 import com.survivingwithandroid.weather.lib.provider.openweathermap.OpenweathermapProviderType;
 import com.survivingwithandroid.weather.lib.request.WeatherRequest;
 import java.lang.reflect.Field;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -59,6 +60,7 @@ public class MainScreen extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle abdt;
     private static final int RC_SIGN_IN = 123;
+    private static final int IDC_POP_UP = 11;
     public static FirebaseUser USER;
 
     //AUSTINS
@@ -100,6 +102,13 @@ public class MainScreen extends AppCompatActivity {
                 finish();
             }
         }
+        if (requestCode == IDC_POP_UP && resultCode == RESULT_OK){
+            long duration = data.getIntExtra("IDC_Time_Key",-1);
+            duration = duration *1000 *60;
+            ScheduleManager sM = new ScheduleManager();
+            sM.runAllNow(duration);
+        }
+
     }
 
     // USE THIS FOR THE DRAWER OPTIONS TO GIVE THEM CONTEXT OR MAKE THE ACTIONABLE.
@@ -156,7 +165,7 @@ public class MainScreen extends AppCompatActivity {
                                             Arrays.asList(new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
                                                     new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build()))
                                     .setTheme(R.style.LoginTheme)
-                                    .setLogo(R.drawable.irrigation)      // Set logo drawable
+                                    .setLogo(R.drawable.irrigation_login)      // Set logo drawable
                                     .build(),
                             RC_SIGN_IN);
                 }
@@ -185,9 +194,11 @@ public class MainScreen extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
-                if (id == R.id.nav_gallery) {
-                    Toast.makeText(MainScreen.this, "smtg", Toast.LENGTH_SHORT).show();
-                } else if (id == R.id.sign_out_menu) {
+                if (id == R.id.nav_manage) {
+                    startActivity(new Intent(MainScreen.this, SettingsMenu.class));
+
+                } else
+                    if (id == R.id.sign_out_menu) {
                     AuthUI.getInstance().signOut(MainScreen.this);
                 }
                 return true;
@@ -234,7 +245,9 @@ public class MainScreen extends AppCompatActivity {
         detachDatabaseReadListener();
     }
     public void openTimer(View view) {
-        startActivity(new Intent(MainScreen.this, TimePopUp.class));
+        //startActivity(new Intent(MainScreen.this, TimePopUp.class));
+        Intent i = new Intent(this, TimePopUp.class);
+        startActivityForResult(i, IDC_POP_UP);
     }
     private void detachDatabaseReadListener() {
         if (mChildEventListener != null) {
@@ -243,8 +256,7 @@ public class MainScreen extends AppCompatActivity {
         }
     }
     public void modifyZones(View view) {
-        startActivity(new Intent(MainScreen.this, CreateSchedule.class));
-        // startActivity(new Intent(MainScreen.this, ZoneSettings.class));
+         startActivity(new Intent(MainScreen.this, ZoneSettings.class));
     }
     private void setupWeather() {
         WeatherClient.ClientBuilder builder = new WeatherClient.ClientBuilder();
@@ -289,8 +301,8 @@ public class MainScreen extends AppCompatActivity {
             });
         } catch (WeatherProviderInstantiationException e) {e.printStackTrace(); }
     }
-    public void modifySettings(View view) {
-        startActivity(new Intent(MainScreen.this, SettingsMenu.class));
+    public void modifySchedules(View view) {
+        startActivity(new Intent(MainScreen.this, CreateSchedule.class));
     }
     public static void setDrawerLeftEdgeSize(Activity activity, DrawerLayout drawerLayout, float displayWidthPercentage) {
         if (activity == null || drawerLayout == null)
@@ -316,4 +328,5 @@ public class MainScreen extends AppCompatActivity {
             // ignore
         }
     }
+
 }
