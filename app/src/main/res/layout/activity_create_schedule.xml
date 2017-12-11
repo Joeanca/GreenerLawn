@@ -368,16 +368,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/AschName_ET" />
 
-        <android.support.design.widget.FloatingActionButton
+        <Button
             android:id="@+id/sch_submit_FAB"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginBottom="24dp"
             android:layout_marginEnd="24dp"
+            android:background="@drawable/rounder_butt4days"
             android:backgroundTint="@color/accent"
             android:clickable="true"
             android:onClick="submitSchedule"
-            app:backgroundTint="@color/accent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/ic_check_24dp"
