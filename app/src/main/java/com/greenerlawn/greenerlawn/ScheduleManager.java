@@ -129,9 +129,11 @@ public class ScheduleManager {
                 // adds each zone to new list according to the # of days it will run
             }
         }
-
+        Log.e("134 sched man", "configureSchedule:  calling create" );
         createScheduleItems(name, duration, dayAL, repeat, endTime, expandStartTimeArr, expandedDays, expandedZoneList);
+        Log.e("134 sched man", "configureSchedule:  we're back from create" );
         pushToFuegoBase();
+
     }
 
     private void pushToFuegoBase() {
@@ -143,7 +145,7 @@ public class ScheduleManager {
 
     public void createScheduleItems(String name, long duration, ArrayList<Integer> dayArr, boolean repeat, long endTime, ArrayList<Long> expandStartTimeArr, int[] expandedDays, ArrayList<String> expandedZoneList) {
         //creates and validates, sends to add method for error handling
-
+        Log.e("134 sched man", "in create" );
         ArrayList<Schedules> tempSchedList = new ArrayList<>();
         for (int i = 0; i< expandedDays.length; i++){
            int sDay = expandedDays[i];
@@ -153,6 +155,7 @@ public class ScheduleManager {
         }
 
         for (Schedules temp: tempSchedList) {
+            Log.e("134 sched man", "calling verifiy and add" );
             verifyValid(temp);
             addSchedule(temp);
         }
@@ -161,6 +164,7 @@ public class ScheduleManager {
     public void addSchedule(Schedules newSched) {
         if(newSched.isValid()){
             schedulesList.add(newSched);
+            Log.e("CreateSched 163", "addSchedule: Added" );
         }else{
             //todo error handling
         }

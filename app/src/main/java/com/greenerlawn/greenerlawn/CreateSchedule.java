@@ -129,6 +129,7 @@ public class CreateSchedule extends AppCompatActivity {
             nameFlag = true;
 
         }
+        Log.e("CreateSchedule", "submitSchedule: dur " + durFlag + "name "+nameFlag+ "zone" +zonesFlag +"start" + startTimeFlag );
         if (durFlag && startTimeFlag && zonesFlag && nameFlag){
             for (int i =0; i <dayArray.length; i++){
                 if (dayArray[i]){
@@ -140,7 +141,7 @@ public class CreateSchedule extends AppCompatActivity {
             ScheduleManager sm = new ScheduleManager();
             sm.configureSchedule(name,zoneNameList,longST,longDur,timeFlag,submitDayAL,repeat);
         }
-        finish();
+        //finish();
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

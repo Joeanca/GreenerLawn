@@ -33,7 +33,6 @@ public class ScheduleZoneSelect extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         zoneList = User.getInstance().zoneListGet();
-        Log.e("33", "onCreate: "+User.getInstance().zoneListGet().get(1).getzName() );
         super.onCreate(savedInstanceState);
 //        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         setContentView(R.layout.schedule_zone_select_activity);
@@ -81,10 +80,12 @@ public class ScheduleZoneSelect extends AppCompatActivity {
 
     private void fillZoneSelectList() {
         for (Zone z : zoneList) {
-            //SchedZoneItem newSZS = new SchedZoneItem(z.getzImage(), z.getzName(), NOT_SELECTED);
-            SchedZoneItem newSZS = new SchedZoneItem( z.getzName(), NOT_SELECTED);
+            SchedZoneItem newSZS;
+            if (z.getzName() == null){
+                newSZS = new SchedZoneItem(z.getZoneNumber(),NOT_SELECTED);
+            }else newSZS = new SchedZoneItem( z.getzName(), NOT_SELECTED);
             zoneSelectList.add(newSZS);
-            Log.e("74", "fillZoneSelectList: "+ z.getzName() );
+            Log.e("ScheduleZoneSelect 89", "fillZoneSelectList: "+ z.getzName() +" " + z.getZoneNumber() );
         }
 
     }
