@@ -5,6 +5,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -19,7 +20,7 @@ public class CreateSchedule extends AppCompatActivity {
     private ArrayList<String> zoneNameList = new ArrayList<String>();
     private boolean[] dayArray = new boolean[8];
     private ArrayList<Integer> submitDayAL = new ArrayList<Integer>(1);
-    private String[] dayTextArr = new String[]{"All", "Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"};
+    private String[] dayTextArr = new String[]{"", "Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"};
     static final int START_TIME_PICK = 1;
     static final int  DURATION_TIME_PICK = 2;
     static final int ZONE_SELECT = 3;
@@ -29,6 +30,8 @@ public class CreateSchedule extends AppCompatActivity {
     private int startHour = -1, startMinute = -1, durHour = -1, durMinute = -1;
     private long longSH, longsM, longDH, longDM, longST, longDur;
     private boolean durFlag = false, startTimeFlag = false, zonesFlag = false, nameFlag = false;
+    private boolean repeat = false;
+    EditText et;
 
 
     //todo pull images properly from DB functions
@@ -52,22 +55,29 @@ public class CreateSchedule extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
+    public void setRepeat(View v){
+        if (repeat)repeat = false;
+        else repeat = true;
+
+        Log.e("61", "setRepeat: "+ repeat );
+    }
+
     public void selectDay(View v) {
+        // i know it's a button, i don't know which button
         Button dayBTN = (Button) v;
-        dayBTN.getText();
+
         int dayValue = 0;
         for (int i = 0; i < dayTextArr.length; i++) {
             if (dayBTN.getText().equals(dayTextArr[i])) {
                 dayValue = i;
+                Log.e("64", "selectDay: "+dayTextArr[i] );
             }
         }
-        if (!dayBTN.isPressed()) {
-            dayBTN.setPressed(true);
-        } else {
-            dayBTN.setPressed(false);
-        }
-        dayArray[dayValue] = dayBTN.isPressed();
+        if (dayArray[dayValue]) dayArray[dayValue] = false;
+        else{dayArray[dayValue] = true;}
+
     }
+
 
     public void durationSet(View durBTN){
         Intent durationIntent = new Intent(this, DurationPopUp.class);
@@ -113,12 +123,11 @@ public class CreateSchedule extends AppCompatActivity {
 
     public void submitSchedule(View view) {
 
-        EditText nameV = (EditText) view.findViewById(R.id.AschName_ET);
-        Switch repeatSW = (Switch) view.findViewById(R.id.schRepeat_SW);
-        boolean repeat = repeatSW.isChecked();
+        et =  findViewById(R.id.AschName_ET);
 
-        if (!nameV.getText().equals("Schedule Name")){
+        if (!et.getText().equals("")){
             nameFlag = true;
+
         }
         if (durFlag && startTimeFlag && zonesFlag && nameFlag){
             for (int i =0; i <dayArray.length; i++){
@@ -126,10 +135,12 @@ public class CreateSchedule extends AppCompatActivity {
                     submitDayAL.add(i);
                 }
             }
+            String name = et.getText().toString();
             int timeFlag = 0;
             ScheduleManager sm = new ScheduleManager();
-            sm.configureSchedule(zoneNameList,longST,longDur,timeFlag,submitDayAL,repeat);
+            sm.configureSchedule(name,zoneNameList,longST,longDur,timeFlag,submitDayAL,repeat);
         }
+        finish();
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

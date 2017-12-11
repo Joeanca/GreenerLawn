@@ -39,6 +39,7 @@ import com.survivingwithandroid.weather.lib.model.Weather;
 import com.survivingwithandroid.weather.lib.provider.openweathermap.OpenweathermapProviderType;
 import com.survivingwithandroid.weather.lib.request.WeatherRequest;
 import java.lang.reflect.Field;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -59,6 +60,7 @@ public class MainScreen extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle abdt;
     private static final int RC_SIGN_IN = 123;
+    private static final int IDC_POP_UP = 11;
     public static FirebaseUser USER;
 
     //AUSTINS
@@ -100,6 +102,13 @@ public class MainScreen extends AppCompatActivity {
                 finish();
             }
         }
+        if (requestCode == IDC_POP_UP && resultCode == RESULT_OK){
+            long duration = data.getIntExtra("IDC_Time_Key",-1);
+            duration = duration *1000 *60;
+            ScheduleManager sM = new ScheduleManager();
+            sM.runAllNow(duration);
+        }
+
     }
 
     // USE THIS FOR THE DRAWER OPTIONS TO GIVE THEM CONTEXT OR MAKE THE ACTIONABLE.
@@ -236,7 +245,9 @@ public class MainScreen extends AppCompatActivity {
         detachDatabaseReadListener();
     }
     public void openTimer(View view) {
-        startActivity(new Intent(MainScreen.this, TimePopUp.class));
+        //startActivity(new Intent(MainScreen.this, TimePopUp.class));
+        Intent i = new Intent(this, TimePopUp.class);
+        startActivityForResult(i, IDC_POP_UP);
     }
     private void detachDatabaseReadListener() {
         if (mChildEventListener != null) {

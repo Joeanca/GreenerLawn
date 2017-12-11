@@ -48,10 +48,12 @@ public class DurationPopUp extends Activity{
     public void submitResult(View view) {
         NumberPicker nphDur = findViewById(R.id.numberPickerHourDuration);
         NumberPicker npmDur =  findViewById(R.id.numberPickerMinuteDuration);
-
+            if(nphDur.getValue() != 0 && npmDur.getValue() !=0){
         durHour = nphDur.getValue();
         durMin = npmDur.getValue();
+            }
 
+    finish();
     }
 
     @Override

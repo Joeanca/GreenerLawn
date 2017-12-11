@@ -75,6 +75,7 @@ public class ScheduleZoneSelect extends AppCompatActivity {
         }else{setResult(RESULT_CANCELED, data);}
 
         super.finish();
+
     }
 
 

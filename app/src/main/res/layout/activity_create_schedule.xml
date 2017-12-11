@@ -119,14 +119,17 @@
 
                     >
 
-                    <Button
+                    <ToggleButton
                         android:id="@+id/schSun_BTN"
                         android:layout_width="60dp"
                         android:layout_height="60dp"
 
                         android:background="@drawable/rounder_butt4days"
-                        android:text="@string/Sunday"
 
+                        android:checked="false"
+                        android:onClick="selectDay"
+                        android:textOff="@string/Sunday"
+                        android:textOn="@string/Sunday"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -146,15 +149,16 @@
                     app:layout_constraintTop_toTopOf="parent">
 
                     <!-- Monday Button -->
-                    <Button
+                    <ToggleButton
                         android:id="@+id/schMon_BTN"
                         android:layout_width="60dp"
                         android:layout_height="60dp"
 
                         android:background="@drawable/rounder_butt4days"
-                        android:text="@string/Monday"
-
+                        android:onClick="selectDay"
                         android:textAlignment="center"
+                        android:textOff="@string/Monday"
+                        android:textOn="@string/Monday"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -171,7 +175,7 @@
                     app:layout_constraintStart_toEndOf="@id/mDayBTN_CL"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <Button
+                    <ToggleButton
                         android:id="@+id/schTue_BTN"
                         android:layout_width="60dp"
                         android:layout_height="60dp"
@@ -179,6 +183,8 @@
                         android:background="@drawable/rounder_butt4days"
                         android:text="@string/Tuesday"
 
+                        android:textOff="@string/Tuesday"
+                        android:textOn="@string/Tuesday"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -196,7 +202,7 @@
                     app:layout_constraintStart_toEndOf="@id/tDayBTN_CL"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <Button
+                    <ToggleButton
                         android:id="@+id/schWed_BTN"
                         android:layout_width="60dp"
                         android:layout_height="60dp"
@@ -204,6 +210,8 @@
                         android:background="@drawable/rounder_butt4days"
                         android:text="@string/Wednesday"
 
+                        android:textOff="@string/Wednesday"
+                        android:textOn="@string/Wednesday"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -239,7 +247,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="24dp"
-
+                        android:onClick="setRepeat"
                         android:checked="false"
                         android:switchPadding="@dimen/activity_horizontal_margin"
                         android:text="@string/repeat_switch"
@@ -265,7 +273,7 @@
 
                     >
 
-                    <Button
+                    <ToggleButton
                         android:id="@+id/schThur_BTN"
                         android:layout_width="60dp"
                         android:layout_height="60dp"
@@ -273,6 +281,8 @@
                         android:background="@drawable/rounder_butt4days"
                         android:text="@string/Thursday"
 
+                        android:textOff="@string/Thursday"
+                        android:textOn="@string/Thursday"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -289,7 +299,7 @@
                     app:layout_constraintStart_toEndOf="@id/schThurBtn_CL"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <Button
+                    <ToggleButton
                         android:id="@+id/schFriday_BTN"
                         android:layout_width="60dp"
                         android:layout_height="60dp"
@@ -297,6 +307,8 @@
                         android:background="@drawable/rounder_butt4days"
                         android:text="@string/Friday"
 
+                        android:textOff="@string/Friday"
+                        android:textOn="@string/Friday"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -315,14 +327,17 @@
 
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <Button
+                    <ToggleButton
                         android:id="@+id/schSat_BTN"
                         android:layout_width="60dp"
                         android:layout_height="60dp"
 
                         android:background="@drawable/rounder_butt4days"
-                        android:text="@string/Saturday"
+                        android:checked="false"
 
+                        android:text="@string/Saturday"
+                        android:textOff="@string/Saturday"
+                        android:textOn="@string/Saturday"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="1.0"
@@ -343,6 +358,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:backgroundTint="@color/accent"
+            android:onClick="startTimePick"
             android:paddingBottom="10dp"
             android:paddingTop="10dp"
             android:text="@string/start_time"
@@ -364,7 +380,7 @@
             app:backgroundTint="@color/accent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/ic_check_black_24dp" />
+            app:srcCompat="@drawable/ic_check_black_24dp" android:focusable="true" />
 
         <EditText
             android:id="@+id/AschName_ET"
@@ -380,6 +396,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
     </android.support.constraint.ConstraintLayout>
 
 

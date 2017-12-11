@@ -45,8 +45,9 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
         android:backgroundTint="@color/primary"
-        android:text="@string/submit"
+        android:onClick="setSubmit"
 
+        android:text="@string/submit"
         android:textColor="@color/icons"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

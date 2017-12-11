@@ -1,8 +1,12 @@
 package com.greenerlawn.greenerlawn;
 
+import android.util.Log;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 /**
@@ -73,10 +77,12 @@ public class ScheduleManager {
 
 
     // todo condense expand calls
-    public void configureSchedule(ArrayList<String> zoneIDList, Long startTime, long duration, int timeFlag, ArrayList<Integer> dayAL, boolean repeat){
+    public void configureSchedule(String name, ArrayList<String> zoneIDList, Long startTime, long duration, int timeFlag, ArrayList<Integer> dayAL, boolean repeat){
         // holds cascading start times
         int endTime = 0;
         Long[] startTimeArr = new Long[zoneIDList.size()];
+        Log.e("82", "configureSchedule: "+ startTimeArr.length );
+        Log.e("83", "configureSchedule: "+dayAL.size());
         // holds redundant day entries for each sched item
         int[] expandedDays = new int[zoneIDList.size()*dayAL.size()];
         // timeFlag is a 0 or 1
@@ -101,7 +107,7 @@ public class ScheduleManager {
         //must use ArrayList as Array's require you to know the position to insert
         // creates 8 8 8 820 820 820 840 840 840
         for(int i=0; i < startTimeArr.length; i++){
-            for(int ii= 0; i < dayAL.size(); ii++){
+            for(int ii= 0; ii < dayAL.size(); ii++){
                 expandStartTimeArr.add(startTimeArr[i]);
             }
         }
@@ -124,15 +130,18 @@ public class ScheduleManager {
             }
         }
 
-        createScheduleItems(duration, dayAL, repeat, endTime, expandStartTimeArr, expandedDays, expandedZoneList);
+        createScheduleItems(name, duration, dayAL, repeat, endTime, expandStartTimeArr, expandedDays, expandedZoneList);
         pushToFuegoBase();
     }
 
     private void pushToFuegoBase() {
         DatabaseFunctions.getInstance().updateSchedule((List)schedulesList);
+        for (Schedules s : schedulesList){
+            Log.e("140", "pushToFuegoBase: "+s.getName() );
+        }
     }
 
-    public void createScheduleItems(long duration, ArrayList<Integer> dayArr, boolean repeat, long endTime, ArrayList<Long> expandStartTimeArr, int[] expandedDays, ArrayList<String> expandedZoneList) {
+    public void createScheduleItems(String name, long duration, ArrayList<Integer> dayArr, boolean repeat, long endTime, ArrayList<Long> expandStartTimeArr, int[] expandedDays, ArrayList<String> expandedZoneList) {
         //creates and validates, sends to add method for error handling
 
         ArrayList<Schedules> tempSchedList = new ArrayList<>();
@@ -140,7 +149,7 @@ public class ScheduleManager {
            int sDay = expandedDays[i];
            Long sStart = expandStartTimeArr.get(i);
            String zGuid = expandedZoneList.get(i);
-           tempSchedList.add(new Schedules(null, sDay,sStart, duration, endTime, zGuid, repeat,SUSPEND_AT_CREATE, VALID_AT_CREATE, IDC_FLAG));
+           tempSchedList.add(new Schedules(name,null, sDay,sStart, duration, endTime, zGuid, repeat,SUSPEND_AT_CREATE, VALID_AT_CREATE, IDC_FLAG));
         }
 
         for (Schedules temp: tempSchedList) {
@@ -158,21 +167,28 @@ public class ScheduleManager {
     }
 
     //RUN ALL METHOD
-    public void runAllNow(int rANduration){
+    public void runAllNow(long rANduration){
         pauseAll();
         Calendar today = Calendar.getInstance();
         Integer day = today.DAY_OF_WEEK;
         ArrayList<Integer> oneDay = new ArrayList<>(1);
         oneDay.add(day);
-        long rANStart = System.currentTimeMillis();
+        long rANStart;
+        Date date = new Date();
+        Calendar calendar = GregorianCalendar.getInstance();
+        calendar.setTime(date);
+        long currHour = calendar.get(Calendar.HOUR_OF_DAY);
+        long currMinute = calendar.get(Calendar.MINUTE);
         //start all in 3 minutes
-        rANStart += (minute *3);
+        currHour = currHour * 60* minute;
+        currMinute = currMinute * minute;
+        rANStart = currHour + currMinute + (minute *3);
         ArrayList zoneID = new ArrayList();
         for (Zone zone: zoneArrayList) {
             zoneID.add(zone.getzGUID());
         }
 
-        configureSchedule(zoneID,rANStart,rANduration,0, oneDay, false);
+        configureSchedule("QuickRun",zoneID,rANStart,rANduration,0, oneDay, false);
 
     }
 
