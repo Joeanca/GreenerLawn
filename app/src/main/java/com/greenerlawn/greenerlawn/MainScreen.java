@@ -64,9 +64,9 @@ public class MainScreen extends AppCompatActivity {
     public static FirebaseUser USER;
 
     //AUSTINS
-//    private static final String OPEN_API_KEY = "bea4b929ff482f02d7ab334b6e015467";
+   private static final String OPEN_API_KEY = "bea4b929ff482f02d7ab334b6e015467";
     //JORGES
-    private static final String OPEN_API_KEY = "38cda1c407a4476daa05ae3c8e1b86a4";
+//    private static final String OPEN_API_KEY = "38cda1c407a4476daa05ae3c8e1b86a4";
 
     List<AuthUI.IdpConfig> providers;
 
